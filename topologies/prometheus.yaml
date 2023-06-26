@@ -1,0 +1,68 @@
+apiVersion: canaries.flanksource.com/v1
+kind: Topology
+metadata:
+  name: prometheus
+spec:
+  icon: prometheus
+  type: Topology
+  schedule: "@every 5m"
+  components:
+    - name: Pods
+      icon: pod
+      selectors:
+        - name: pods
+          labelSelector: 'namespace=monitoring'
+    - name: Prometheus Database
+      icon: prometheus
+      properties:
+      - name: Metrics count
+        headline: true
+        lookup:
+          prometheus:
+            - query: 'count({__name__=~".+"})'
+              host: 'http://prometheus-k8s.monitoring:9090'
+              display:
+                javascript: |
+                  value = ''
+                  if (results.length > 0) {
+                    value = results[0].value
+                  }
+                  value
+      - name: Disk used (GB)
+        headline: true
+        lookup:
+          prometheus:
+            - query: 'prometheus_tsdb_storage_blocks_bytes / (1024 * 1024 * 1024)'
+              host: 'http://prometheus-k8s.monitoring:9090'
+              display:
+                javascript: |
+                  value = ''
+                  if (results.length > 0) {
+                    value = results[0].value
+                  }
+                  value.toString().substring(0,6)
+      - name: Targets
+        headline: true
+        lookup:
+          prometheus:
+            - query: 'count(prometheus_target_scrape_pool_targets)'
+              host: 'http://prometheus-k8s.monitoring:9090'
+              display:
+                javascript: |
+                  value = ''
+                  if (results.length > 0) {
+                    value = results[0].value
+                  }
+                  value
+      - name: Rule groups with duration > 1 sec
+        lookup:
+          prometheus:
+            - query: 'count(prometheus_rule_group_last_duration_seconds > 1)'
+              host: 'http://prometheus-k8s.monitoring:9090'
+              display:
+                javascript: |
+                  value = '0'
+                  if (results.length > 0) {
+                    value = results[0].value
+                  }
+                  value
