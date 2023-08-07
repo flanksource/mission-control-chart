@@ -4,7 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.337"
+  tag: "v0.0.338"
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -22,10 +22,8 @@ externalPostgrest:
 #   password: ''
 #   labels: 'key1=val1,key2=val2'
 upstream_push: {}
-
 # Allowed values are [none, kratos,clerk]
 authProvider: kratos
-
 db:
   create: true
   secretKeyRef:
