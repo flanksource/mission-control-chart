@@ -46,7 +46,7 @@ spec:
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
             - --kratos-api=http://kratos-public:80
-            - --enable-auth
+            - --auth={{ .Values.authProvider }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000
            {{- end }}

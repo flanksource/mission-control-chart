@@ -22,6 +22,10 @@ externalPostgrest:
 #   password: ''
 #   labels: 'key1=val1,key2=val2'
 upstream_push: {}
+
+# Allowed values are [none, kratos,clerk]
+authProvider: kratos
+
 db:
   create: true
   secretKeyRef:
