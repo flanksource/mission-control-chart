@@ -23,7 +23,7 @@ dependencies:
   - name: kratos
     version: "0.32.0"
     repository: https://k8s.ory.sh/helm/charts
-    condition: auth
+    condition: authProvider == 'kratos'
     import-values:
       - child: secret
         parent: kratossecret
