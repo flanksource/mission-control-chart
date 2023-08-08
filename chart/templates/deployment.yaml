@@ -45,8 +45,13 @@ spec:
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
-            - --kratos-api=http://kratos-public:80
             - --auth={{ .Values.authProvider }}
+           {{- if eq .Values.authProvider "kratos" }}
+            - --kratos-api=http://kratos-public:80
+           {{- end }}
+           {{- if eq .Values.authProvider "clerk" }}
+            - --clerk-secret={{ .Values.clerkSecret }}
+           {{- end }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000
            {{- end }}
