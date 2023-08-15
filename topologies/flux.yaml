@@ -25,11 +25,12 @@ spec:
               display:
                 javascript: |
                   JSON.stringify(results.results.map(function(r) {
-                    var status = r.config.status.conditions[0].status === "True" ? "healthy" : "unhealthy"
                     return {
                       name: r.name,
                       icon: 'helm',
-                      status: status,
+                      namespace: r.namespace,
+                      status: r.status,
+                      status_reason: r.description,
                       selectors: [{
                         name: 'pods',
                         labelSelector: 'app.kubernetes.io/instance='+r.name,
@@ -70,11 +71,12 @@ spec:
               display:
                 javascript: |
                   JSON.stringify(results.results.map(function(r) {
-                    var status = r.config.status.conditions[0].status === "True" ? "healthy" : "unhealthy"
                     return {
                       name: r.name,
                       icon: 'kustomize',
-                      status: status,
+                      namespace: r.namespace,
+                      status: r.status,
+                      status_reason: r.description,
                       selectors: [{
                         name: 'pods',
                         labelSelector: 'kustomize.toolkit.fluxcd.io/name='+r.name + ',kustomize.toolkit.fluxcd.io/namespace='+r.config.metadata.namespace
@@ -114,7 +116,9 @@ spec:
                     return {
                       name: r.name,
                       icon: 'helm',
-                      status: status,
+                      namespace: r.namespace,
+                      status: r.status,
+                      status_reason: r.description,
                       configs: [
                         {
                           name: r.name,
@@ -150,7 +154,9 @@ spec:
                     return {
                       name: r.name,
                       icon: 'git',
-                      status: status,
+                      namespace: r.namespace,
+                      status: r.status,
+                      status_reason: r.description,
                       configs: [
                         {
                           name: r.name,
