@@ -20,6 +20,7 @@ rules:
   resources:
   - connections
   - incidentrules
+  - playbooks
   verbs:
   - create
   - delete
@@ -33,6 +34,7 @@ rules:
   resources:
   - connections/finalizers
   - incidentrules/finalizers
+  - playbooks/finalizers
   verbs:
   - update
 - apiGroups:
@@ -40,6 +42,7 @@ rules:
   resources:
   - connections/status
   - incidentrules/status
+  - playbooks/status
   verbs:
   - get
   - patch
