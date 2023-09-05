@@ -50,7 +50,7 @@ spec:
             - --kratos-api=http://kratos-public:80
            {{- end }}
            {{- if eq .Values.authProvider "clerk" }}
-            - --clerk-secret={{ .Values.clerkSecret }}
+            - --clerk-jwks-url={{ .Values.clerkJWKSURL }}
            {{- end }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000

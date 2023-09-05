@@ -24,7 +24,7 @@ externalPostgrest:
 upstream_push: {}
 # Allowed values are [none, kratos,clerk]
 authProvider: kratos
-clerkSecret: ""
+clerkJWKSURL: ""
 db:
   create: true
   secretKeyRef:
