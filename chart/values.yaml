@@ -117,6 +117,7 @@ flanksource-ui:
 # - Disable kratos secret. Again, we explicitly generate secrets.yaml to include
 # database URL in it.
 kratos:
+  enabled: true
   deployment:
     extraArgs:
       - --watch-courier
