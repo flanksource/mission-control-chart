@@ -25,6 +25,7 @@ upstream_push: {}
 # Allowed values are [none, kratos,clerk]
 authProvider: kratos
 clerkJWKSURL: ""
+clerkOrgID: ""
 db:
   create: true
   secretKeyRef:

@@ -51,6 +51,7 @@ spec:
            {{- end }}
            {{- if eq .Values.authProvider "clerk" }}
             - --clerk-jwks-url={{ .Values.clerkJWKSURL }}
+            - --clerk-org-id={{ .Values.clerkOrgID }}
            {{- end }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000
