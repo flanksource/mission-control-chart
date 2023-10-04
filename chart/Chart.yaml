@@ -11,7 +11,7 @@ dependencies:
     version: ">= 0.0.20"
     repository: https://flanksource.github.io/charts
   - name: config-db
-    version: "0.0.138"
+    version: "0.0.139"
     repository: https://flanksource.github.io/charts
   - name: canary-checker
     version: "1.0.50"
