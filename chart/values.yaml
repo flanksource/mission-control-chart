@@ -14,6 +14,7 @@ externalPostgrest:
   logLevel: info
   dbScema: public
   dbAnonRole: postgrest_anon
+  maxRows: 2000
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
