@@ -65,7 +65,7 @@ spec:
             - --upstream-password={{ .Values.upstream_push.password }}
             - --upstream-labels={{ .Values.upstream_push.labels | default "" }}
            {{- end }}
-           {{- if .Values .Values.otel_collector }}
+           {{- if .Values.otel_collector }}
             - --otel-collector-url={{ .Values.otel_collector | default "" | quote }}
            {{- end }}
           resources:
