@@ -26,6 +26,10 @@ upstream_push: {}
 authProvider: kratos
 clerkJWKSURL: ""
 clerkOrgID: ""
+
+# OpenTelemetry gRPC collector endpoint in host:port format
+otel_collector: ""
+
 db:
   create: true
   secretKeyRef:
@@ -77,6 +81,7 @@ config-db:
       name: incident-commander-postgres
       key: DB_URL
 apm-hub:
+  enabled: true
   db:
     enabled: false
     secretKeyRef:
