@@ -55,6 +55,8 @@ spec:
            {{- end }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000
+           {{- else}}
+            - --postgrest-max-rows='{{.Values.externalPostgrest.maxRows}}'
            {{- end }}
            {{- if .Values.upstream_push }}
             - --upstream-name={{ .Values.upstream_push.name }}

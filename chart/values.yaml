@@ -46,6 +46,7 @@ smtp:
     # SMTP_USER: <user>
     # SMTP_PASSWORD: <password>
 adminPassword: admin
+
 canary-checker:
   image:
     type: full
@@ -69,6 +70,7 @@ canary-checker:
     ingress:
       enabled: true
       host: "canary-checker-ui.local"
+
 config-db:
   disablePostgrest: true
   db:
@@ -77,6 +79,7 @@ config-db:
       create: false
       name: incident-commander-postgres
       key: DB_URL
+
 apm-hub:
   db:
     enabled: false
@@ -84,6 +87,7 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
+
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 ingress:
   enabled: false
@@ -95,6 +99,7 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
 flanksource-ui:
   enabled: true
   nameOverride: "incident-manager-ui"
