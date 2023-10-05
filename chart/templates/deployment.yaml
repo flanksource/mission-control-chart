@@ -63,6 +63,7 @@ spec:
             - --upstream-password={{ .Values.upstream_push.password }}
             - --upstream-labels={{ .Values.upstream_push.labels | default "" }}
            {{- end }}
+            - --otel-collector-url={{ .Values.otel_collector | default "" | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:

@@ -10,6 +10,7 @@ dependencies:
   - name: apm-hub
     version: ">= 0.0.20"
     repository: https://flanksource.github.io/charts
+    condition: apm-hub.enabled
   - name: config-db
     version: "0.0.138"
     repository: https://flanksource.github.io/charts
