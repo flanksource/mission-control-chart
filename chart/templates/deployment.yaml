@@ -66,7 +66,7 @@ spec:
             - --upstream-labels={{ .Values.upstream_push.labels | default "" }}
            {{- end }}
            {{- if .Values.otel_collector }}
-            - --otel-collector-url={{ .Values.otel_collector | default "" | quote }}
+            - --otel-collector-url={{ .Values.otel_collector | default "" }}
            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
