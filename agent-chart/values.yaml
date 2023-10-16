@@ -1,0 +1,40 @@
+# Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
+nameOverride: ""
+
+# If true, creates secret
+upstream:
+  createSecret: false
+  host: ""
+  username: ""
+  password: ""
+  secretName: upstream
+
+canary-checker:
+  image:
+    type: full
+  upstream:
+    enabled: true
+    agentName: "default-agent"
+    secretKeyRef:
+      name: upstream
+  db:
+    embedded:
+      persist: true
+  flanksource-ui:
+    # Disable canary-checker by default.
+    enabled: false
+
+config-db:
+  db:
+    enabled: true
+    secretKeyRef:
+      create: true
+    storage: "20Gi"
+    storageClass: ""
+
+  upstream:
+    enabled: true
+    secretKeyRef:
+      name: upstream
+    agentName: default-agent
+    pageSize: 500
