@@ -1,0 +1,15 @@
+apiVersion: v2
+name: mission-control-agent
+description: A Helm chart for flanksource mission control agent
+type: application
+version: 0.1.0
+appVersion: "0.0.10"
+maintainers:
+  - name: Flanksource
+dependencies:
+  - name: config-db
+    version: "0.0.141"
+    repository: https://flanksource.github.io/charts
+  - name: canary-checker
+    version: "1.0.60"
+    repository: https://flanksource.github.io/charts
