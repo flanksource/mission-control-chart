@@ -1,5 +1,5 @@
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
-nameOverride: ""
+nameOverride: "mc-agent"
 
 # If true, creates secret
 upstream:

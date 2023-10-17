@@ -7,3 +7,8 @@ chart-local:
 chart:
 	helm dependency build ./chart
 	helm package ./chart
+
+.PHONY: agent-chart
+agent-chart:
+	helm dependency build ./agent-chart
+	helm package ./agent-chart
