@@ -4,7 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.374"
+  tag: "v0.0.375"
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
