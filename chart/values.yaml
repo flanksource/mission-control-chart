@@ -8,6 +8,7 @@ image:
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+extraArgs: {}
 externalPostgrest:
   enable: true
   tag: v10.1.0
@@ -185,7 +186,7 @@ kratos:
 resources:
   requests:
     cpu: 200m
-    memory: 200Mi
-  limits:
     memory: 512Mi
+  limits:
+    memory: 1024Mi
     cpu: 500m
