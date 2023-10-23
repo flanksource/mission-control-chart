@@ -40,7 +40,6 @@ spec:
             - /app/incident-commander
           args:
             - serve
-            - -vvv
             - --public-endpoint=https://{{ .Values.ingress.host }}
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
@@ -57,6 +56,9 @@ spec:
             - --postgrest-uri=http://postgrest:3000
            {{- else}}
             - --postgrest-max-rows='{{.Values.externalPostgrest.maxRows}}'
+           {{- end }}
+           {{- range $k, $v := .Values.extraArgs}}
+           - --{{$k}}={{$v}}
            {{- end }}
            {{- if .Values.upstream_push }}
             - --upstream-name={{ .Values.upstream_push.name }}
