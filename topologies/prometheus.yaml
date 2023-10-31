@@ -7,11 +7,51 @@ spec:
   type: Topology
   schedule: "@every 5m"
   components:
-    - name: Pods
-      icon: pod
-      selectors:
-        - name: pods
-          labelSelector: 'namespace=monitoring'
+    - name: pods
+      icon: pods
+      lookup:
+        kubernetes:
+        - display:
+            javascript: JSON.stringify(k8s.getPodTopology(results))
+          kind: Pod
+          name: k8s
+          namespace:
+            name: monitoring
+      properties:
+      - lookup:
+          prometheus:
+          - display:
+              javascript: |
+                var components = [];
+                for (idx in results) {
+                  var value = parseInt(Number(results[idx].value))
+                  // CPU can be between 0 & 1, so take ceil for that case
+                  if (value < 1) {value = 1}
+
+                  components.push({
+                    name: results[idx].pod,
+                    properties: [{name: 'cpu', value: value}],
+                  })
+                }
+                JSON.stringify(components)
+            query: 1000 * max by (pod) (rate(container_cpu_usage_seconds_total{container!=""}[5m]))
+            url: http://prometheus-k8s.monitoring:9090
+        name: cpu
+      - lookup:
+          prometheus:
+          - display:
+              javascript: |
+                var components = [];
+                for (idx in results) {
+                  components.push({
+                    name: results[idx].pod,
+                    properties: [{name: 'memory', value: parseInt(Number(results[idx].value))}],
+                  })
+                }
+                JSON.stringify(components)
+            query: max by (pod) (avg_over_time(container_memory_working_set_bytes{container!=""}[5m]))
+            url: http://prometheus-k8s.monitoring:9090
+        name: memory
     - name: Prometheus Database
       icon: prometheus
       properties:
@@ -22,12 +62,7 @@ spec:
             - query: 'count({__name__=~".+"})'
               host: 'http://prometheus-k8s.monitoring:9090'
               display:
-                javascript: |
-                  value = ''
-                  if (results.length > 0) {
-                    value = results[0].value
-                  }
-                  value
+                expr: results[0].value
       - name: Disk used (GB)
         headline: true
         lookup:
@@ -48,21 +83,11 @@ spec:
             - query: 'count(prometheus_target_scrape_pool_targets)'
               host: 'http://prometheus-k8s.monitoring:9090'
               display:
-                javascript: |
-                  value = ''
-                  if (results.length > 0) {
-                    value = results[0].value
-                  }
-                  value
+                expr: results[0].value
       - name: Rule groups with duration > 1 sec
         lookup:
           prometheus:
             - query: 'count(prometheus_rule_group_last_duration_seconds > 1)'
               host: 'http://prometheus-k8s.monitoring:9090'
               display:
-                javascript: |
-                  value = '0'
-                  if (results.length > 0) {
-                    value = results[0].value
-                  }
-                  value
+                expr: results[0].value
