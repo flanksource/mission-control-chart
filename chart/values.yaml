@@ -185,8 +185,8 @@ kratos:
         level: warning
 resources:
   requests:
-    cpu: 200m
-    memory: 512Mi
+    cpu: 100m
+    memory: 768Mi
   limits:
     memory: 1024Mi
     cpu: 500m
