@@ -52,42 +52,56 @@ spec:
             query: max by (pod) (avg_over_time(container_memory_working_set_bytes{container!=""}[5m]))
             url: http://prometheus-k8s.monitoring:9090
         name: memory
-    - name: Prometheus Database
-      icon: prometheus
-      properties:
-      - name: Metrics count
-        headline: true
-        lookup:
-          prometheus:
-            - query: 'count({__name__=~".+"})'
-              host: 'http://prometheus-k8s.monitoring:9090'
-              display:
-                expr: results[0].value
-      - name: Disk used (GB)
-        headline: true
-        lookup:
-          prometheus:
-            - query: 'prometheus_tsdb_storage_blocks_bytes / (1024 * 1024 * 1024)'
-              host: 'http://prometheus-k8s.monitoring:9090'
-              display:
-                javascript: |
-                  value = ''
-                  if (results.length > 0) {
-                    value = results[0].value
-                  }
-                  value.toString().substring(0,6)
-      - name: Targets
-        headline: true
-        lookup:
-          prometheus:
-            - query: 'count(prometheus_target_scrape_pool_targets)'
-              host: 'http://prometheus-k8s.monitoring:9090'
-              display:
-                expr: results[0].value
-      - name: Rule groups with duration > 1 sec
-        lookup:
-          prometheus:
-            - query: 'count(prometheus_rule_group_last_duration_seconds > 1)'
-              host: 'http://prometheus-k8s.monitoring:9090'
-              display:
-                expr: results[0].value
+  properties:
+  - name: Metrics count
+    headline: true
+    lookup:
+      prometheus:
+        - query: 'count({__name__=~".+"})'
+          url: 'http://prometheus-k8s.monitoring:9090'
+          display:
+            expr: results[0].value
+  - name: Disk used
+    lookup:
+      prometheus:
+        - query: 'prometheus_tsdb_storage_blocks_bytes'
+          url: 'http://prometheus-k8s.monitoring:9090'
+          display:
+            expr: |
+              [{'name': 'Disk used', 'value': int(results[0].value), 'headline': true, 'unit': 'bytes'}].toJSON()
+  - name: Memory
+    lookup:
+      prometheus:
+        - query: 'max(container_memory_working_set_bytes{namespace="monitoring",container="prometheus"})'
+          url: 'http://prometheus-k8s.monitoring:9090'
+          display:
+            expr: |
+              [{'name': 'Memory', 'value': int(results[0].value), 'headline': true, 'unit': 'bytes'}].toJSON()
+  - name: Targets
+    lookup:
+      prometheus:
+        - query: 'count(prometheus_target_scrape_pool_targets)'
+          url: 'http://prometheus-k8s.monitoring:9090'
+          display:
+            expr: results[0].value
+  - name: Rule groups with duration > 1 sec
+    lookup:
+      prometheus:
+        - query: 'count(prometheus_rule_group_last_duration_seconds > 1)'
+          url: 'http://prometheus-k8s.monitoring:9090'
+          display:
+            expr: results[0].value
+  - name: Version
+    lookup:
+      prometheus:
+        - url: https://prometheus.demo.aws.flanksource.com/
+          query: prometheus_build_info
+          display:
+            expr: results[0].version
+  - name: Alerts
+    lookup:
+      prometheus:
+        - url: https://prometheus.demo.aws.flanksource.com/
+          query: count(ALERTS{alertstate="firing"})
+          display:
+            expr: results[0].value
