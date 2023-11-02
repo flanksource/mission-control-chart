@@ -38,11 +38,16 @@
               "type": "string"
             }
           }
+        },
+        "groups": {
+          "type": "array",
+          "title": "Groups",
+          "items": {
+            "type": "string"
+          }
         }
       },
-      "required": [
-        "email"
-      ],
+      "required": ["email"],
       "additionalProperties": false
     }
   }
