@@ -53,22 +53,22 @@ spec:
             url: http://prometheus-k8s.monitoring:9090
         name: memory
   properties:
-  - name: Metrics count
+  - name: Metrics
     headline: true
     lookup:
       prometheus:
         - query: 'count({__name__=~".+"})'
           url: 'http://prometheus-k8s.monitoring:9090'
           display:
-            expr: results[0].value
-  - name: Disk used
+            expr: results[0].value 
+  - name: Disk
     lookup:
       prometheus:
         - query: 'prometheus_tsdb_storage_blocks_bytes'
           url: 'http://prometheus-k8s.monitoring:9090'
           display:
             expr: |
-              [{'name': 'Disk used', 'value': int(results[0].value), 'headline': true, 'unit': 'bytes'}].toJSON()
+              [{'name': 'Disk', 'value': int(results[0].value), 'headline': true, 'unit': 'bytes'}].toJSON()
   - name: Memory
     lookup:
       prometheus:
