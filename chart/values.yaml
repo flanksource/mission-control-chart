@@ -4,7 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.385"
+  tag: "v0.0.386"
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -16,19 +16,16 @@ externalPostgrest:
   dbScema: public
   dbAnonRole: postgrest_anon
   maxRows: 2000
-
 # Specify the cel-go script or the file path to the cel script.
 # Script is used to map the user identity to the role & teams.
 identityRoleMapper:
   # specify the script inline
   script: ""
-
   # specify the script via a config map that'll be mounted to `mountPath`
   configMap:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
-
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
