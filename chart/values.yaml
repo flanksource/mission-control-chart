@@ -24,7 +24,7 @@ identityRoleMapper:
   script: ""
 
   # specify the script via a config map that'll be mounted to `mountPath`
-  configMap: 
+  configMap:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
