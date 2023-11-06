@@ -15,10 +15,21 @@ spec:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "incident-commander.fullname" . }}-sa
+      {{- if ne .Values.identityRoleMapper.configMap.name ""}}
+      volumes:
+        - name: identity-role-mapper
+          configMap:
+            name: {{ .Values.identityRoleMapper.configMap.name}}
+      {{- end}}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if ne .Values.identityRoleMapper.configMap.name ""}}
+          volumeMounts:
+            - name: identity-role-mapper
+              mountPath: {{ .Values.identityRoleMapper.configMap.mountPath}}
+          {{- end}}
           env:
             - name: DB_URL
               valueFrom:
@@ -70,6 +81,11 @@ spec:
            {{- if .Values.otel_collector }}
             - --otel-collector-url={{ .Values.otel_collector | default "" }}
            {{- end }}
+           {{- if ne .Values.identityRoleMapper.script "" }}
+            - --identity-role-mapper='{{ .Values.identityRoleMapper.script }}'
+           {{- else if ne .Values.identityRoleMapper.configMap.name ""}}
+            - --identity-role-mapper='file://{{ .Values.identityRoleMapper.configMap.mountPath }}/{{ .Values.identityRoleMapper.configMap.key}}'
+           {{- end}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
