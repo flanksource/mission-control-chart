@@ -26,6 +26,7 @@ identityRoleMapper:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
+
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -34,12 +35,18 @@ identityRoleMapper:
 #   password: ''
 #   labels: 'key1=val1,key2=val2'
 upstream_push: {}
+
 # Allowed values are [none, kratos,clerk]
 authProvider: kratos
 clerkJWKSURL: ""
 clerkOrgID: ""
+
 # OpenTelemetry gRPC collector endpoint in host:port format
 otel_collector: ""
+
+# Properties to configure mission-control feature sets
+properties: {}
+
 db:
   create: true
   secretKeyRef:
