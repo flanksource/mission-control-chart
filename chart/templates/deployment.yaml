@@ -15,8 +15,11 @@ spec:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "incident-commander.fullname" . }}-sa
-      {{- if ne .Values.identityRoleMapper.configMap.name ""}}
       volumes:
+        - name: properties-config
+          configMap:
+            name: {{ include "incident-commander.fullname" . }}-properties-config
+      {{- if ne .Values.identityRoleMapper.configMap.name ""}}
         - name: identity-role-mapper
           configMap:
             name: {{ .Values.identityRoleMapper.configMap.name}}
@@ -96,6 +99,10 @@ spec:
             httpGet:
               path: /health
               port: 8080
+          volumeMounts:
+            - mountPath: /app/mission-control.properties
+              name: properties-config
+              subPath: mission-control.properties
       {{- with .Values.extra }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
