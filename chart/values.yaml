@@ -202,3 +202,12 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
+
+# List of scrapers to deploy
+scrapers:
+  # kubernetes:
+  #   - name: default
+  #     cluster: demo
+  #     exclusions:
+  #       - Secret
+  #       - ReplicaSet

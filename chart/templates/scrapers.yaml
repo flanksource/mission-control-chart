@@ -1,0 +1,19 @@
+{{if and (.Values.scrapers) (.Values.scrapers.kubernetes)}}
+{{range $k := .Values.scrapers.kubernetes}}
+apiVersion: configs.flanksource.com/v1
+kind: ScrapeConfig
+metadata:
+metadata:
+  name: {{$k.name}}
+  namespace: "{{if $k.namespace}}{{$k.namespace}}{{else}}default{{end}}"
+spec:
+  kubernetes:
+    clusterName: {{$k.cluster}}
+    {{- if and ($k.exclusions) (len $k.exclusions) }}
+    exclusions:
+      {{- range $e := $k.exclusions}}
+      - {{$e}}
+      {{- end}}
+    {{- end}}
+{{end}}
+{{end}}
