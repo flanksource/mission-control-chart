@@ -87,11 +87,14 @@ canary-checker:
 config-db:
   disablePostgrest: true
   db:
-    enabled: false
-    secretKeyRef:
-      create: false
-      name: incident-commander-postgres
-      key: DB_URL
+    runMigrations: false
+    embedded:
+      persist: false
+    external:
+      enabled: true
+      secretKeyRef:
+        name: incident-commander-postgres
+        key: DB_URL
 apm-hub:
   enabled: true
   db:
