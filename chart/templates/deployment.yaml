@@ -54,7 +54,7 @@ spec:
             - /app/incident-commander
           args:
             - serve
-            - --public-endpoint=https://{{ .Values.ingress.host }}
+            - --public-endpoint=https://{{ tpl .Values.ingress.host . }}
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
@@ -81,8 +81,11 @@ spec:
             - --upstream-password={{ .Values.upstream_push.password }}
             - --upstream-labels={{ .Values.upstream_push.labels | default "" }}
            {{- end }}
-           {{- if .Values.otel_collector }}
-            - --otel-collector-url={{ .Values.otel_collector | default "" }}
+           {{- if (tpl .Values.otel.collector .) }}
+            - --otel-collector-url={{ tpl .Values.otel.collector . | default "" }}
+           {{- end }}
+           {{- if (tpl .Values.otel.serviceName .) }}
+            - --otel-service-name={{ tpl .Values.otel.serviceName . | default "mission-control" }}
            {{- end }}
            {{- if ne .Values.identityRoleMapper.script "" }}
             - --identity-role-mapper='{{ .Values.identityRoleMapper.script }}'
