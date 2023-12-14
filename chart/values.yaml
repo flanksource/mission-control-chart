@@ -8,8 +8,8 @@ image:
 
 global:
   ui:
-    host: ''
-    tlsSecretName: ''
+    host: 'mission-control-ui.local'
+    tlsSecretName: 'mission-control-ui-tls'
   api:
     host: ''
     tlsSecretName: ''
