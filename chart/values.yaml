@@ -5,6 +5,17 @@ image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
   tag: "v0.0.403"
+
+global:
+  ui:
+    host: 'mission-control-ui.local'
+    tlsSecretName: 'mission-control-ui-tls'
+  api:
+    host: ''
+    tlsSecretName: ''
+  otel:
+    collector: ''
+
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -38,10 +49,13 @@ upstream_push: {}
 authProvider: kratos
 clerkJWKSURL: ""
 clerkOrgID: ""
-# OpenTelemetry gRPC collector endpoint in host:port format
-otel_collector: ""
+otel:
+  # OpenTelemetry gRPC collector endpoint in host:port format
+  collector: '{{.Values.global.otel.collector}}'
+  serviceName: "mission-control"
 # Properties to configure mission-control feature sets
 properties: {}
+
 db:
   create: true
   secretKeyRef:
@@ -65,6 +79,8 @@ canary-checker:
   image:
     type: full
   disablePostgrest: true
+  otel:
+    collector: "{{ .Values.global.otel.collector }}"
   db:
     runMigrations: false
     external:
@@ -74,16 +90,8 @@ canary-checker:
         name: incident-commander-postgres
         key: DB_URL
   flanksource-ui:
-    # Disable canary-checker by default.
+    # Disable UI via canary-checker by default.
     enabled: false
-    withoutAuth: true
-    nameOverride: "canary-checker-ui"
-    fullnameOverride: "canary-checker-ui"
-    oryKratosURL: ""
-    backendURL: http://canary-checker:8080
-    ingress:
-      enabled: true
-      host: "canary-checker-ui.local"
 config-db:
   disablePostgrest: true
   db:
@@ -103,30 +111,35 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
+
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 ingress:
   enabled: false
   annotations:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: incident-commander.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  host: "{{.Values.global.api.host}}"
+  tls:
+    - hosts:
+      - "{{.Values.global.api.host}}"
+      secretName: "{{.Values.global.api.tlsSecretName}}"
+
 flanksource-ui:
   enabled: true
+
   nameOverride: "incident-manager-ui"
   fullnameOverride: "incident-manager-ui"
+
   # This should be $host/api/.ory
-  oryKratosURL: http://flanksource-ui:3000/api/.ory
+  oryKratosURL: http://{{.Values.global.ui.host}}/api/.ory
   backendURL: http://mission-control:8080
   ingress:
     enabled: true
-    host: "incident-manager-ui.local"
+    host: "{{.Values.global.ui.host}}"
     tls:
       - hosts:
-          - "incident-manager-ui.local"
+        - "{{.Values.global.ui.host}}"
+        secretName: "{{.Values.global.ui.tlsSecretName}}"
 # - if chart name (incident-commander) is changed, change the urls. E.g.
 # oryKratosURI url points to the incident-commander service with a suffix.
 #

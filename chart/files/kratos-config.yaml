@@ -6,15 +6,15 @@ session:
   lifespan: 336h
 serve:
   public:
-    base_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/api/.ory'
+    base_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/api/.ory'
     cors:
       enabled: true
   # admin:
   #   base_url: http://127.0.0.1:4434/
 selfservice:
-  default_browser_return_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/'
+  default_browser_return_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/'
   allowed_return_urls:
-    - 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}'
+    - 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}'
   methods:
     password:
       enabled: true
@@ -22,26 +22,26 @@ selfservice:
       enabled: true
   flows:
     error:
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/error'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/error'
     settings:
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/profile-settings'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/profile-settings'
       privileged_session_max_age: 15m
     recovery:
       enabled: true
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/recovery'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/recovery'
     verification:
       enabled: true
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/verification'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/verification'
     logout:
       after:
-        default_browser_return_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/login'
+        default_browser_return_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/login'
     login:
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/login'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/login'
       lifespan: 10m
     registration:
       enabled: {{ .Values.registration | default false }}
       lifespan: 10m
-      ui_url: 'https://{{ index .Values "flanksource-ui" "ingress" "host" }}/registration'
+      ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/registration'
       after:
         password:
           hooks:
