@@ -4,8 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.403"
-
+  tag: "v0.0.404"
 global:
   ui:
     host: 'mission-control-ui.local'
@@ -15,7 +14,6 @@ global:
     tlsSecretName: ''
   otel:
     collector: ''
-
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -55,7 +53,6 @@ otel:
   serviceName: "mission-control"
 # Properties to configure mission-control feature sets
 properties: {}
-
 db:
   create: true
   secretKeyRef:
@@ -111,7 +108,6 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
-
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 ingress:
   enabled: false
@@ -121,15 +117,12 @@ ingress:
   host: "{{.Values.global.api.host}}"
   tls:
     - hosts:
-      - "{{.Values.global.api.host}}"
+        - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
-
 flanksource-ui:
   enabled: true
-
   nameOverride: "incident-manager-ui"
   fullnameOverride: "incident-manager-ui"
-
   # This should be $host/api/.ory
   oryKratosURL: http://{{.Values.global.ui.host}}/api/.ory
   backendURL: http://mission-control:8080
@@ -138,7 +131,7 @@ flanksource-ui:
     host: "{{.Values.global.ui.host}}"
     tls:
       - hosts:
-        - "{{.Values.global.ui.host}}"
+          - "{{.Values.global.ui.host}}"
         secretName: "{{.Values.global.ui.tlsSecretName}}"
 # - if chart name (incident-commander) is changed, change the urls. E.g.
 # oryKratosURI url points to the incident-commander service with a suffix.
