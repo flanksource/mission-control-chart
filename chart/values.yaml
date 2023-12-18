@@ -63,6 +63,10 @@ db:
     key: PGRST_JWT_SECRET
   storageClass:
   storage: 10Gi
+  shmVolume: 256Mi
+  resources:
+    requests:
+      memory: 1Gi
 smtp:
   secretRef:
     name: incident-commander-smtp
