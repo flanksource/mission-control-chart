@@ -99,6 +99,8 @@ spec:
               path: /health
               port: 8080
           readinessProbe:
+            failureThreshold: 200
+            periodSeconds: 10
             httpGet:
               path: /health
               port: 8080
