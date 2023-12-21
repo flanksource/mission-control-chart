@@ -39,6 +39,14 @@ spec:
       containers:
       - name: postgresql
         image: docker.io/supabase/postgres:14.1.0.21
+        command:
+          - /usr/local/bin/docker-entrypoint.sh
+          - -D
+          - /var/lib/postgresql/data
+          - --config-file=/etc/postgresql/postgresql.conf
+          {{- range $k, $v := .Values.db.conf }}
+          - --{{ $k }}={{ $v }}
+          {{- end }}
         resources:
             {{- toYaml .Values.db.resources | nindent 12 }}
         env:
@@ -47,9 +55,6 @@ spec:
           - name: POSTGRES_DB
             value: mission_control
         volumeMounts:
-          - name: conf
-            mountPath: /etc/postgresql/postgresql.conf
-            subPath: postgresql.conf
           - name: dshm
             mountPath: /dev/shm
           - name: postgresql
