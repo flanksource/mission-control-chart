@@ -1,0 +1,17 @@
+db:
+  create: true
+  conf:
+    shared_buffers: 512MB
+    effective_cache_size: 512MB
+    log_destination: stderr
+    logging_collector: off
+  storage: 5Gi
+  shmVolume: 64Mi
+  resources:
+    requests:
+      memory: 256Mi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
