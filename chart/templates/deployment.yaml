@@ -94,13 +94,17 @@ spec:
            {{- end}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          startupProbe:
+              periodSeconds: 10
+              failureThreshold: 120 # 20 minutes for any migration scripts to run
+              httpGet:
+                path: /health
+                port: 8080
           livenessProbe:
             httpGet:
               path: /health
               port: 8080
           readinessProbe:
-            failureThreshold: 200
-            periodSeconds: 10
             httpGet:
               path: /health
               port: 8080
