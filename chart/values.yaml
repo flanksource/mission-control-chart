@@ -1,6 +1,7 @@
 replicas: 1
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
 nameOverride: ""
+
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
@@ -17,7 +18,9 @@ global:
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+
 extraArgs: {}
+
 externalPostgrest:
   enable: true
   tag: v10.1.0
@@ -25,6 +28,7 @@ externalPostgrest:
   dbScema: public
   dbAnonRole: postgrest_anon
   maxRows: 2000
+
 # Specify the cel-go script or the file path to the cel script.
 # Script is used to map the user identity to the role & teams.
 identityRoleMapper:
@@ -35,6 +39,7 @@ identityRoleMapper:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
+
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -43,20 +48,30 @@ identityRoleMapper:
 #   password: ''
 #   labels: 'key1=val1,key2=val2'
 upstream_push: {}
+
 # Allowed values are [none, kratos,clerk]
 authProvider: kratos
 clerkJWKSURL: ""
 clerkOrgID: ""
+
 otel:
   # OpenTelemetry gRPC collector endpoint in host:port format
   collector: "{{.Values.global.otel.collector}}"
   serviceName: "mission-control"
+
 # Properties to configure mission-control feature sets
 properties:
   incidents.disable: true
   logs.disable: true
+
 db:
   create: true
+  image: postgres
+  tag: '15.5@sha256:ee2f170c46df225310c923010230434e269238a65307539f9aced9da6ca44fad'
+  upgrade:
+    perform: true
+    old: '14'
+    new: '15'
   conf:
     max_connections: 200
     shared_buffers: 1GB
@@ -106,7 +121,9 @@ smtp:
     # SMTP_PORT: <port>
     # SMTP_USER: <user>
     # SMTP_PASSWORD: <password>
+
 adminPassword: admin
+
 canary-checker:
   image:
     type: full
@@ -124,6 +141,7 @@ canary-checker:
   flanksource-ui:
     # Disable UI via canary-checker by default.
     enabled: false
+
 config-db:
   disablePostgrest: true
   db:
@@ -135,6 +153,7 @@ config-db:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
+
 apm-hub:
   enabled: false
   db:
@@ -143,6 +162,7 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
+
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 ingress:
   enabled: false
@@ -154,6 +174,7 @@ ingress:
     - hosts:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
+
 flanksource-ui:
   enabled: true
   nameOverride: "incident-manager-ui"
@@ -168,6 +189,7 @@ flanksource-ui:
       - hosts:
           - "{{.Values.global.ui.host}}"
         secretName: "{{.Values.global.ui.tlsSecretName}}"
+
 # - if chart name (incident-commander) is changed, change the urls. E.g.
 # oryKratosURI url points to the incident-commander service with a suffix.
 #

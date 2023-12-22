@@ -20,11 +20,24 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: "{{- .Values.db.shmVolume  }}"
-        - name: conf
-          configMap:
-            name: postgresql-conf
-            optional: true
       initContainers:
+        {{- if .Values.db.upgrade.perform}}
+        - image: tianon/postgres-upgrade:{{.Values.db.upgrade.old}}-to-{{.Values.db.upgrade.new}}
+          name: postgres-upgrade
+          volumeMounts:
+            - mountPath: "/current"
+              name: postgresql
+          command:
+            - sh
+            - -c
+            - "if [ ! -d '/current/postgres' ]; then exit 0; fi && rm -rf /var/lib/postgresql/{{.Values.db.upgrade.old}}/data &&
+              mv /current/postgres /var/lib/postgresql/{{.Values.db.upgrade.old}}/data && 
+              mkdir -p /var/lib/postgresql/{{.Values.db.upgrade.new}}/data &&
+              chmod -R 0750 /var/lib/postgresql/{{.Values.db.upgrade.new}}/data &&
+              chown 999:999 -R /var/lib/postgresql/{{.Values.db.upgrade.new}}/data &&
+              /usr/local/bin/docker-upgrade &&
+              mv /var/lib/postgresql/{{.Values.db.upgrade.new}}/data /current/postgres"
+        {{- end}}
         - command:
           - sh
           - -c
@@ -38,12 +51,11 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: docker.io/supabase/postgres:14.1.0.21
+        image: '{{.Values.db.image}}:{{.Values.db.tag}}'
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D
           - /var/lib/postgresql/data
-          - --config-file=/etc/postgresql/postgresql.conf
           {{- range $k, $v := .Values.db.conf }}
           - --{{ $k }}={{ $v }}
           {{- end }}
@@ -68,13 +80,12 @@ spec:
       name: postgresql
     spec:
       accessModes: ["ReadWriteOnce"]
-      {{ if .Values.db.storageClass }}
+      {{- if .Values.db.storageClass }}
       storageClassName: {{ .Values.db.storageClass }}
-      {{ end }}
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.db.storage }}
-
 ---
 apiVersion: v1
 kind: Service
