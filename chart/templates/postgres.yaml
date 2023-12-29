@@ -28,10 +28,18 @@ spec:
             - mountPath: "/current"
               name: postgresql
           command:
-            - sh
+            - bash
             - -c
             - |
-              if [ ! -d '/current/postgres' ]; then exit 0; fi 
+              # fresh db 
+              if [ ! -d '/current/postgres' ]; then exit 0; fi
+
+              # db already on the desired version
+              if [ $(</current/postgres/PG_VERSION) == "{{.Values.db.upgrade.new}}" ]; then
+                echo "Already on the new version"
+                exit 0
+              fi
+
               rm -rf /var/lib/postgresql/{{.Values.db.upgrade.old}}/data 
               mv /current/postgres /var/lib/postgresql/{{.Values.db.upgrade.old}}/data
               mkdir -p /var/lib/postgresql/{{.Values.db.upgrade.new}}/data 
