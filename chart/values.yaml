@@ -4,7 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.430"
+  tag: "v0.0.431"
 global:
   ui:
     host: "mission-control-ui.local"
