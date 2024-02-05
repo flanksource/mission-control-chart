@@ -12,7 +12,7 @@ dependencies:
     repository: https://flanksource.github.io/charts
     condition: apm-hub.enabled
   - name: config-db
-    version: "0.0.181"
+    version: "0.0.182"
     repository: https://flanksource.github.io/charts
   - name: canary-checker
     version: "1.0.220"
