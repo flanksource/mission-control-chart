@@ -91,6 +91,7 @@ db:
     key: DB_URL
   secretKeyRef:
     name: incident-commander-postgres
+    key: DB_URL
   jwtSecretKeyRef:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
