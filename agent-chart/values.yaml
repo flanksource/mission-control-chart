@@ -1,6 +1,4 @@
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
-nameOverride: "mc-agent"
-
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
@@ -9,6 +7,10 @@ image:
 global:
   otel:
     collector: ""
+
+serviceAccount:
+  # Annotations to add to the service account
+  annotations: {}
 
 otel:
   # OpenTelemetry gRPC collector endpoint in host:port format

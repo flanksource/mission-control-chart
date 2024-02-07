@@ -49,7 +49,6 @@ spec:
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
-            - --auth=none
            {{- range $k, $v := .Values.extraArgs}}
            - --{{$k}}={{$v}}
            {{- end }}
