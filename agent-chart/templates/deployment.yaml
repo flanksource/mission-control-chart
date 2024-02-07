@@ -27,15 +27,13 @@ spec:
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.db.secretKeyRef.name  }}
+                  name: {{ .Values.db.secretKeyRef.name }}
                   key: {{ .Values.db.secretKeyRef.key }}
             - name: PGRST_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.db.jwtSecretKeyRef.name  }}
                   key: {{ .Values.db.jwtSecretKeyRef.key }}
-            - name: ADMIN_PASSWORD
-              value: {{ .Values.adminPassword }}
           envFrom:
             - secretRef:
                 name: {{ .Values.smtp.secretRef.name }}

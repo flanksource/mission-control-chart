@@ -27,6 +27,7 @@ upstream:
   host: ""
   username: ""
   password: ""
+  agentName: ""
   secretName: upstream
 
 resources:
