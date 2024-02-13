@@ -47,12 +47,6 @@ spec:
            {{- range $k, $v := .Values.extraArgs}}
            - --{{$k}}={{$v}}
            {{- end }}
-           {{- if (tpl .Values.otel.collector .) }}
-            - --otel-collector-url={{ tpl .Values.otel.collector . | default "" }}
-           {{- end }}
-           {{- if (tpl .Values.otel.serviceName .) }}
-            - --otel-service-name={{ tpl .Values.otel.serviceName . | default "mission-control" }}
-           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           startupProbe:

@@ -62,7 +62,7 @@ db:
   jwtSecretKeyRef:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
-  storageClass:
+  storageClass: default
   storage: 20Gi
   shmVolume: 256Mi
   resources:
