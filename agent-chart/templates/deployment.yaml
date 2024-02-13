@@ -36,9 +36,6 @@ spec:
                   key: {{ .Values.db.jwtSecretKeyRef.key }}
           envFrom:
             - secretRef:
-                name: {{ .Values.smtp.secretRef.name }}
-                optional: true
-            - secretRef:
                 name: {{ .Values.upstream.secretName }}
           command:
             - /app/incident-commander

@@ -1,0 +1,283 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["image", "serviceAccount", "upstream", "resources", "db", "canary-checker", "config-db"],
+  "properties": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": ["repository", "pullPolicy", "tag"]
+    },
+    "serviceAccount": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object"
+        }
+      },
+      "required": ["annotations"]
+    },
+    "upstream": {
+      "type": "object",
+      "properties": {
+        "createSecret": {
+          "type": "boolean"
+        },
+        "host": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "agentName": {
+          "type": "string"
+        },
+        "secretName": {
+          "type": "string"
+        }
+      },
+      "required": ["createSecret", "host", "username", "password", "agentName", "secretName"]
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string"
+            },
+            "memory": {
+              "type": "string"
+            }
+          },
+          "required": ["cpu", "memory"]
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "memory": {
+              "type": "string"
+            },
+            "cpu": {
+              "type": "string"
+            }
+          },
+          "required": ["memory", "cpu"]
+        }
+      }
+    },
+    "db": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "conf": {
+          "type": "object"
+        },
+        "secretKeyRef": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "key"]
+        },
+        "jwtSecretKeyRef": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "key"]
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "storage": {
+          "type": "string"
+        },
+        "shmVolume": {
+          "type": "string"
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "properties": {
+                "memory": {
+                  "type": "string"
+                }
+              },
+              "required": ["memory"]
+            }
+          }
+        }
+      }
+    },
+    "canary-checker": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": ["type"]
+        },
+        "upstream": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "secretKeyRef": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": ["name"]
+            }
+          },
+          "required": ["enabled", "secretKeyRef"]
+        },
+        "db": {
+          "type": "object",
+          "properties": {
+            "runMigrations": {
+              "type": "boolean"
+            },
+            "external": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "create": {
+                  "type": "boolean"
+                },
+                "secretKeyRef": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["name", "key"]
+                }
+              },
+              "required": ["enabled", "create", "secretKeyRef"]
+            }
+          }
+        },
+        "flanksource-ui": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            }
+          },
+          "required": ["enabled"]
+        }
+      }
+    },
+    "config-db": {
+      "type": "object",
+      "properties": {
+        "disablePostgrest": {
+          "type": "boolean"
+        },
+        "db": {
+          "type": "object",
+          "properties": {
+            "runMigrations": {
+              "type": "boolean"
+            },
+            "embedded": {
+              "type": "object",
+              "properties": {
+                "persist": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["persist"]
+            },
+            "external": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "secretKeyRef": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["name", "key"]
+                }
+              },
+              "required": ["enabled", "secretKeyRef"]
+            }
+          }
+        },
+        "upstream": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "secretKeyRef": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": ["name"]
+            },
+            "pageSize": {
+              "type": "integer"
+            }
+          },
+          "required": ["enabled", "secretKeyRef", "pageSize"]
+        }
+      }
+    }
+  }
+}
+

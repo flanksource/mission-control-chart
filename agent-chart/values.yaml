@@ -4,22 +4,9 @@ image:
   pullPolicy: IfNotPresent
   tag: "v0.0.439"
 
-global:
-  otel:
-    collector: ""
-
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
-
-otel:
-  # OpenTelemetry gRPC collector endpoint in host:port format
-  collector: "{{.Values.global.otel.collector}}"
-  serviceName: "mission-control"
-
-smtp:
-  secretRef:
-    name: incident-commander-smtp
 
 # If true, creates secret
 upstream:
@@ -80,14 +67,13 @@ db:
   shmVolume: 256Mi
   resources:
     requests:
-      memory: 4Gi
+      memory: 2Gi
 
 canary-checker:
   image:
     type: full
   upstream:
     enabled: true
-    agentName: "default-agent"
     secretKeyRef:
       name: upstream
   db:
@@ -117,5 +103,4 @@ config-db:
     enabled: true
     secretKeyRef:
       name: upstream
-    agentName: default-agent
-    pageSize: 500
+    pageSize: 100
