@@ -24,8 +24,7 @@
         "annotations": {
           "type": "object"
         }
-      },
-      "required": ["annotations"]
+      }
     },
     "upstream": {
       "type": "object",
