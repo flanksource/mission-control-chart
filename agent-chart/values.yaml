@@ -1,40 +1,122 @@
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
-nameOverride: "mc-agent"
+image:
+  repository: docker.io/flanksource/incident-commander
+  pullPolicy: IfNotPresent
+  tag: "v0.0.439"
+
+serviceAccount:
+  # Annotations to add to the service account
+  annotations: {}
 
 # If true, creates secret
 upstream:
-  createSecret: false
+  createSecret: true
   host: ""
   username: ""
   password: ""
+  agentName: ""
   secretName: upstream
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 768Mi
+  limits:
+    memory: 1024Mi
+    cpu: 500m
+
+db:
+  create: true
+  conf:
+    # Memory Configuration
+    shared_buffers: 1GB
+    effective_cache_size: 3GB
+    work_mem: 10MB
+    maintenance_work_mem: 205MB
+
+    # Checkpoint Related Configuration
+    min_wal_size: 2GB
+    max_wal_size: 3GB
+    checkpoint_completion_target: 0.9
+    wal_buffers: -1
+
+    # Network Related Configuration
+    listen_addresses: '*'
+    max_connections: 100
+
+    # Storage Configuration
+    random_page_cost: 1.1
+    effective_io_concurrency: 200
+
+    # Worker Processes Configuration
+    max_worker_processes: 8
+    max_parallel_workers_per_gather: 2
+    max_parallel_workers: 2
+
+    # Logging configuration for pgbadger
+    logging_collector: on
+    log_checkpoints: on
+    log_connections: on
+    log_disconnections: on
+    log_lock_waits: on
+    log_temp_files: 0
+    lc_messages: 'C'
+    log_timezone: "UTC"
+
+    # Adjust the minimum time to collect the data
+    log_min_duration_statement: '10s'
+    log_autovacuum_min_duration: 0
+    log_destination: 'csvlog'
+    ssl: off
+    timezone: "UTC"
+    password_encryption: scram-sha-256
+    db_user_namespace: off
+    extra_float_digits: 0
+  secretKeyRef:
+    name: incident-commander-postgres
+    key: DB_URL
+  jwtSecretKeyRef:
+    name: incident-commander-postgrest-jwt
+    key: PGRST_JWT_SECRET
+  storageClass: default
+  storage: 20Gi
+  shmVolume: 256Mi
+  resources:
+    requests:
+      memory: 2Gi
 
 canary-checker:
   image:
     type: full
   upstream:
     enabled: true
-    agentName: "default-agent"
     secretKeyRef:
       name: upstream
   db:
-    embedded:
-      persist: true
+    runMigrations: false
+    external:
+      enabled: true
+      create: false
+      secretKeyRef:
+        name: incident-commander-postgres
+        key: DB_URL
   flanksource-ui:
     # Disable canary-checker by default.
     enabled: false
 
 config-db:
+  disablePostgrest: true
   db:
-    enabled: true
-    secretKeyRef:
-      create: true
-    storage: "20Gi"
-    storageClass: ""
-
+    runMigrations: false
+    embedded:
+      persist: false
+    external:
+      enabled: true
+      secretKeyRef:
+        name: incident-commander-postgres
+        key: DB_URL
   upstream:
     enabled: true
     secretKeyRef:
       name: upstream
-    agentName: default-agent
-    pageSize: 500
+    pageSize: 100
