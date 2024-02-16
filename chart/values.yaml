@@ -127,7 +127,7 @@ canary-checker:
       enabled: true
       create: false
       secretKeyRef:
-        name: incident-commander-db-url
+        name: incident-commander-postgres
         key: DB_URL
   flanksource-ui:
     # Disable UI via canary-checker by default.
@@ -141,7 +141,7 @@ config-db:
     external:
       enabled: true
       secretKeyRef:
-        name: incident-commander-db-url
+        name: incident-commander-postgres
         key: DB_URL
 apm-hub:
   enabled: false
@@ -149,7 +149,7 @@ apm-hub:
     enabled: false
     secretKeyRef:
       create: false
-      name: incident-commander-db-url
+      name: incident-commander-postgres
       key: DB_URL
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 ingress:

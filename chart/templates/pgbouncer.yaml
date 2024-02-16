@@ -18,6 +18,15 @@ spec:
     port: 5432
     targetPort: 5432
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pgbouncer-config
+type: Opaque
+data:
+  pgbouncer.ini: W2RhdGFiYXNlc10NCm1pc3Npb25fY29udHJvbCA9IGhvc3Q9cG9zdGdyZXMubWlzc2lvbi1jb250cm9sLnN2Yy5jbHVzdGVyLmxvY2FsIHBvcnQ9NTQzMiBkYm5hbWU9bWlzc2lvbl9jb250cm9sDQoNCltwZ2JvdW5jZXJdDQpsaXN0ZW5fYWRkciA9IDAuMC4wLjANCmxpc3Rlbl9wb3J0ID0gNTQzMg0KdW5peF9zb2NrZXRfZGlyID0NCnVzZXIgPSBwb3N0Z3Jlcw0KYXV0aF9maWxlID0gL2V0Yy9wZ2JvdW5jZXIvdXNlcmxpc3QudHh0DQphdXRoX3R5cGUgPSBtZDUNCnBvb2xfbW9kZSA9IHRyYW5zYWN0aW9uDQptYXhfY2xpZW50X2Nvbm4gPSAxMDANCmlnbm9yZV9zdGFydHVwX3BhcmFtZXRlcnMgPSBleHRyYV9mbG9hdF9kaWdpdHMNCg0KIyBMb2cgc2V0dGluZ3MNCmFkbWluX3VzZXJzID0gcG9zdGdyZXM=
+  userlist.txt: InBvc3RncmVzIiAiVWVHSmNaRDBIQ2hBUmVEY0lLd2VvOEpodXptdmdyU2IiDQoiYXBwX3VzZXIiICJhcHBwYXNzd29yZCI=
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,7 +48,7 @@ spec:
         - containerPort: 5432
         env:
         - name: AUTH_TYPE
-          value: trust
+          value: md5
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
