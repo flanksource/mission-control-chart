@@ -56,7 +56,7 @@ properties:
   incidents.disable: true
   logs.disable: true
 db:
-  create: false
+  create: true
   conf:
     max_connections: 200
     shared_buffers: 1GB
@@ -121,7 +121,7 @@ canary-checker:
   db:
     runMigrations: false
     connectionPooler:
-      enabled: true
+      enabled: false
     external:
       enabled: true
       create: false
@@ -138,7 +138,7 @@ config-db:
     embedded:
       persist: false
     connectionPooler:
-      enabled: true
+      enabled: false
     external:
       enabled: true
       secretKeyRef:
