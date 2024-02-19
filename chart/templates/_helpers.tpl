@@ -109,14 +109,3 @@ Generate the secrets.cipher value
     {{- end -}}
   {{- end -}}
 {{- end -}}
-
-{{/*
-We haven't handled the case when pooler is disabled and we use an external pg
-*/}}
-{{- define "app.db_host" -}}
-  {{- if .Values.db.connectionPooler.enabled  }}
-    {{- printf "%s-pgbouncer.%s.svc.cluster.local" (include "incident-commander.name" . ) .Release.Namespace }}
-  {{- else }}
-    {{- printf "postgres.%s.svc.cluster.local" .Release.Namespace }}
-  {{- end  }}
-{{- end }}

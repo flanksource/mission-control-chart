@@ -56,7 +56,7 @@ properties:
   incidents.disable: true
   logs.disable: true
 db:
-  create: true
+  create: false
   conf:
     max_connections: 200
     shared_buffers: 1GB
@@ -86,9 +86,6 @@ db:
     password_encryption: scram-sha-256
     db_user_namespace: off
     extra_float_digits: 0
-  urlSecretKeyRef:
-    name: incident-commander-db-url
-    key: DB_URL
   secretKeyRef:
     name: incident-commander-postgres
     key: DB_URL
@@ -96,7 +93,7 @@ db:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
   connectionPooler:
-    enabled: true
+    enabled: false
     serviceAccount:
       annotations: {}
     extraContainers: ""
@@ -123,6 +120,8 @@ canary-checker:
     collector: "{{ .Values.global.otel.collector }}"
   db:
     runMigrations: false
+    connectionPooler:
+      enabled: true
     external:
       enabled: true
       create: false
@@ -138,6 +137,8 @@ config-db:
     runMigrations: false
     embedded:
       persist: false
+    connectionPooler:
+      enabled: true
     external:
       enabled: true
       secretKeyRef:
