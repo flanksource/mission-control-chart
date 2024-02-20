@@ -37,7 +37,7 @@ spec:
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.db.connectionPooler.enabled }}{{ include "incident-commander.name" . }}-pgbouncer{{ else }}{{ .Values.db.secretKeyRef.name }}{{ end }}
+                  name: {{ if .Values.db.connectionPooler.enabled }}{{ include "incident-commander.connectionPooler.secretKeyRef" . }}{{ else }}{{ .Values.db.secretKeyRef.name }}{{ end }}
                   key: {{ .Values.db.secretKeyRef.key }}
             - name: PGRST_JWT_SECRET
               valueFrom:

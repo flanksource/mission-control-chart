@@ -93,7 +93,8 @@ db:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
   connectionPooler:
-    enabled: false
+    enabled: true
+    secretKeyRef: "MYpgbouncer"
     serviceAccount:
       annotations: {}
     extraContainers: ""
@@ -122,6 +123,7 @@ canary-checker:
     runMigrations: false
     connectionPooler:
       enabled: false
+      #secretKeyRef: ""
     external:
       enabled: true
       create: false
@@ -139,6 +141,7 @@ config-db:
       persist: false
     connectionPooler:
       enabled: false
+      # secretKeyRef: ""
     external:
       enabled: true
       secretKeyRef:

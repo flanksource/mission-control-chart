@@ -70,6 +70,14 @@ spec:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: POSTGRES_PORT
+        volumeMounts:
+          - name: configfiles
+            mountPath: "/etc/pgbouncer"
+            readOnly: true 
+      volumes:
+        - name: configfiles
+          secret:
+            secretName: {{ include "incident-commander.connectionPooler.secretKeyRef" . }}
 {{ .Values.db.connectionPooler.extraContainers | indent 6 }}
 ---
 {{- end }}
