@@ -14,6 +14,8 @@ global:
     tlsSecretName: ""
   otel:
     collector: ""
+  connectionPooler:
+    enabled: true
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -93,9 +95,9 @@ db:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
   connectionPooler:
-    enabled: false
+    enabled: "{{ .Values.global.connectionPooler.enabled }}"
     secretKeyRef:
-      name: ""
+      name: mission-control-connection-pooler
     serviceAccount:
       annotations: {}
     extraContainers: ""
@@ -123,7 +125,7 @@ canary-checker:
   db:
     runMigrations: false
     connectionPooler:
-      enabled: false
+      enabled: "{{ .Values.global.connectionPooler.enabled }}"
       # secretKeyRef:
       #   name: ""
       #   key: DB_URL
@@ -143,7 +145,7 @@ config-db:
     embedded:
       persist: false
     connectionPooler:
-      enabled: false
+      enabled: "{{ .Values.global.connectionPooler.enabled }}"
       # secretKeyRef:
       #   name: ""
       #   key: DB_URL
