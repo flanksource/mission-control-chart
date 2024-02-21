@@ -38,7 +38,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ if .Values.db.connectionPooler.enabled }}{{ .Values.db.connectionPooler.secretKeyRef.name }}{{ else }}{{ .Values.db.secretKeyRef.name }}{{ end }}
-                  key: {{ .Values.db.secretKeyRef.key }}
+                  key: {{- if .Values.db.connectionPooler.enabled -}}
+                          {{ .Values.db.connectionPooler.secretKeyRef.key }}
+                        {{- else -}}
+                          {{ .Values.db.external.secretKeyRef.key -}}
+                        {{- end }}
             - name: PGRST_JWT_SECRET
               valueFrom:
                 secretKeyRef:
