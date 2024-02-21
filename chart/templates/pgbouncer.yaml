@@ -1,4 +1,4 @@
-{{- if .Values.db.connectionPooler.enabled }}
+{{- if .Values.global.db.connectionPooler.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
