@@ -93,8 +93,8 @@ db:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
   connectionPooler:
-    enabled: true
-    secretKeyRef: "pgbouncer"
+    enabled: false
+    secretKeyRef: ""
     serviceAccount:
       annotations: {}
     extraContainers: ""
