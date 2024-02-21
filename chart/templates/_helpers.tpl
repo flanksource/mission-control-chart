@@ -114,6 +114,6 @@ Generate the secrets.cipher value
 {{- if .Values.db.connectionPooler.secretKeyRef -}}
   {{- printf "%s" .Values.db.connectionPooler.secretKeyRef -}}
 {{- else -}}
-  {{- printf "%s-pgbouncer-config" (include "incident-commander.name" .) -}}
+  {{- printf "%s-connection-pooler" (include "incident-commander.name" .) -}}
 {{- end -}}
 {{- end }}

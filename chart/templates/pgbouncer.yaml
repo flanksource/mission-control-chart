@@ -77,7 +77,7 @@ spec:
       volumes:
         - name: configfiles
           secret:
-            secretName: {{ include "incident-commander.connectionPooler.secretKeyRef" . }}
+            secretName: {{ include "incident-commander.name" . }}-pgbouncer-config
 {{ .Values.db.connectionPooler.extraContainers | indent 6 }}
 ---
 {{- end }}
