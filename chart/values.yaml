@@ -15,7 +15,7 @@ global:
   otel:
     collector: ""
   connectionPooler:
-    enabled: true
+    enabled: false
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -98,6 +98,7 @@ db:
     enabled: "{{ .Values.global.connectionPooler.enabled }}"
     secretKeyRef:
       name: mission-control-connection-pooler
+      key: DB_URL
     serviceAccount:
       annotations: {}
     extraContainers: ""
