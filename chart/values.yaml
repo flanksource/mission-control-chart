@@ -96,7 +96,7 @@ db:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
   connectionPooler:
-    # enabled: ""
+    enabled: false
     secretKeyRef:
       name: mission-control-connection-pooler
       key: DB_URL
@@ -126,11 +126,6 @@ canary-checker:
     collector: "{{ .Values.global.otel.collector }}"
   db:
     runMigrations: false
-    # connectionPooler:
-    #   enabled: ""
-    #   secretKeyRef:
-    #     name: ""
-    #     key: DB_URL
     external:
       enabled: true
       create: false
@@ -146,11 +141,6 @@ config-db:
     runMigrations: false
     embedded:
       persist: false
-    # connectionPooler:
-    #   enabled: ""
-    #   secretKeyRef:
-    #     name: ""
-    #     key: DB_URL
     external:
       enabled: true
       secretKeyRef:
