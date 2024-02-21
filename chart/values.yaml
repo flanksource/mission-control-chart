@@ -123,7 +123,7 @@ canary-checker:
     runMigrations: false
     connectionPooler:
       enabled: false
-      #secretKeyRef: ""
+      # secretKeyRef: ""
     external:
       enabled: true
       create: false
