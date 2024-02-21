@@ -94,7 +94,8 @@ db:
     key: PGRST_JWT_SECRET
   connectionPooler:
     enabled: false
-    secretKeyRef: ""
+    secretKeyRef: 
+      name: ""
     serviceAccount:
       annotations: {}
     extraContainers: ""
@@ -123,7 +124,9 @@ canary-checker:
     runMigrations: false
     connectionPooler:
       enabled: false
-      # secretKeyRef: ""
+      # secretKeyRef: 
+      #   name: ""
+      #   key: DB_URL
     external:
       enabled: true
       create: false
@@ -141,7 +144,9 @@ config-db:
       persist: false
     connectionPooler:
       enabled: false
-      # secretKeyRef: ""
+      # secretKeyRef: 
+      #   name: ""
+      #   key: DB_URL
     external:
       enabled: true
       secretKeyRef:
