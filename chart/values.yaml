@@ -16,7 +16,7 @@ global:
     collector: ""
   db:
     connectionPooler:
-      enabled: true
+      enabled: false
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
