@@ -94,7 +94,7 @@ db:
     key: PGRST_JWT_SECRET
   connectionPooler:
     enabled: true
-    secretKeyRef: "MYpgbouncer"
+    secretKeyRef: "pgbouncer"
     serviceAccount:
       annotations: {}
     extraContainers: ""
