@@ -75,7 +75,7 @@ spec:
            - --{{$k}}={{$v}}
            {{- end }}
            {{- if .Values.upstream_push }}
-            - --upstream-name={{ .Values.upstream_push.name }}
+            - --upstream-agent-name={{ .Values.upstream_push.name }}
             - --upstream-host={{ .Values.upstream_push.host }}
             - --upstream-user={{ .Values.upstream_push.user }}
             - --upstream-password={{ .Values.upstream_push.password }}
