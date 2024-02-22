@@ -2,17 +2,17 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "incident-commander.name" . }}-pgbouncer
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
   annotations:
 {{ toYaml .Values.db.connectionPooler.serviceAccount.annotations | indent 4 }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "incident-commander.name" . }}-pgbouncer
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
 spec:
   selector:
-    app: {{ include "incident-commander.name" . }}-pgbouncer
+    app: {{ include "incident-commander.fullname" . }}-pgbouncer
   ports:
   - protocol: TCP
     port: 5432
@@ -21,17 +21,17 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "incident-commander.name" . }}-pgbouncer
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
 spec:
   selector:
     matchLabels:
-      app: {{ include "incident-commander.name" . }}-pgbouncer
+      app: {{ include "incident-commander.fullname" . }}-pgbouncer
   template:
     metadata:
       labels:
-        app: {{ include "incident-commander.name" . }}-pgbouncer
+        app: {{ include "incident-commander.fullname" . }}-pgbouncer
     spec:
-      serviceAccountName: {{ include "incident-commander.name" . }}-pgbouncer
+      serviceAccountName: {{ include "incident-commander.fullname" . }}-pgbouncer
       containers:
       - name: pgbouncer
         image: edoburu/pgbouncer:1.21.0-p1
