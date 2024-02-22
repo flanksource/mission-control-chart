@@ -17,6 +17,9 @@ global:
   db:
     connectionPooler:
       enabled: false
+      secretKeyRef:
+        name: mission-control-connection-pooler
+        key: DB_URL
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
