@@ -69,10 +69,10 @@ spec:
           - name: configfiles
             mountPath: "/bitnami/pgbouncer/conf/"
             readOnly: true 
+{{ .Values.global.db.connectionPooler.extraContainers | indent 6 }}
       volumes:
         - name: configfiles
           secret:
             secretName: {{ include "incident-commander.name" . }}-pgbouncer-config
-{{ .Values.global.db.connectionPooler.extraContainers | indent 6 }}
 ---
 {{- end }}
