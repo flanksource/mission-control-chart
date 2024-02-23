@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   name: {{ include "incident-commander.fullname" . }}-pgbouncer
   annotations:
-{{ toYaml .Values.db.connectionPooler.serviceAccount.annotations | indent 4 }}
+{{ toYaml .Values.global.db.connectionPooler.serviceAccount.annotations | indent 4 }}
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +34,7 @@ spec:
       serviceAccountName: {{ include "incident-commander.fullname" . }}-pgbouncer
       containers:
       - name: pgbouncer
-        image: {{ .Values.db.connectionPooler.image }}
+        image: {{ .Values.global.db.connectionPooler.image }}
         ports:
         - containerPort: 5432
         env:
@@ -73,6 +73,6 @@ spec:
         - name: configfiles
           secret:
             secretName: {{ include "incident-commander.name" . }}-pgbouncer-config
-{{ .Values.db.connectionPooler.extraContainers | indent 6 }}
+{{ .Values.global.db.connectionPooler.extraContainers | indent 6 }}
 ---
 {{- end }}

@@ -20,6 +20,10 @@ global:
       secretKeyRef:
         name: mission-control-connection-pooler
         key: DB_URL
+      serviceAccount:
+        annotations: {}
+      extraContainers: ""
+      image: bitnami/pgbouncer:1.22.0
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -98,15 +102,6 @@ db:
   jwtSecretKeyRef:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
-  connectionPooler:
-    enabled: false
-    secretKeyRef:
-      name: mission-control-connection-pooler
-      key: DB_URL
-    serviceAccount:
-      annotations: {}
-    extraContainers: ""
-    image: bitnami/pgbouncer:1.22.0
   storageClass:
   storage: 20Gi
   shmVolume: 256Mi

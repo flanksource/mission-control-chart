@@ -37,8 +37,8 @@ spec:
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.global.db.connectionPooler.enabled }}{{ .Values.db.connectionPooler.secretKeyRef.name }}{{ else }}{{ .Values.db.secretKeyRef.name }}{{ end }}
-                  key: {{ if .Values.global.db.connectionPooler.enabled }}{{ .Values.db.connectionPooler.secretKeyRef.key }}{{ else }}{{ .Values.db.secretKeyRef.key }}{{ end }}
+                  name: {{ if .Values.global.db.connectionPooler.enabled }}{{ .Values.global.db.connectionPooler.secretKeyRef.name }}{{ else }}{{ .Values.db.secretKeyRef.name }}{{ end }}
+                  key: {{ if .Values.global.db.connectionPooler.enabled }}{{ .Values.global.db.connectionPooler.secretKeyRef.key }}{{ else }}{{ .Values.db.secretKeyRef.key }}{{ end }}
             - name: PGRST_JWT_SECRET
               valueFrom:
                 secretKeyRef:
