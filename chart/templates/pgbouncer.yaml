@@ -34,45 +34,40 @@ spec:
       serviceAccountName: {{ include "incident-commander.fullname" . }}-pgbouncer
       containers:
       - name: pgbouncer
-        image: edoburu/pgbouncer:1.21.0-p1
+        image: {{ .Values.db.connectionPooler.image }}
         ports:
         - containerPort: 5432
         env:
-        - name: AUTH_TYPE
+        - name: PGBOUNCER_AUTH_TYPE
           value: md5
-        - name: DB_HOST
+        - name: POSTGRESQL_HOST
           valueFrom:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: POSTGRES_HOST
-        - name: AUTH_USER
+        - name: POSTGRESQL_USERNAME
           valueFrom:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: POSTGRES_USER
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.db.secretKeyRef.name }}
-              key: POSTGRES_USER
-        - name: DB_PASSWORD
+        - name: POSTGRESQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: POSTGRES_PASSWORD
-        - name: DB_NAME
+        - name: POSTGRESQL_DATABASE
           valueFrom:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: DATABASE
-        - name: DB_PORT
+        - name: POSTGRESQL_PORT
           valueFrom:
             secretKeyRef:
               name: {{ .Values.db.secretKeyRef.name }}
               key: POSTGRES_PORT
         volumeMounts:
           - name: configfiles
-            mountPath: "/etc/pgbouncer"
+            mountPath: "/bitnami/pgbouncer/conf/"
             readOnly: true 
       volumes:
         - name: configfiles

@@ -106,6 +106,7 @@ db:
     serviceAccount:
       annotations: {}
     extraContainers: ""
+    image: bitnami/pgbouncer:1.22.0
   storageClass:
   storage: 20Gi
   shmVolume: 256Mi
