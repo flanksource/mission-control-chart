@@ -14,6 +14,16 @@ global:
     tlsSecretName: ""
   otel:
     collector: ""
+  db:
+    connectionPooler:
+      enabled: false
+      secretKeyRef:
+        name: mission-control-connection-pooler
+        key: DB_URL
+      serviceAccount:
+        annotations: {}
+      extraContainers: ""
+      image: bitnami/pgbouncer:1.22.0
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}

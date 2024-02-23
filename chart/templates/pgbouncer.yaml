@@ -1,0 +1,78 @@
+{{- if .Values.global.db.connectionPooler.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
+  annotations:
+{{ toYaml .Values.global.db.connectionPooler.serviceAccount.annotations | indent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
+spec:
+  selector:
+    app: {{ include "incident-commander.fullname" . }}-pgbouncer
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "incident-commander.fullname" . }}-pgbouncer
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "incident-commander.fullname" . }}-pgbouncer
+  template:
+    metadata:
+      labels:
+        app: {{ include "incident-commander.fullname" . }}-pgbouncer
+    spec:
+      serviceAccountName: {{ include "incident-commander.fullname" . }}-pgbouncer
+      containers:
+      - name: pgbouncer
+        image: {{ .Values.global.db.connectionPooler.image }}
+        ports:
+        - containerPort: 5432
+        env:
+        - name: PGBOUNCER_AUTH_TYPE
+          value: md5
+        - name: POSTGRESQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.secretKeyRef.name }}
+              key: POSTGRES_HOST
+        - name: POSTGRESQL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.secretKeyRef.name }}
+              key: POSTGRES_USER
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.secretKeyRef.name }}
+              key: POSTGRES_PASSWORD
+        - name: POSTGRESQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.secretKeyRef.name }}
+              key: DATABASE
+        - name: POSTGRESQL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.secretKeyRef.name }}
+              key: POSTGRES_PORT
+        volumeMounts:
+          - name: configfiles
+            mountPath: "/bitnami/pgbouncer/conf/"
+            readOnly: true 
+      volumes:
+        - name: configfiles
+          secret:
+            secretName: {{ include "incident-commander.name" . }}-pgbouncer-config
+{{ .Values.global.db.connectionPooler.extraContainers | indent 6 }}
+---
+{{- end }}
