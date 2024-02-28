@@ -1,6 +1,5 @@
 {{- if .Values.upstream.createSecret }}
 {{- $_ := required "upstream.host is a required value" .Values.upstream.host }}
-{{- $_ := required "upstream.username is a required value" .Values.upstream.username }}
 {{- $_ := required "upstream.password is a required value" .Values.upstream.password }}
 {{- $_ := required "upstream.agentName is a required value" .Values.upstream.agentName }}
 {{- end }}
