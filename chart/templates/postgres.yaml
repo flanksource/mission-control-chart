@@ -81,12 +81,12 @@ spec:
             value: pganalyze
           - name: DB_PASSWORD
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: {{ .Values.db.pganalyze.secretName }}
                 key: DB_PASSWORD
           - name: PGA_API_KEY
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: {{ .Values.db.pganalyze.secretName }}
                 key: PGA_API_KEY
           - name: PGA_ENABLE_LOG_EXPLAIN
