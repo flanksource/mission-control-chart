@@ -24,6 +24,9 @@ spec:
           configMap:
             name: postgresql-conf
             optional: true
+        - name: logs
+          emptyDir: {}
+
       initContainers:
         - command:
           - sh
@@ -60,9 +63,43 @@ spec:
           - name: postgresql
             mountPath: /var/lib/postgresql/data
             subPath: postgres
+          - name: logs
+            mountPath: /var/log/postgresql
         envFrom:
           - secretRef:
               name: {{ .Values.db.secretKeyRef.name }}
+
+      {{- if .Values.db.pganalyze.enabled }}
+      - name: pganalyze-collector
+        image: quay.io/pganalyze/collector:stable
+        env:
+          - name: DB_HOST
+            value: localhost
+          - name: DB_NAME
+            value: mission_control
+          - name: DB_USERNAME
+            value: pganalyze
+          - name: DB_PASSWORD
+            valueFrom:
+              secretRef:
+                name: {{ .Values.db.pganalyze.secretName }}
+                key: DB_PASSWORD
+          - name: PGA_API_KEY
+            valueFrom:
+              secretRef:
+                name: {{ .Values.db.pganalyze.secretName }}
+                key: PGA_API_KEY
+          - name: PGA_ENABLE_LOG_EXPLAIN
+            value: "true"
+          - name: LOG_LOCATION
+            value: /var/log/postgresql
+
+        volumeMounts:
+          - name: logs
+            mountPath: /var/log/postgresql
+
+      {{- end }}
+
   volumeClaimTemplates:
   - metadata:
       name: postgresql

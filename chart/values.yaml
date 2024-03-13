@@ -108,6 +108,11 @@ db:
   resources:
     requests:
       memory: 4Gi
+
+  pganalyze:
+    enabled: false
+    secretName: pganalyze
+
 smtp:
   secretRef:
     name: incident-commander-smtp
