@@ -84,6 +84,9 @@ db:
   resources:
     requests:
       memory: 2Gi
+  pganalyze:
+    enabled: false
+    secretName: pganalyze
 
 canary-checker:
   image:
