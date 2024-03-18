@@ -110,6 +110,7 @@ db:
       memory: 4Gi
   pganalyze:
     enabled: false
+    systemID: mission-control
     secretName: pganalyze
 smtp:
   secretRef:
