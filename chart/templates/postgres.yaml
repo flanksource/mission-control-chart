@@ -89,6 +89,8 @@ spec:
               secretKeyRef:
                 name: {{ .Values.db.pganalyze.secretName }}
                 key: PGA_API_KEY
+          - name: PGA_API_SYSTEM_ID
+            value: {{ .Values.db.pganalyze.systemID }}
           - name: PGA_ENABLE_LOG_EXPLAIN
             value: "true"
           - name: LOG_LOCATION
