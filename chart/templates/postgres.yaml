@@ -48,7 +48,7 @@ spec:
           - /var/lib/postgresql/data
           - --config-file=/etc/postgresql/postgresql.conf
           {{- range $k, $v := .Values.db.conf }}
-          - --{{ $k }}={{ $v }}
+          - '--{{ $k }}={{ $v }}'
           {{- end }}
         resources:
             {{- toYaml .Values.db.resources | nindent 12 }}
