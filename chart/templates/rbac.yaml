@@ -15,32 +15,32 @@ metadata:
   creationTimestamp: null
   name: {{ include "incident-commander.name" . }}-role
 rules:
-  {{- if .Values.serviceAccount.rbac.secrets}}
-  - apiGroups:
-      - v1
-    resources:
-      - secrets
-    verbs:
-      - get
-      - list
-  {{- end}}
-  {{- if .Values.serviceAccount.rbac.configmaps}}
-  - apiGroups:
-      - v1
-    resources:
-      - configmaps
-    verbs:
-      - get
-      - list
-  {{- end}}
-  {{- if .Values.serviceAccount.rbac.tokenRequest}}
-  - apiGroups:
-      - authentication.k8s.io/v1
-    resources:
-      - serviceaccounts/token
-    verbs:
-      - create
-  {{- end}}
+{{- if .Values.serviceAccount.rbac.secrets}}
+- apiGroups:
+    - v1
+  resources:
+    - secrets
+  verbs:
+    - get
+    - list
+{{- end}}
+{{- if .Values.serviceAccount.rbac.configmaps}}
+- apiGroups:
+    - v1
+  resources:
+    - configmaps
+  verbs:
+    - get
+    - list
+{{- end}}
+{{- if .Values.serviceAccount.rbac.tokenRequest}}
+- apiGroups:
+    - authentication.k8s.io/v1
+  resources:
+    - serviceaccounts/token
+  verbs:
+    - create
+{{- end}}
 - apiGroups:
   - mission-control.flanksource.com
   resources:
