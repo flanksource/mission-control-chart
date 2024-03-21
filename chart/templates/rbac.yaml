@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "incident-commander.fullname" . }}-sa
+  name: {{ include "incident-commander.name" . }}-sa
   labels:
     {{- include "incident-commander.labels" . | nindent 4 }}
   {{- with .Values.serviceAccount.annotations }}
@@ -10,7 +10,7 @@ metadata:
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
 metadata:
   creationTimestamp: null
   name: {{ include "incident-commander.name" . }}-role
@@ -50,16 +50,71 @@ rules:
   - get
   - patch
   - update
+{{- if .Values.serviceAccount.rbac.secrets}}
+- apiGroups:
+    - v1
+  resources:
+    - secrets
+  verbs:
+    - get
+    - list
+{{- end}}
+{{- if .Values.serviceAccount.rbac.configmaps}}
+- apiGroups:
+    - v1
+  resources:
+    - configmaps
+  verbs:
+    - get
+    - list
+{{- end}}
+{{- if .Values.serviceAccount.rbac.exec}}
+- apiGroups: [""]
+  resources:
+    - pods/attach
+    - pods/exec
+    - pods/log
+  verbs:
+    - '*'
+{{- end}}
+{{- if .Values.serviceAccount.rbac.podRun}}
+- apiGroups: [""]
+  resources:
+    - pods/attach
+    - pods/exec
+    - pods/log
+    - pods
+  verbs:
+    - '*'
+{{- end}}
+{{- if .Values.serviceAccount.rbac.tokenRequest}}
+- apiGroups:
+    - authentication.k8s.io/v1
+  resources:
+    - serviceaccounts/token
+  verbs:
+    - create
+{{- end}}
+{{- if .Values.serviceAccount.rbac.readAll}}
+- apiGroups:
+    - "*"
+  resources:
+    - "*"
+  verbs:
+    - list
+    - get
+    - watch
+{{- end}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}RoleBinding
 metadata:
-  name: {{ include "incident-commander.fullname" . }}-rolebinding
+  name: {{ include "incident-commander.name" . }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
   name: {{ include "incident-commander.name" . }}-role
 subjects:
   - kind: ServiceAccount
-    name: {{ include "incident-commander.fullname" . }}-sa
+    name: {{ include "incident-commander.name" . }}-sa
     namespace: {{ .Release.Namespace }}

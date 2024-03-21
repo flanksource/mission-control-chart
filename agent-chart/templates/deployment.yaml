@@ -14,11 +14,11 @@ spec:
       labels:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "incident-commander.fullname" . }}-sa
+      serviceAccountName: {{ include "incident-commander.name" . }}-sa
       volumes:
         - name: properties-config
           configMap:
-            name: {{ include "incident-commander.fullname" . }}-properties-config
+            name: {{ include "incident-commander.name" . }}-properties-config
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
