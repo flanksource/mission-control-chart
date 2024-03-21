@@ -24,9 +24,20 @@ global:
         annotations: {}
       extraContainers: ""
       image: bitnami/pgbouncer:1.22.0
+
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+  
+  rbac:
+    # Whether to create cluster-wide or namespaced roles
+    clusterRole: true
+
+    # for secret management with valueFrom
+    tokenRequest: true
+    secrets: true
+    configmaps: true
+
 extraArgs: {}
 externalPostgrest:
   enable: true

@@ -10,11 +10,37 @@ metadata:
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: "{{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role"
 metadata:
   creationTimestamp: null
   name: {{ include "incident-commander.name" . }}-role
 rules:
+  {{- if .Values.serviceAccount.rbac.secrets}}
+  - apiGroups:
+      - v1
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+  {{- end}}
+  {{- if .Values.serviceAccount.rbac.configmaps}}
+  - apiGroups:
+      - v1
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+  {{- end}}
+  {{- if .Values.serviceAccount.rbac.tokenRequest}}
+  - apiGroups:
+      - authentication.k8s.io/v1
+    resources:
+      - serviceaccounts/token
+    verbs:
+      - create
+  {{- end}}
 - apiGroups:
   - mission-control.flanksource.com
   resources:
@@ -52,12 +78,12 @@ rules:
   - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: "{{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}RoleBinding"
 metadata:
   name: {{ include "incident-commander.fullname" . }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: "{{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role"
   name: {{ include "incident-commander.name" . }}-role
 subjects:
   - kind: ServiceAccount
