@@ -49,7 +49,10 @@ spec:
                   name: {{ .Values.db.jwtSecretKeyRef.name  }}
                   key: {{ .Values.db.jwtSecretKeyRef.key }}
             - name: ADMIN_PASSWORD
-              value: {{ .Values.adminPassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.adminPassword.secretKeyRef.name }}
+                  key: {{ .Values.adminPassword.secretKeyRef.key }}
           envFrom:
             - secretRef:
                 name: {{ .Values.smtp.secretRef.name }}
