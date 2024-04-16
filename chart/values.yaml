@@ -142,7 +142,8 @@ smtp:
     # SMTP_PASSWORD: <password>
 adminPassword:
   secretKeyRef:
-    create: true # set to false if you want to pass in an existing secret
+    # set to false if you want to pass in an existing secret
+    create: true
     name: mission-control-admin-password
     key: password
 canary-checker:
