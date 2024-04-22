@@ -25,5 +25,4 @@ jobs:
           helm template . \
             --set upstream.host=host \
             --set upstream.password=password \
-            --set upstream.agentName=agent \
-            --set db.storageClass=default \
+            --set upstream.agentName=agent
