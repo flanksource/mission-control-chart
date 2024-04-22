@@ -2,7 +2,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.513"
+  tag: "v0.0.514"
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -19,7 +19,6 @@ serviceAccount:
     podRun: true
     # exec
     exec: true
-
 # If true, creates secret
 upstream:
   createSecret: true
