@@ -6,6 +6,20 @@ image:
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+  rbac:
+    # Whether to create cluster-wide or namespaced roles
+    clusterRole: true
+    # for secret management with valueFrom
+    tokenRequest: true
+    secrets: true
+    configmaps: true
+    # for use with kubernetes resource lookups
+    readAll: true
+    # Playbook pod actions
+    podRun: true
+    # exec
+    exec: true
+
 # If true, creates secret
 upstream:
   createSecret: true
