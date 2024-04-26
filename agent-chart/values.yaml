@@ -2,7 +2,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.516"
+  tag: "v0.0.517"
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
