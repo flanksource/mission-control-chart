@@ -34,6 +34,10 @@ spec:
               mountPath: {{ .Values.identityRoleMapper.configMap.mountPath}}
           {{- end}}
           env:
+            {{- if (tpl .Values.otel.labels .)}}
+            - name: OTEL_LABELS
+              value: "{{(tpl .Values.otel.labels .)}}"
+            {{- end}}
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
