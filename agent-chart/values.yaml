@@ -3,6 +3,14 @@ image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
   tag: "v0.0.546"
+
+global:
+  # -v, -vv, -vvv
+  logLevel: ""
+
+logLevel: "{{.Values.global.logLevel}}"
+jsonLogs: true
+
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
@@ -91,6 +99,7 @@ db:
     enabled: false
     secretName: pganalyze
 canary-checker:
+  logLevel: "{{.Values.global.logLevel}}"
   image:
     type: full
   upstream:
@@ -110,6 +119,7 @@ canary-checker:
     enabled: false
 config-db:
   disablePostgrest: true
+  logLevel: "{{.Values.global.logLevel}}"
   db:
     runMigrations: false
     embedded:

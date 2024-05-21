@@ -5,7 +5,10 @@ image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
   tag: "v0.0.546"
+
 global:
+  # -v, -vv, -vvv
+  logLevel: ""
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
@@ -80,6 +83,11 @@ otel:
 properties:
   incidents.disable: true
   logs.disable: true
+
+# -v, -vv, -vvv
+logLevel: "{{.Values.global.logLevel}}"
+jsonLogs: true
+
 db:
   create: true
   conf:
@@ -140,6 +148,7 @@ canary-checker:
   image:
     type: full
   disablePostgrest: true
+  logLevel: "{{.Values.global.logLevel}}"
   otel:
     collector: "{{ .Values.global.otel.collector }}"
     labels: "{{ .Values.global.otel.labels }}"
@@ -159,6 +168,7 @@ config-db:
   otel:
     collector: "{{ .Values.global.otel.collector }}"
     labels: "{{ .Values.global.otel.labels }}"
+  logLevel: "{{.Values.global.logLevel}}"
   db:
     runMigrations: false
     embedded:

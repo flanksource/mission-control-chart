@@ -75,6 +75,12 @@ spec:
            {{- else}}
             - --postgrest-max-rows='{{.Values.externalPostgrest.maxRows}}'
            {{- end }}
+           {{- if (tpl .Values.logLevel .)}}
+            - {{ tpl .Values.logLevel . }}
+           {{- end }}
+           {{- if .Values.jsonLogs }}
+            - --json-logs
+           {{- end }}
            {{- range $k, $v := .Values.extraArgs}}
            - --{{$k}}={{$v}}
            {{- end }}
