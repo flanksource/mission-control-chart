@@ -4,8 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.546"
-
+  tag: "v0.0.547"
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -83,11 +82,9 @@ otel:
 properties:
   incidents.disable: true
   logs.disable: true
-
 # -v, -vv, -vvv
 logLevel: "{{.Values.global.logLevel}}"
 jsonLogs: true
-
 db:
   create: true
   conf:
