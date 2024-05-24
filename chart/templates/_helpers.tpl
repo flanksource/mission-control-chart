@@ -19,6 +19,19 @@ Expand the name of the chart.
 {{- end }}
 {{- end }}
 
+{{/*
+Get the admin password value or a randomly generated password.
+Note adminPassword is deprecated, and will be removed in a future version.
+*/}}
+{{- define "mission-control.admin.password" -}}
+  {{- if .Values.admin.password -}}
+    {{ .Values.admin.password -}}
+  {{- else if .Values.adminPassword -}}
+    {{ .Values.adminPassword -}}
+  {{- else -}}
+    {{ randAlphaNum 10 }}
+  {{- end -}}
+{{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.

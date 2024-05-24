@@ -48,8 +48,16 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.db.jwtSecretKeyRef.name  }}
                   key: {{ .Values.db.jwtSecretKeyRef.key }}
+            {{- if ne .Values.admin.existingSecret "" }}
             - name: ADMIN_PASSWORD
-              value: {{ .Values.adminPassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.admin.existingSecret }}
+                  key: admin-password
+            {{- else }}
+            - name: ADMIN_PASSWORD
+              value: {{ include "mission-control.admin.password" . }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ .Values.smtp.secretRef.name }}

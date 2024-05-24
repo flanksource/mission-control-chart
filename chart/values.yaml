@@ -140,7 +140,18 @@ smtp:
     # SMTP_PORT: <port>
     # SMTP_USER: <user>
     # SMTP_PASSWORD: <password>
-adminPassword: admin
+# DEPRECATED - adminPassword is deprecated, and will be removed in a future version.
+# adminPassword: ""
+admin:
+  # If you leave this empty, and do not override with admin.existingSecret, a
+  # random password will be generated for you.
+  password: ""
+  # Specifying an existing secret name will override the admin.password.
+  # The secret key must be "admin-password"
+  # For example, to create from a file:
+  #   echo -n 'S!B\*d$zDsb=' > ./admin-password.txt
+  #   kubectl create secret generic admin-password-secret --from-file=admin-password.txt
+  existingSecret: ""
 canary-checker:
   image:
     type: full
