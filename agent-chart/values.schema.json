@@ -149,24 +149,6 @@
           },
           "required": ["type"]
         },
-        "upstream": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "secretKeyRef": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              },
-              "required": ["name"]
-            }
-          },
-          "required": ["enabled", "secretKeyRef"]
-        },
         "db": {
           "type": "object",
           "properties": {
@@ -253,27 +235,6 @@
               "required": ["enabled", "secretKeyRef"]
             }
           }
-        },
-        "upstream": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "secretKeyRef": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              },
-              "required": ["name"]
-            },
-            "pageSize": {
-              "type": "integer"
-            }
-          },
-          "required": ["enabled", "secretKeyRef", "pageSize"]
         }
       }
     }
