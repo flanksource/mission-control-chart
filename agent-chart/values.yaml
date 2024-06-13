@@ -99,10 +99,6 @@ canary-checker:
   logLevel: "{{.Values.global.logLevel}}"
   image:
     type: full
-  upstream:
-    enabled: true
-    secretKeyRef:
-      name: upstream
   db:
     runMigrations: false
     external:
@@ -126,8 +122,3 @@ config-db:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
-  upstream:
-    enabled: true
-    secretKeyRef:
-      name: upstream
-    pageSize: 100
