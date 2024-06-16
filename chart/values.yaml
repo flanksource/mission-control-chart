@@ -8,6 +8,7 @@ image:
 global:
   # -v, -vv, -vvv
   logLevel: ""
+  imageRegistry: public.ecr.aws/k4y9r6y5
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
@@ -29,6 +30,7 @@ global:
       image: bitnami/pgbouncer:1.22.0
 serviceAccount:
   # Annotations to add to the service account
+  name: mission-control-sa
   annotations: {}
   rbac:
     # Whether to create cluster-wide or namespaced roles
@@ -225,6 +227,8 @@ flanksource-ui:
 # database URL in it.
 kratos:
   enabled: true
+  image:
+    repository: public.ecr.aws/k4y9r6y5/kratos
   deployment:
     extraArgs:
       - --watch-courier

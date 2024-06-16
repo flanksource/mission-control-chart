@@ -14,14 +14,14 @@ spec:
       labels:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "incident-commander.name" . }}-sa
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       volumes:
         - name: properties-config
           configMap:
             name: {{ include "incident-commander.name" . }}-properties-config
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.imageRegistry }}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_URL

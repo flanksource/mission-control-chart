@@ -41,7 +41,7 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: docker.io/supabase/postgres:14.1.0.21
+        image: public.ecr.aws/k4y9r6y5/postgres:14.1.0.21
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D

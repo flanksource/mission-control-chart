@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: postgrest
-          image: docker.io/postgrest/postgrest:{{ .Values.externalPostgrest.tag | default "v10.1.0" }}
+          image: public.ecr.aws/k4y9r6y5/postgrest:{{ .Values.externalPostgrest.tag | default "v10.1.0" }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: PGRST_DB_URI

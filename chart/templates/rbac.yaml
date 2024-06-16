@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "incident-commander.name" . }}-sa
+  name: {{.Values.serviceAccount.name}}
   labels:
     {{- include "incident-commander.labels" . | nindent 4 }}
   {{- with .Values.serviceAccount.annotations }}
@@ -116,5 +116,5 @@ roleRef:
   name: {{ include "incident-commander.name" . }}-role
 subjects:
   - kind: ServiceAccount
-    name: {{ include "incident-commander.name" . }}-sa
+    name: {{.Values.serviceAccount.name}}
     namespace: {{ .Release.Namespace }}

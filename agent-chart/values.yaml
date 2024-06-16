@@ -6,11 +6,14 @@ image:
 global:
   # -v, -vv, -vvv
   logLevel: ""
+  imageRegistry: public.ecr.aws/k4y9r6y5
+
 logLevel: "{{.Values.global.logLevel}}"
 jsonLogs: true
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+  name: mission-control-sa
   rbac:
     # Whether to create cluster-wide or namespaced roles
     clusterRole: true
