@@ -19,7 +19,7 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: "{{- .Values.db.shmVolume  }}"
+            sizeLimit: "{{- .Values.db.shmVolume }}"
         - name: conf
           configMap:
             name: postgresql-conf
@@ -41,7 +41,7 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: public.ecr.aws/k4y9r6y5/postgres:14.1.0.21
+        image: {{ tpl .Values.global.imageRegistry . }}/postgres:14.1.0.21
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D
