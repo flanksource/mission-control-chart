@@ -21,7 +21,7 @@ spec:
             name: {{ include "incident-commander.name" . }}-properties-config
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.global.imageRegistry }}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_URL
