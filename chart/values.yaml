@@ -8,6 +8,8 @@ image:
 global:
   # -v, -vv, -vvv
   logLevel: ""
+  imageRegistry: public.ecr.aws
+  imagePrefix: k4y9r6y5
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
@@ -29,6 +31,7 @@ global:
       image: bitnami/pgbouncer:1.22.0
 serviceAccount:
   # Annotations to add to the service account
+  name: mission-control-sa
   annotations: {}
   rbac:
     # Whether to create cluster-wide or namespaced roles
@@ -46,7 +49,9 @@ serviceAccount:
 extraArgs: {}
 externalPostgrest:
   enable: true
-  tag: v10.1.0
+  tag: v10.2.0
+  # supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io
+  imageName: supabase/postgrest
   logLevel: info
   dbScema: public
   dbAnonRole: postgrest_anon
@@ -225,6 +230,8 @@ flanksource-ui:
 # database URL in it.
 kratos:
   enabled: true
+  image:
+    repository: public.ecr.aws/k4y9r6y5/kratos
   deployment:
     extraArgs:
       - --watch-courier

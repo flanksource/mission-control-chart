@@ -19,7 +19,7 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: "{{- .Values.db.shmVolume  }}"
+            sizeLimit: "{{- .Values.db.shmVolume }}"
         - name: conf
           configMap:
             name: postgresql-conf
@@ -41,7 +41,7 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: docker.io/supabase/postgres:14.1.0.21
+        image: {{ tpl .Values.global.imageRegistry . }}/supabase/postgres:14.1.0.89
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D
