@@ -2,13 +2,12 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.594"
+  tag: "v0.0.595"
 global:
   # -v, -vv, -vvv
   logLevel: ""
   imageRegistry: public.ecr.aws
   imagePrefix: k4y9r6y5
-
 logLevel: "{{.Values.global.logLevel}}"
 jsonLogs: true
 serviceAccount:
