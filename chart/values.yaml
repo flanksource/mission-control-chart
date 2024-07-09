@@ -10,6 +10,7 @@ global:
   logLevel: ""
   imageRegistry: public.ecr.aws
   imagePrefix: k4y9r6y5
+  labels: {}
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"

@@ -46,6 +46,9 @@ Selector labels
 app.kubernetes.io/name: {{ include "incident-commander.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 control-plane: incident-commander
+{{- if .Values.global.labels }}
+{{.Values.global.labels | toYaml}}
+{{- end }}
 {{- end }}
 
 {{/*
