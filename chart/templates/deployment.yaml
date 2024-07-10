@@ -4,6 +4,7 @@ metadata:
   name: {{ include "incident-commander.name" . }}
   labels:
     {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   revisionHistoryLimit: 1
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
+        {{- include "incident-commander.extraLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       volumes:
