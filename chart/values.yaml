@@ -9,7 +9,7 @@ global:
   # -v, -vv, -vvv
   logLevel: ""
   imageRegistry: public.ecr.aws
-  imagePrefix: k4y9r6y5
+  imagePrefix: flanksource
   labels: {}
   ui:
     host: "mission-control-ui.local"
