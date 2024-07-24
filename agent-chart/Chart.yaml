@@ -13,3 +13,8 @@ dependencies:
   - name: canary-checker
     version: "1.0.260-beta.129"
     repository: https://flanksource.github.io/charts
+  - name: mission-control-watchtower
+    version: "0.1.16"
+    repository: https://flanksource.github.io/charts
+    alias: pushTelemetry
+    condition: pushTelemetry.enabled
