@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: postgrest
-          image: {{ tpl .Values.global.imageRegistry . }}/{{.Values.externalPostgrest.imageName}}:{{ .Values.externalPostgrest.tag | default "v10.2.0" }}
+          image: {{ include "postgrest.image" . }}:{{ .Values.externalPostgrest.tag | default "v10.2.0" }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: PGRST_DB_URI

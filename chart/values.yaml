@@ -52,7 +52,7 @@ externalPostgrest:
   enable: true
   tag: v10.2.0
   # supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io
-  imageName: supabase/postgrest
+  imageName: ''
   logLevel: info
   dbScema: public
   dbAnonRole: postgrest_anon
