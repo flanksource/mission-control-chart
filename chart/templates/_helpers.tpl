@@ -54,6 +54,16 @@ control-plane: incident-commander
 {{- end }}
 {{- end }}
 
+{{- define "postgrest.image" -}}
+{{ if .Values.externalPostgrest.imageName }}
+{{- .Values.externalPostgrest.imageName -}}
+{{- else if eq .Values.global.imageRegistry "public.ecr.aws" -}}
+public.ecr.aws/supabase/postgrest
+{{- else -}}
+docker.io/postgrest/postgrest
+{{- end }}
+{{- end }}
+
 {{/*
 https://github.com/ory/k8s/blob/master/helm/charts/kratos/templates/_helpers.tpl#L103
 */}}
