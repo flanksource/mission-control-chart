@@ -65,6 +65,7 @@ spec:
           args:
             - serve
             - --public-endpoint=https://{{ tpl .Values.ingress.host . }}
+            - --frontend-url=https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080

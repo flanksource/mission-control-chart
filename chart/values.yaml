@@ -15,7 +15,7 @@ global:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
   api:
-    host: ""
+    host: "mission-control-ui.local/api"
     tlsSecretName: ""
   otel:
     collector: ""
