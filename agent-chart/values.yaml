@@ -2,7 +2,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.651"
+  tag: "v0.0.652"
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -43,14 +43,12 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
-
 pushTelemetry:
   enabled: false
   isAgent: true
   playbooks: false
   pushLocation:
     url: https://telemetry.app.flanksource.com/push/topology
-
 db:
   create: true
   conf:
