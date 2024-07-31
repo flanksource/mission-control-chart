@@ -35,6 +35,11 @@ serviceAccount:
   name: mission-control-sa
   annotations: {}
   rbac:
+    # Impersonate allows the service account to impersonate as
+    # - mission-control-reader-role
+    # - mission-control-writer-role
+    # This is used by kubeproxy.
+    impersonate: false
     # Whether to create cluster-wide or namespaced roles
     clusterRole: true
     # for secret management with valueFrom
