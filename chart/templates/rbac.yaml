@@ -12,9 +12,16 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
 metadata:
-  creationTimestamp: null
   name: {{ include "incident-commander.name" . }}-role
 rules:
+{{- if .Values.serviceAccount.rbac.impersonate}}
+- apiGroups:
+  - ""
+  resources:
+  - users
+  verbs:
+  - impersonate
+{{- end}}
 - apiGroups:
   - mission-control.flanksource.com
   resources:
@@ -118,3 +125,59 @@ subjects:
   - kind: ServiceAccount
     name: {{.Values.serviceAccount.name}}
     namespace: {{ .Release.Namespace }}
+{{- if .Values.serviceAccount.rbac.impersonate}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
+metadata:
+  name: 'mission-control-reader-role'
+rules:
+  - apiGroups: ['']
+    resources: ['configmaps', 'secrets']
+    verbs: ['get', 'list', 'watch']
+  - apiGroups:
+      - 'configs.flanksource.com'
+      - 'canaries.flanksource.com'
+      - 'mission-control.flanksource.com'
+    resources: ['*']
+    verbs: ['get', 'list', 'watch']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
+metadata:
+  name: 'mission-control-writer-role'
+rules:
+  - apiGroups: ['']
+    resources: ['configmaps', 'secrets']
+    verbs: ['*']
+  - apiGroups:
+      - 'configs.flanksource.com'
+      - 'canaries.flanksource.com'
+      - 'mission-control.flanksource.com'
+    resources: ['*']
+    verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}RoleBinding
+metadata:
+  name: 'mission-control-reader-role-binding'
+subjects:
+  - kind: User
+    name: 'mission-control-reader'
+roleRef:
+  kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
+  name: 'mission-control-reader-role'
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}RoleBinding
+metadata:
+  name: 'mission-control-writer-role-binding'
+subjects:
+  - kind: User
+    name: 'mission-control-writer'
+roleRef:
+  kind: {{if .Values.serviceAccount.rbac.clusterRole}}Cluster{{end}}Role
+  name: 'mission-control-writer-role'
+  apiGroup: rbac.authorization.k8s.io
+{{- end}}
