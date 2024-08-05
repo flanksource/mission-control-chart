@@ -11,7 +11,7 @@ dependencies:
     version: "0.0.440"
     repository: https://flanksource.github.io/charts
   - name: canary-checker
-    version: "1.0.260-beta.140"
+    version: "1.0.260-beta.141"
     repository: https://flanksource.github.io/charts
   - name: mission-control-watchtower
     version: "0.1.16"
