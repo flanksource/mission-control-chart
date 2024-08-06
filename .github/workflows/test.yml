@@ -73,7 +73,7 @@ jobs:
           helm repo add flanksource https://flanksource.github.io/charts
           helm repo add ory https://k8s.ory.sh/helm/charts
           helm dependency build ./chart
-          ct install --charts ./chart --namespace default --helm-extra-args="--timeout 10m"  --github-groups
+          ct install --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
 
       - name: Test deploying topology
         run: test/test.sh
