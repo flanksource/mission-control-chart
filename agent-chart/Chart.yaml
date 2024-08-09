@@ -14,7 +14,7 @@ dependencies:
     version: "1.0.260-beta.145"
     repository: https://flanksource.github.io/charts
   - name: mission-control-watchtower
-    version: "0.1.19"
+    version: "0.1.20"
     repository: https://flanksource.github.io/charts
     alias: pushTelemetry
     condition: pushTelemetry.enabled
