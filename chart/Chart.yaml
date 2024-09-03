@@ -15,7 +15,7 @@ dependencies:
     version: "0.0.502"
     repository: https://flanksource.github.io/charts
   - name: canary-checker
-    version: "1.0.260-beta.191"
+    version: "1.0.260-beta.192"
     repository: https://flanksource.github.io/charts
   - name: flanksource-ui
     version: "1.0.760"
