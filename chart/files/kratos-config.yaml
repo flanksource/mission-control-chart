@@ -9,8 +9,9 @@ serve:
     base_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/api/.ory'
     cors:
       enabled: true
-  # admin:
-  #   base_url: http://127.0.0.1:4434/
+  admin:
+    base_url: 'http://kratos-admin'
+    port: 4434
 selfservice:
   default_browser_return_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/'
   allowed_return_urls:
