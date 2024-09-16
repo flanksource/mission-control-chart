@@ -1,0 +1,8 @@
+apiVersion: v2
+name: mission-control-crds
+description: A Helm chart for all flanksource mission control CRD's
+type: application
+version: 0.1.0
+appVersion: "0.0.10"
+maintainers:
+  - name: Flanksource

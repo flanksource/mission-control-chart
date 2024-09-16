@@ -12,3 +12,7 @@ chart:
 agent-chart:
 	helm dependency build ./agent-chart
 	helm package ./agent-chart
+
+.PHONY: crd-chart
+crd-chart:
+	helm package ./crd-chart
