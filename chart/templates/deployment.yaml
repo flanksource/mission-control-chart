@@ -31,11 +31,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if ne .Values.identityRoleMapper.configMap.name ""}}
-          volumeMounts:
-            - name: identity-role-mapper
-              mountPath: {{ .Values.identityRoleMapper.configMap.mountPath}}
-          {{- end}}
           env:
             {{- if (tpl .Values.otel.labels .)}}
             - name: OTEL_LABELS
@@ -129,6 +124,10 @@ spec:
             - mountPath: /app/mission-control.properties
               name: properties-config
               subPath: mission-control.properties
+            {{- if ne .Values.identityRoleMapper.configMap.name ""}}
+            - name: identity-role-mapper
+              mountPath: {{ .Values.identityRoleMapper.configMap.mountPath}}
+            {{- end}}
       {{- with .Values.extra }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
