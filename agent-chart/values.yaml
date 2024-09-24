@@ -2,7 +2,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.790"
+  tag: "v0.0.791"
 global:
   # -v, -vv, -vvv
   logLevel: ""
