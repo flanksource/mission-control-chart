@@ -17,6 +17,11 @@ selfservice:
   allowed_return_urls:
     - 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}'
   methods:
+    code:
+      enabled: true
+      config:
+        lifespan: 1h
+        missing_credential_fallback_enabled: false
     password:
       enabled: true
     link:
@@ -30,6 +35,8 @@ selfservice:
     recovery:
       enabled: true
       ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/recovery'
+      use: code
+      notify_unknown_recipients: false
     verification:
       enabled: true
       ui_url: 'https://{{ tpl (index .Values "flanksource-ui" "ingress" "host") . }}/verification'
