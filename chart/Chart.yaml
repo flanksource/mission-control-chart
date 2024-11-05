@@ -18,7 +18,7 @@ dependencies:
     version: "1.1.0-beta.60"
     repository: https://flanksource.github.io/charts
   - name: flanksource-ui
-    version: "1.0.820"
+    version: "1.0.821"
     repository: https://flanksource.github.io/charts
     condition: flanksource-ui.enabled
   - name: kratos
