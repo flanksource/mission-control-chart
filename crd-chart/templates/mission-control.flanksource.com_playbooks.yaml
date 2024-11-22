@@ -341,16 +341,14 @@ spec:
                                           type: string
                                       type: object
                                   type: object
+                                assumeRole:
+                                  type: string
                                 connection:
                                   description: ConnectionName of the connection. It'll
                                     be used to populate the endpoint, accessKey and
                                     secretKey.
                                   type: string
                                 endpoint:
-                                  type: string
-                                objectPath:
-                                  description: glob path to restrict matches to a
-                                    subset
                                   type: string
                                 region:
                                   type: string
@@ -447,10 +445,6 @@ spec:
                                 skipTLSVerify:
                                   description: Skip TLS verify when connecting to
                                     aws
-                                  type: boolean
-                                usePathStyle:
-                                  description: 'Use path style path: http://s3.amazonaws.com/BUCKET/KEY
-                                    instead of http://BUCKET.s3.amazonaws.com/KEY'
                                   type: boolean
                               type: object
                             azure:
@@ -550,6 +544,8 @@ spec:
                                 tenantID:
                                   type: string
                               type: object
+                            fromConfigItem:
+                              type: string
                             gcp:
                               properties:
                                 connection:
@@ -603,6 +599,59 @@ spec:
                                   type: object
                                 endpoint:
                                   type: string
+                                skipTLSVerify:
+                                  description: Skip TLS verify
+                                  type: boolean
+                              type: object
+                            kubernetes:
+                              properties:
+                                connection:
+                                  type: string
+                                kubeconfig:
+                                  properties:
+                                    name:
+                                      type: string
+                                    value:
+                                      type: string
+                                    valueFrom:
+                                      properties:
+                                        configMapKeyRef:
+                                          properties:
+                                            key:
+                                              type: string
+                                            name:
+                                              type: string
+                                          required:
+                                          - key
+                                          type: object
+                                        helmRef:
+                                          properties:
+                                            key:
+                                              description: Key is a JSONPath expression
+                                                used to fetch the key from the merged
+                                                JSON.
+                                              type: string
+                                            name:
+                                              type: string
+                                          required:
+                                          - key
+                                          type: object
+                                        secretKeyRef:
+                                          properties:
+                                            key:
+                                              type: string
+                                            name:
+                                              type: string
+                                          required:
+                                          - key
+                                          type: object
+                                        serviceAccount:
+                                          description: ServiceAccount specifies the
+                                            service account whose token should be
+                                            fetched
+                                          type: string
+                                      type: object
+                                  type: object
                               type: object
                           type: object
                         env:
@@ -1236,28 +1285,35 @@ spec:
                       type: boolean
                     labelSelector:
                       type: string
+                    limit:
+                      type: integer
                     name:
                       type: string
                     namespace:
                       type: string
                     scope:
                       description: |-
-                        Scope is the id parent of the resource to select.
-                        Example: For config items, the scope is the scraper id
-                        - for checks, it's canaries and
-                        - for components, it's topology.
+                        Scope is the reference for parent of the resource to select.
+                        For config items, the scope is the scraper id
+                        For checks, it's canaries and
+                        For components, it's topology.
+                        It can either be a uuid or namespace/name
                       type: string
                     search:
                       description: Search query that applies to the resource name,
                         tag & labels.
                       type: string
                     statuses:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
                     tagSelector:
                       type: string
                     types:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
@@ -1287,28 +1343,35 @@ spec:
                       type: boolean
                     labelSelector:
                       type: string
+                    limit:
+                      type: integer
                     name:
                       type: string
                     namespace:
                       type: string
                     scope:
                       description: |-
-                        Scope is the id parent of the resource to select.
-                        Example: For config items, the scope is the scraper id
-                        - for checks, it's canaries and
-                        - for components, it's topology.
+                        Scope is the reference for parent of the resource to select.
+                        For config items, the scope is the scraper id
+                        For checks, it's canaries and
+                        For components, it's topology.
+                        It can either be a uuid or namespace/name
                       type: string
                     search:
                       description: Search query that applies to the resource name,
                         tag & labels.
                       type: string
                     statuses:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
                     tagSelector:
                       type: string
                     types:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
@@ -1338,28 +1401,35 @@ spec:
                       type: boolean
                     labelSelector:
                       type: string
+                    limit:
+                      type: integer
                     name:
                       type: string
                     namespace:
                       type: string
                     scope:
                       description: |-
-                        Scope is the id parent of the resource to select.
-                        Example: For config items, the scope is the scraper id
-                        - for checks, it's canaries and
-                        - for components, it's topology.
+                        Scope is the reference for parent of the resource to select.
+                        For config items, the scope is the scraper id
+                        For checks, it's canaries and
+                        For components, it's topology.
+                        It can either be a uuid or namespace/name
                       type: string
                     search:
                       description: Search query that applies to the resource name,
                         tag & labels.
                       type: string
                     statuses:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
                     tagSelector:
                       type: string
                     types:
+                      description: StringArray represents a one-dimensional array
+                        of the PostgreSQL character types.
                       items:
                         type: string
                       type: array
@@ -1718,6 +1788,12 @@ spec:
                     default:
                       description: Specify the default value of the parameter.
                       type: string
+                    dependsOn:
+                      description: DependsOn lists the parameters that influence this
+                        parameter's default values.
+                      items:
+                        type: string
+                      type: array
                     description:
                       type: string
                     icon:
