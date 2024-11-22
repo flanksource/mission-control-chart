@@ -120,7 +120,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -492,7 +500,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -877,7 +893,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -1212,7 +1236,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -1510,7 +1542,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -1710,6 +1750,8 @@ spec:
                               type: boolean
                             labelSelector:
                               type: string
+                            limit:
+                              type: integer
                             name:
                               type: string
                             namespace:
@@ -1720,12 +1762,14 @@ spec:
                               description: Search query that applies to the resource name, tag & labels.
                               type: string
                             statuses:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
                             tagSelector:
                               type: string
                             types:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
@@ -1848,7 +1892,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -2255,7 +2307,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -2462,7 +2522,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -2718,6 +2786,9 @@ spec:
                                 type: object
                               endpoint:
                                 type: string
+                              skipTLSVerify:
+                                description: Skip TLS verify
+                                type: boolean
                             type: object
                           instance:
                             type: string
@@ -2743,7 +2814,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -2973,7 +3052,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       minrecords:
                         type: integer
                       name:
@@ -3283,7 +3370,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -3575,7 +3670,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -3836,7 +3939,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -4080,7 +4191,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -4865,6 +4984,9 @@ spec:
                                 type: object
                               endpoint:
                                 type: string
+                              skipTLSVerify:
+                                description: Skip TLS verify
+                                type: boolean
                             type: object
                         type: object
                       description:
@@ -4939,7 +5061,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -5382,6 +5512,9 @@ spec:
                             type: object
                           endpoint:
                             type: string
+                          skipTLSVerify:
+                            description: Skip TLS verify
+                            type: boolean
                         type: object
                       icon:
                         description: Icon for overwriting default icon on the dashboard
@@ -5406,7 +5539,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       minAge:
                         description: MinAge the latest object should be older than defined age
                         type: string
@@ -5854,7 +5995,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -6221,7 +6370,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -6540,7 +6697,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -6860,7 +7025,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -7357,7 +7530,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -7620,7 +7801,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -7866,7 +8055,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -8165,7 +8362,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -8491,7 +8696,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -8758,7 +8971,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -9055,7 +9276,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -9188,7 +9417,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -9518,7 +9755,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -9860,7 +10105,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -10106,7 +10359,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -10453,7 +10714,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -10688,7 +10957,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -11063,7 +11340,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -11622,7 +11907,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -11893,6 +12186,7 @@ spec:
                   type: array
                 replicas:
                   default: 1
+                  description: Replicas pauses the canary if = 0.
                   type: integer
                 restic:
                   items:
@@ -11971,7 +12265,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -12319,7 +12621,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -12625,7 +12935,15 @@ spec:
                           https://canarychecker.io/concepts/metrics-exporter
                         items:
                           type: object
+                          additionalProperties: true
+                          properties:
+                            labels:
+                              type: array
+                              items:
+                                type: object
+                                additionalProperties: true
                         type: array
+                        x-kubernetes-preserve-unknown-fields: true
                       name:
                         description: Name of the check
                         type: string
@@ -12863,6 +13181,7 @@ spec:
                             type: string
                         type: object
                       type: array
+                      x-kubernetes-preserve-unknown-fields: true
                     name:
                       description: Name of the check
                       type: string
@@ -13227,6 +13546,8 @@ spec:
                     type: object
                   type: array
                   x-kubernetes-preserve-unknown-fields: true
+                configID:
+                  type: string
                 configs:
                   description: Lookup and associate config items with this component
                   items:
@@ -13260,6 +13581,8 @@ spec:
                         type: boolean
                       labelSelector:
                         type: string
+                      limit:
+                        type: integer
                       name:
                         type: string
                       namespace:
@@ -13270,6 +13593,7 @@ spec:
                         description: Search query that applies to the resource name, tag & labels.
                         type: string
                       statuses:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
@@ -13284,6 +13608,7 @@ spec:
                         description: Deprecated. Use `types`
                         type: string
                       types:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
@@ -13405,6 +13730,8 @@ spec:
                                 type: boolean
                               labelSelector:
                                 type: string
+                              limit:
+                                type: integer
                               name:
                                 type: string
                               namespace:
@@ -13415,6 +13742,7 @@ spec:
                                 description: Search query that applies to the resource name, tag & labels.
                                 type: string
                               statuses:
+                                description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                 items:
                                   type: string
                                 type: array
@@ -13429,6 +13757,7 @@ spec:
                                 description: Deprecated. Use `types`
                                 type: string
                               types:
+                                description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                 items:
                                   type: string
                                 type: array
@@ -13553,6 +13882,8 @@ spec:
                         type: boolean
                       labelSelector:
                         type: string
+                      limit:
+                        type: integer
                       name:
                         type: string
                       namespace:
@@ -13563,12 +13894,14 @@ spec:
                         description: Search query that applies to the resource name, tag & labels.
                         type: string
                       statuses:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
                       tagSelector:
                         type: string
                       types:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
@@ -13693,6 +14026,8 @@ spec:
                                   type: boolean
                                 labelSelector:
                                   type: string
+                                limit:
+                                  type: integer
                                 name:
                                   type: string
                                 namespace:
@@ -13703,12 +14038,14 @@ spec:
                                   description: Search query that applies to the resource name, tag & labels.
                                   type: string
                                 statuses:
+                                  description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                   items:
                                     type: string
                                   type: array
                                 tagSelector:
                                   type: string
                                 types:
+                                  description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                   items:
                                     type: string
                                   type: array
@@ -13721,6 +14058,8 @@ spec:
                           type: object
                         type: array
                         x-kubernetes-preserve-unknown-fields: true
+                      configID:
+                        type: string
                       configs:
                         description: Lookup and associate config items with this component
                         items:
@@ -13754,6 +14093,8 @@ spec:
                               type: boolean
                             labelSelector:
                               type: string
+                            limit:
+                              type: integer
                             name:
                               type: string
                             namespace:
@@ -13764,6 +14105,7 @@ spec:
                               description: Search query that applies to the resource name, tag & labels.
                               type: string
                             statuses:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
@@ -13778,6 +14120,7 @@ spec:
                               description: Deprecated. Use `types`
                               type: string
                             types:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
@@ -13899,6 +14242,8 @@ spec:
                                       type: boolean
                                     labelSelector:
                                       type: string
+                                    limit:
+                                      type: integer
                                     name:
                                       type: string
                                     namespace:
@@ -13909,6 +14254,7 @@ spec:
                                       description: Search query that applies to the resource name, tag & labels.
                                       type: string
                                     statuses:
+                                      description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                       items:
                                         type: string
                                       type: array
@@ -13923,6 +14269,7 @@ spec:
                                       description: Deprecated. Use `types`
                                       type: string
                                     types:
+                                      description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                       items:
                                         type: string
                                       type: array
@@ -14047,6 +14394,8 @@ spec:
                               type: boolean
                             labelSelector:
                               type: string
+                            limit:
+                              type: integer
                             name:
                               type: string
                             namespace:
@@ -14057,12 +14406,14 @@ spec:
                               description: Search query that applies to the resource name, tag & labels.
                               type: string
                             statuses:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
                             tagSelector:
                               type: string
                             types:
+                              description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                               items:
                                 type: string
                               type: array
@@ -14141,6 +14492,8 @@ spec:
                         type: boolean
                       labelSelector:
                         type: string
+                      limit:
+                        type: integer
                       name:
                         type: string
                       namespace:
@@ -14151,6 +14504,7 @@ spec:
                         description: Search query that applies to the resource name, tag & labels.
                         type: string
                       statuses:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
@@ -14165,6 +14519,7 @@ spec:
                         description: Deprecated. Use `types`
                         type: string
                       types:
+                        description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                         items:
                           type: string
                         type: array
@@ -14197,6 +14552,8 @@ spec:
                           type: boolean
                         labelSelector:
                           type: string
+                        limit:
+                          type: integer
                         name:
                           type: string
                         namespace:
@@ -14207,12 +14564,14 @@ spec:
                           description: Search query that applies to the resource name, tag & labels.
                           type: string
                         statuses:
+                          description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                           items:
                             type: string
                           type: array
                         tagSelector:
                           type: string
                         types:
+                          description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                           items:
                             type: string
                           type: array
@@ -14284,6 +14643,8 @@ spec:
                                 type: boolean
                               labelSelector:
                                 type: string
+                              limit:
+                                type: integer
                               name:
                                 type: string
                               namespace:
@@ -14294,6 +14655,7 @@ spec:
                                 description: Search query that applies to the resource name, tag & labels.
                                 type: string
                               statuses:
+                                description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                 items:
                                   type: string
                                 type: array
@@ -14308,6 +14670,7 @@ spec:
                                 description: Deprecated. Use `types`
                                 type: string
                               types:
+                                description: StringArray represents a one-dimensional array of the PostgreSQL character types.
                                 items:
                                   type: string
                                 type: array
