@@ -102,7 +102,7 @@ spec:
            {{- if ne .Values.identityRoleMapper.script "" }}
             - --identity-role-mapper='{{ .Values.identityRoleMapper.script }}'
            {{- else if ne .Values.identityRoleMapper.configMap.name ""}}
-            - --identity-role-mapper='file://{{ .Values.identityRoleMapper.configMap.mountPath }}/{{ .Values.identityRoleMapper.configMap.key}}'
+            - --identity-role-mapper=file://{{ .Values.identityRoleMapper.configMap.mountPath }}/{{ .Values.identityRoleMapper.configMap.key}}
            {{- end}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
