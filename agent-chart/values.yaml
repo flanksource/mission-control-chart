@@ -85,6 +85,10 @@ db:
     log_min_duration_statement: '10s'
     log_autovacuum_min_duration: 0
     log_destination: 'csvlog'
+    log_filename: 'postgresql-%d.log'
+    log_rotation_age: '1d'
+    log_rotation_size: '100MB'
+    log_truncate_on_rotation: on
     ssl: off
     timezone: "UTC"
     password_encryption: scram-sha-256
