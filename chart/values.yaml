@@ -11,6 +11,9 @@ global:
   imageRegistry: public.ecr.aws
   imagePrefix: flanksource
   labels: {}
+  serviceMonitor:
+    enabled: false
+    labels: {}
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
@@ -57,7 +60,7 @@ externalPostgrest:
   enable: true
   tag: v10.2.0
   # supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io
-  imageName: ''
+  imageName: ""
   logLevel: info
   dbScema: public
   dbAnonRole: postgrest_anon
@@ -72,6 +75,12 @@ identityRoleMapper:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
+serviceMonitor:
+  enabled: false
+  # @schema
+  # additionalProperties: true
+  # @schema
+  labels: {}
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -116,8 +125,8 @@ db:
     log_line_prefix: "%m [%p] %q[user=%u,db=%d,app=%a] "
     log_lock_waits: on
     log_min_duration_statement: "1s"
-    log_rotation_age: '1d'
-    log_rotation_size: '100MB'
+    log_rotation_age: "1d"
+    log_rotation_size: "100MB"
     log_truncate_on_rotation: on
     log_statement: "all"
     log_temp_files: 0
@@ -134,7 +143,7 @@ db:
   jwtSecretKeyRef:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
-  storageClass: ''
+  storageClass: ""
   storage: 20Gi
   shmVolume: 256Mi
   resources:
