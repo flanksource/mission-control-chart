@@ -5,10 +5,8 @@ kind: ConfigMap
 metadata:
   name: postgresql-scripts
 data:
-  update-admin-password.sh: |
+  post-startup.sh: |
     #!/bin/bash
-    echo "Updating postgres user password after 60s"
-    sleep 30
     psql -U postgres -c "ALTER USER postgres PASSWORD '${POSTGRES_PASSWORD}';"
 ---
 apiVersion: apps/v1
@@ -57,22 +55,13 @@ spec:
       - name: postgresql
         image: {{ tpl .Values.global.imageRegistry . }}/supabase/postgres:14.1.0.89
         command:
-        - /bin/bash
-        - -c
-        - |
-          chmod +x /update-admin-password.sh
-          # Custom initialization logic
-          if [ -f /update-admin-password.sh ]; then
-            echo "Running custom initialization script..."
-            /bin/bash /update-admin-password.sh &
-          fi
-
-          # Pass control back to the default entrypoint with provided arguments
-          exec /usr/local/bin/docker-entrypoint.sh -D /var/lib/postgresql/data --config-file=/etc/postgresql/postgresql.conf \
+          - /usr/local/bin/docker-entrypoint.sh
+          - -D
+          - /var/lib/postgresql/data
+          - --config-file=/etc/postgresql/postgresql.conf
           {{- range $k, $v := .Values.db.conf }}
-          --{{ $k }}={{ $v }} \
+          - '--{{ $k }}={{ $v }}'
           {{- end }}
-
         resources:
             {{- toYaml .Values.db.resources | nindent 12 }}
         env:
@@ -80,6 +69,13 @@ spec:
             value: /var/lib/postgresql/data
           - name: POSTGRES_DB
             value: mission_control
+        startupProbe:
+          initialDelaySeconds: 15
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - bash /post-startup.sh
         volumeMounts:
           - name: dshm
             mountPath: /dev/shm
@@ -89,8 +85,8 @@ spec:
           - name: logs
             mountPath: /var/log/postgresql
           - name: scripts
-            mountPath: /update-admin-password.sh
-            subPath: update-admin-password.sh
+            mountPath: /post-startup.sh
+            subPath: post-startup.sh
         envFrom:
           - secretRef:
               name: {{ .Values.db.secretKeyRef.name }}
