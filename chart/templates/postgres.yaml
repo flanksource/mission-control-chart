@@ -1,5 +1,14 @@
 {{- if eq .Values.db.create true }}
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-scripts
+data:
+  post-startup.sh: |
+    #!/bin/bash
+    psql -U postgres -c "ALTER USER postgres PASSWORD '${POSTGRES_PASSWORD}';"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -26,6 +35,10 @@ spec:
             optional: true
         - name: logs
           emptyDir: {}
+        - name: scripts
+          configMap:
+            name: postgresql-scripts
+            defaultMode: 0755
 
       initContainers:
         - command:
@@ -57,6 +70,11 @@ spec:
             value: /var/lib/postgresql/data
           - name: POSTGRES_DB
             value: mission_control
+        startupProbe:
+          initialDelaySeconds: 15
+          exec:
+            command:
+            - /post-startup.sh
         volumeMounts:
           - name: dshm
             mountPath: /dev/shm
@@ -65,6 +83,9 @@ spec:
             subPath: postgres
           - name: logs
             mountPath: /var/log/postgresql
+          - name: scripts
+            mountPath: /post-startup.sh
+            subPath: post-startup.sh
         envFrom:
           - secretRef:
               name: {{ .Values.db.secretKeyRef.name }}
