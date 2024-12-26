@@ -38,6 +38,7 @@ spec:
         - name: scripts
           configMap:
             name: postgresql-scripts
+            defaultMode: 0755
 
       initContainers:
         - command:
@@ -73,9 +74,7 @@ spec:
           initialDelaySeconds: 15
           exec:
             command:
-            - /bin/bash
-            - -c
-            - bash /post-startup.sh
+            - /post-startup.sh
         volumeMounts:
           - name: dshm
             mountPath: /dev/shm
