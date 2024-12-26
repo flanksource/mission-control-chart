@@ -7,7 +7,8 @@ metadata:
 data:
   update-admin-password.sh: |
     #!/bin/bash
-    echo "Updating postgres user password"
+    echo "Updating postgres user password after 60s"
+    sleep 30
     psql -U postgres -c "ALTER USER postgres PASSWORD '${POSTGRES_PASSWORD}';"
 ---
 apiVersion: apps/v1
@@ -56,13 +57,22 @@ spec:
       - name: postgresql
         image: {{ tpl .Values.global.imageRegistry . }}/supabase/postgres:14.1.0.89
         command:
-          - /usr/local/bin/docker-entrypoint.sh
-          - -D
-          - /var/lib/postgresql/data
-          - --config-file=/etc/postgresql/postgresql.conf
+        - /bin/bash
+        - -c
+        - |
+          chmod +x /update-admin-password.sh
+          # Custom initialization logic
+          if [ -f /update-admin-password.sh ]; then
+            echo "Running custom initialization script..."
+            /bin/bash /update-admin-password.sh &
+          fi
+
+          # Pass control back to the default entrypoint with provided arguments
+          exec /usr/local/bin/docker-entrypoint.sh -D /var/lib/postgresql/data --config-file=/etc/postgresql/postgresql.conf \
           {{- range $k, $v := .Values.db.conf }}
-          - '--{{ $k }}={{ $v }}'
+          --{{ $k }}={{ $v }} \
           {{- end }}
+
         resources:
             {{- toYaml .Values.db.resources | nindent 12 }}
         env:
@@ -79,7 +89,7 @@ spec:
           - name: logs
             mountPath: /var/log/postgresql
           - name: scripts
-            mountPath: /docker-entrypoint-initdb.d/update-admin-password.sh
+            mountPath: /update-admin-password.sh
             subPath: update-admin-password.sh
         envFrom:
           - secretRef:
