@@ -79,6 +79,11 @@ spec:
                   person:
                     description: ID or email of the person
                     type: string
+                  playbook:
+                    description: |-
+                      Name or <namespace>/<name> of the playbook to run.
+                      When a playbook is set as the recipient, a run is triggered.
+                    type: string
                   properties:
                     additionalProperties:
                       type: string
@@ -104,12 +109,31 @@ spec:
 
                   If specified, it should be a valid duration string (e.g., "5m", "1h").
                 type: string
+              waitForEvalPeriod:
+                description: |-
+                  WaitForEvalPeriod is an additional delay after WaitFor before evaluating
+                  Kubernetes config health. Format: "5m", "1h"
+                type: string
             required:
             - events
             - to
             type: object
           status:
             description: NotificationStatus defines the observed state of Notification
+            properties:
+              error:
+                type: string
+              failed:
+                type: integer
+              lastSent:
+                format: date-time
+                type: string
+              pending:
+                type: integer
+              sent:
+                type: integer
+              status:
+                type: string
             type: object
         type: object
     served: true
