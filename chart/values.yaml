@@ -81,10 +81,19 @@ serviceAccount:
     #   type: object
     # @schema
     extra: []
+
+# @schema
+# required: false
+# @schema
+impersonationRole:
+  namespaces: [default]
+  createNamespaces: true
+
 # @schema
 # required: false
 # @schema
 extraArgs: {}
+
 # @schema
 # required: false
 # @schema
