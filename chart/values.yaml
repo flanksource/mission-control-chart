@@ -45,16 +45,25 @@ serviceAccount:
     impersonate: false
     # Whether to create cluster-wide or namespaced roles
     clusterRole: true
+    clusterAdmin: false
     # for secret management with valueFrom
     tokenRequest: true
     secrets: true
     configmaps: true
     # for use with kubernetes resource lookups
     readAll: true
-    # Playbook pod actions
+    # Required for pod playbook actions
     podRun: true
-    # exec
+    # Allows mission control to exec into pods
     exec: true
+    # @schema
+    # required: false
+    # default: []
+    # type: array
+    # items:
+    #   type: object
+    # @schema
+    extra: []
 extraArgs: {}
 externalPostgrest:
   enable: true
