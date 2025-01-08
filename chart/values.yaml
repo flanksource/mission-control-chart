@@ -4,7 +4,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.974"
+  tag: "v0.0.975"
 global:
   # -v, -vv, -vvv
   logLevel: ""
