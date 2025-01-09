@@ -1,5 +1,29 @@
 {{- if .Values.serviceAccount.rbac.impersonate}}
 
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mission-control-read-namespaces
+rules:
+  - apiGroups: ['']
+    resources: ['namespaces']
+    verbs: ['get', 'list', 'watch']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mission-control-writer-role-binding
+subjects:
+  - kind: User
+    name: mission-control-reader
+  - kind: User
+    name: mission-control-writer
+roleRef:
+  kind: ClusterRole
+  name: mission-control-read-namespaces
+  apiGroup: rbac.authorization.k8s.io
+
 {{- range .Values.impersonationRole.namespaces }}
 {{- if and (ne . "kube-system") (ne . "mission-control") (ne . "kube-public") (ne . "kube-node-lease") }}
 
@@ -50,17 +74,6 @@ rules:
   - apiGroups: ['']
     resources: ['configmaps', 'secrets']
     verbs: ['*']
-  {{- if $.Values.serviceAccount.rbac.clusterRole}}
-  - apiGroups: ['']
-    resources: ['namespaces']
-    verbs:
-      - create
-      - patch
-      - get
-      - list
-      - update
-      - watch
-  {{- end }}
   - apiGroups:
       - 'configs.flanksource.com'
       - 'canaries.flanksource.com'
