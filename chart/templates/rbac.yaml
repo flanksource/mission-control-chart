@@ -29,6 +29,9 @@ rules:
   - incidentrules
   - playbooks
   - notifications
+  - notificationsilences
+  - permissiongroups
+  - permissions
   verbs:
   - create
   - delete
@@ -44,6 +47,9 @@ rules:
   - incidentrules/finalizers
   - playbooks/finalizers
   - notifications/finalizers
+  - notificationsilences/finalizers
+  - permissiongroups/finalizers
+  - permissions/finalizers
   verbs:
   - update
 - apiGroups:
@@ -53,6 +59,9 @@ rules:
   - incidentrules/status
   - playbooks/status
   - notifications/status
+  - notificationsilences/status
+  - permissiongroups/status
+  - permissions/status
   verbs:
   - get
   - patch
