@@ -182,10 +182,6 @@ adminPassword:
     name: mission-control-admin-password
     key: password
 
-# @schema
-# type: object
-# additionalProperties: true
-# @schema
 canary-checker:
   image:
     type: full
@@ -202,6 +198,7 @@ canary-checker:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
+
   flanksource-ui:
     # Disable UI via canary-checker by default.
     enabled: false
