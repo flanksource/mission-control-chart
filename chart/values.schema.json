@@ -115,7 +115,7 @@
       "type": "string"
     },
     "canary-checker": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "db": {
           "additionalProperties": false,
@@ -2055,7 +2055,6 @@
     "db",
     "smtp",
     "adminPassword",
-    "canary-checker",
     "config-db",
     "apm-hub",
     "ingress",

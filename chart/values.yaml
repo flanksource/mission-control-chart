@@ -182,6 +182,10 @@ adminPassword:
     name: mission-control-admin-password
     key: password
 
+# @schema
+# type: object
+# additionalProperties: true
+# @schema
 canary-checker:
   image:
     type: full
