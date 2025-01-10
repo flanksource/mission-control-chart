@@ -44,7 +44,7 @@
       "type": "object"
     },
     "apm-hub": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "db": {
           "additionalProperties": false,
@@ -115,7 +115,7 @@
       "type": "string"
     },
     "canary-checker": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "db": {
           "additionalProperties": false,
@@ -739,7 +739,6 @@
       },
       "required": [
         "create",
-        "conf",
         "secretKeyRef",
         "jwtSecretKeyRef",
         "storageClass",
@@ -817,7 +816,7 @@
       "type": "object"
     },
     "flanksource-ui": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "backendURL": {
           "default": "http://mission-control:8080",
@@ -1132,6 +1131,7 @@
         "logLevel",
         "imageRegistry",
         "imagePrefix",
+        "labels",
         "serviceMonitor",
         "ui",
         "api",
@@ -3174,12 +3174,8 @@
     "db",
     "smtp",
     "adminPassword",
-    "canary-checker",
     "config-db",
-    "apm-hub",
     "ingress",
-    "flanksource-ui",
-    "kratos",
     "resources"
   ],
   "type": "object"

@@ -117,6 +117,9 @@ logLevel: "{{.Values.global.logLevel}}"
 jsonLogs: true
 db:
   create: true
+  # @schema
+  # type: object
+  # @schema
   conf:
     max_connections: 200
     shared_buffers: 1GB
@@ -177,6 +180,11 @@ adminPassword:
     create: true
     name: mission-control-admin-password
     key: password
+
+# @schema
+# type: object
+# additionalProperties: true
+# @schema
 canary-checker:
   image:
     type: full
@@ -211,6 +219,12 @@ config-db:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
+
+
+# @schema
+# type: object
+# additionalProperties: true
+# @schema
 apm-hub:
   enabled: false
   db:
@@ -230,6 +244,11 @@ ingress:
     - hosts:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
+
+# @schema
+# type: object
+# additionalProperties: true
+# @schema
 flanksource-ui:
   enabled: true
   nameOverride: "incident-manager-ui"
@@ -254,6 +273,10 @@ flanksource-ui:
 #
 # - Disable kratos secret. Again, we explicitly generate secrets.yaml to include
 # database URL in it.
+# @schema
+# type: object
+# additionalProperties: true
+# @schema
 kratos:
   enabled: true
   image:
