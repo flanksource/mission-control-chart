@@ -43,12 +43,22 @@
       "title": "adminPassword",
       "type": "object"
     },
+    "apm-hub": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
     "authProvider": {
       "default": "kratos",
       "description": "Allowed values are [none, kratos,clerk]",
       "required": [],
       "title": "authProvider",
       "type": "string"
+    },
+    "canary-checker": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
     },
     "clerkJWKSURL": {
       "default": "",
@@ -61,6 +71,11 @@
       "required": [],
       "title": "clerkOrgID",
       "type": "string"
+    },
+    "config-db": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
     },
     "db": {
       "additionalProperties": false,
@@ -482,6 +497,11 @@
       "title": "extraArgs",
       "type": "object"
     },
+    "flanksource-ui": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
     "global": {
       "additionalProperties": false,
       "properties": {
@@ -865,6 +885,11 @@
       "required": [],
       "title": "jsonLogs",
       "type": "boolean"
+    },
+    "kratos": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
     },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
