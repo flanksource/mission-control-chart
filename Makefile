@@ -24,7 +24,7 @@ crd-chart:
 
 .PHONY: values.schema.json
 values.schema.json: .bin/helm-schema
-	cd chart && ../.bin/helm-schema -r -f values.yaml && cd -
+	cd chart && ../.bin/helm-schema --no-dependencies --dependencies-filter xxx -r -f values.yaml && cd -
 
 .bin/helm-schema:
 	test -s $(LOCALBIN)/helm-schema  || \
