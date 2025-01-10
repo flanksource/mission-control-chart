@@ -120,6 +120,7 @@ db:
   # @schema
   # type: object
   # additionalProperties: true
+  # properties: {}
   # @schema
   conf:
     max_connections: 200
