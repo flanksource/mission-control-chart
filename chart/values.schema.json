@@ -1,0 +1,3186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "adminPassword": {
+      "additionalProperties": false,
+      "properties": {
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "default": true,
+              "description": "set to false if you want to pass in an existing secret",
+              "required": [],
+              "title": "create",
+              "type": "boolean"
+            },
+            "key": {
+              "default": "password",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "mission-control-admin-password",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "create",
+            "name",
+            "key"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        }
+      },
+      "required": [
+        "secretKeyRef"
+      ],
+      "title": "adminPassword",
+      "type": "object"
+    },
+    "apm-hub": {
+      "additionalProperties": false,
+      "properties": {
+        "db": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "secretKeyRef": {
+              "additionalProperties": false,
+              "properties": {
+                "create": {
+                  "default": false,
+                  "required": [],
+                  "title": "create",
+                  "type": "boolean"
+                },
+                "key": {
+                  "default": "DB_URL",
+                  "required": [],
+                  "title": "key",
+                  "type": "string"
+                },
+                "name": {
+                  "default": "incident-commander-postgres",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "create",
+                "name",
+                "key"
+              ],
+              "title": "secretKeyRef",
+              "type": "object"
+            }
+          },
+          "required": [
+            "enabled",
+            "secretKeyRef"
+          ],
+          "title": "db",
+          "type": "object"
+        },
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled",
+        "db"
+      ],
+      "title": "apm-hub",
+      "type": "object"
+    },
+    "authProvider": {
+      "default": "kratos",
+      "description": "Allowed values are [none, kratos,clerk]",
+      "required": [],
+      "title": "authProvider",
+      "type": "string"
+    },
+    "canary-checker": {
+      "additionalProperties": false,
+      "properties": {
+        "db": {
+          "additionalProperties": false,
+          "properties": {
+            "external": {
+              "additionalProperties": false,
+              "properties": {
+                "create": {
+                  "default": false,
+                  "required": [],
+                  "title": "create",
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "secretKeyRef": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "default": "DB_URL",
+                      "required": [],
+                      "title": "key",
+                      "type": "string"
+                    },
+                    "name": {
+                      "default": "incident-commander-postgres",
+                      "required": [],
+                      "title": "name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "key"
+                  ],
+                  "title": "secretKeyRef",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "enabled",
+                "create",
+                "secretKeyRef"
+              ],
+              "title": "external",
+              "type": "object"
+            },
+            "runMigrations": {
+              "default": false,
+              "required": [],
+              "title": "runMigrations",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "runMigrations",
+            "external"
+          ],
+          "title": "db",
+          "type": "object"
+        },
+        "disablePostgrest": {
+          "default": true,
+          "required": [],
+          "title": "disablePostgrest",
+          "type": "boolean"
+        },
+        "flanksource-ui": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "description": "Disable UI via canary-checker by default.",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "title": "flanksource-ui",
+          "type": "object"
+        },
+        "image": {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "default": "full",
+              "required": [],
+              "title": "type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "title": "image",
+          "type": "object"
+        },
+        "logLevel": {
+          "default": "{{.Values.global.logLevel}}",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "otel": {
+          "additionalProperties": false,
+          "properties": {
+            "collector": {
+              "default": "{{ .Values.global.otel.collector }}",
+              "required": [],
+              "title": "collector",
+              "type": "string"
+            },
+            "labels": {
+              "default": "{{ .Values.global.otel.labels }}",
+              "required": [],
+              "title": "labels",
+              "type": "string"
+            }
+          },
+          "required": [
+            "collector",
+            "labels"
+          ],
+          "title": "otel",
+          "type": "object"
+        }
+      },
+      "required": [
+        "image",
+        "disablePostgrest",
+        "logLevel",
+        "otel",
+        "db",
+        "flanksource-ui"
+      ],
+      "title": "canary-checker",
+      "type": "object"
+    },
+    "clerkJWKSURL": {
+      "default": "",
+      "required": [],
+      "title": "clerkJWKSURL",
+      "type": "string"
+    },
+    "clerkOrgID": {
+      "default": "",
+      "required": [],
+      "title": "clerkOrgID",
+      "type": "string"
+    },
+    "config-db": {
+      "additionalProperties": false,
+      "properties": {
+        "db": {
+          "additionalProperties": false,
+          "properties": {
+            "embedded": {
+              "additionalProperties": false,
+              "properties": {
+                "persist": {
+                  "default": false,
+                  "required": [],
+                  "title": "persist",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "persist"
+              ],
+              "title": "embedded",
+              "type": "object"
+            },
+            "external": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "secretKeyRef": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "default": "DB_URL",
+                      "required": [],
+                      "title": "key",
+                      "type": "string"
+                    },
+                    "name": {
+                      "default": "incident-commander-postgres",
+                      "required": [],
+                      "title": "name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "key"
+                  ],
+                  "title": "secretKeyRef",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "enabled",
+                "secretKeyRef"
+              ],
+              "title": "external",
+              "type": "object"
+            },
+            "runMigrations": {
+              "default": false,
+              "required": [],
+              "title": "runMigrations",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "runMigrations",
+            "embedded",
+            "external"
+          ],
+          "title": "db",
+          "type": "object"
+        },
+        "disablePostgrest": {
+          "default": true,
+          "required": [],
+          "title": "disablePostgrest",
+          "type": "boolean"
+        },
+        "logLevel": {
+          "default": "{{.Values.global.logLevel}}",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "otel": {
+          "additionalProperties": false,
+          "properties": {
+            "collector": {
+              "default": "{{ .Values.global.otel.collector }}",
+              "required": [],
+              "title": "collector",
+              "type": "string"
+            },
+            "labels": {
+              "default": "{{ .Values.global.otel.labels }}",
+              "required": [],
+              "title": "labels",
+              "type": "string"
+            }
+          },
+          "required": [
+            "collector",
+            "labels"
+          ],
+          "title": "otel",
+          "type": "object"
+        }
+      },
+      "required": [
+        "disablePostgrest",
+        "otel",
+        "logLevel",
+        "db"
+      ],
+      "title": "config-db",
+      "type": "object"
+    },
+    "db": {
+      "additionalProperties": false,
+      "properties": {
+        "conf": {
+          "additionalProperties": false,
+          "properties": {
+            "db_user_namespace": {
+              "default": "off",
+              "required": [],
+              "title": "db_user_namespace",
+              "type": "string"
+            },
+            "effective_cache_size": {
+              "default": "3GB",
+              "required": [],
+              "title": "effective_cache_size",
+              "type": "string"
+            },
+            "effective_io_concurrency": {
+              "default": 200,
+              "required": [],
+              "title": "effective_io_concurrency",
+              "type": "integer"
+            },
+            "extra_float_digits": {
+              "default": 0,
+              "required": [],
+              "title": "extra_float_digits",
+              "type": "integer"
+            },
+            "log_autovacuum_min_duration": {
+              "default": 0,
+              "required": [],
+              "title": "log_autovacuum_min_duration",
+              "type": "integer"
+            },
+            "log_connections": {
+              "default": "on",
+              "required": [],
+              "title": "log_connections",
+              "type": "string"
+            },
+            "log_destination": {
+              "default": "stderr",
+              "required": [],
+              "title": "log_destination",
+              "type": "string"
+            },
+            "log_directory": {
+              "default": "/var/log/postgresql",
+              "required": [],
+              "title": "log_directory",
+              "type": "string"
+            },
+            "log_file_mode": {
+              "default": 644,
+              "required": [],
+              "title": "log_file_mode",
+              "type": "integer"
+            },
+            "log_filename": {
+              "default": "postgresql-%d.log",
+              "required": [],
+              "title": "log_filename",
+              "type": "string"
+            },
+            "log_line_prefix": {
+              "default": "%m [%p] %q[user=%u,db=%d,app=%a] ",
+              "required": [],
+              "title": "log_line_prefix",
+              "type": "string"
+            },
+            "log_lock_waits": {
+              "default": "on",
+              "required": [],
+              "title": "log_lock_waits",
+              "type": "string"
+            },
+            "log_min_duration_statement": {
+              "default": "1s",
+              "required": [],
+              "title": "log_min_duration_statement",
+              "type": "string"
+            },
+            "log_rotation_age": {
+              "default": "1d",
+              "required": [],
+              "title": "log_rotation_age",
+              "type": "string"
+            },
+            "log_rotation_size": {
+              "default": "100MB",
+              "required": [],
+              "title": "log_rotation_size",
+              "type": "string"
+            },
+            "log_statement": {
+              "default": "all",
+              "required": [],
+              "title": "log_statement",
+              "type": "string"
+            },
+            "log_temp_files": {
+              "default": 0,
+              "required": [],
+              "title": "log_temp_files",
+              "type": "integer"
+            },
+            "log_timezone": {
+              "default": "UTC",
+              "required": [],
+              "title": "log_timezone",
+              "type": "string"
+            },
+            "log_truncate_on_rotation": {
+              "default": "on",
+              "required": [],
+              "title": "log_truncate_on_rotation",
+              "type": "string"
+            },
+            "logging_collector": {
+              "default": "on",
+              "required": [],
+              "title": "logging_collector",
+              "type": "string"
+            },
+            "maintenance_work_mem": {
+              "default": "256MB",
+              "required": [],
+              "title": "maintenance_work_mem",
+              "type": "string"
+            },
+            "max_connections": {
+              "default": 200,
+              "required": [],
+              "title": "max_connections",
+              "type": "integer"
+            },
+            "max_wal_size": {
+              "default": "4GB",
+              "required": [],
+              "title": "max_wal_size",
+              "type": "string"
+            },
+            "password_encryption": {
+              "default": "scram-sha-256",
+              "required": [],
+              "title": "password_encryption",
+              "type": "string"
+            },
+            "shared_buffers": {
+              "default": "1GB",
+              "required": [],
+              "title": "shared_buffers",
+              "type": "string"
+            },
+            "ssl": {
+              "default": "off",
+              "required": [],
+              "title": "ssl",
+              "type": "string"
+            },
+            "timezone": {
+              "default": "UTC",
+              "required": [],
+              "title": "timezone",
+              "type": "string"
+            },
+            "wal_buffers": {
+              "default": "16MB",
+              "required": [],
+              "title": "wal_buffers",
+              "type": "string"
+            },
+            "work_mem": {
+              "default": "10MB",
+              "required": [],
+              "title": "work_mem",
+              "type": "string"
+            }
+          },
+          "required": [
+            "max_connections",
+            "shared_buffers",
+            "effective_cache_size",
+            "maintenance_work_mem",
+            "wal_buffers",
+            "effective_io_concurrency",
+            "work_mem",
+            "max_wal_size",
+            "log_autovacuum_min_duration",
+            "log_connections",
+            "log_destination",
+            "log_directory",
+            "log_file_mode",
+            "log_filename",
+            "log_line_prefix",
+            "log_lock_waits",
+            "log_min_duration_statement",
+            "log_rotation_age",
+            "log_rotation_size",
+            "log_truncate_on_rotation",
+            "log_statement",
+            "log_temp_files",
+            "log_timezone",
+            "logging_collector",
+            "ssl",
+            "timezone",
+            "password_encryption",
+            "db_user_namespace",
+            "extra_float_digits"
+          ],
+          "title": "conf",
+          "type": "object"
+        },
+        "create": {
+          "default": true,
+          "required": [],
+          "title": "create",
+          "type": "boolean"
+        },
+        "jwtSecretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "default": "PGRST_JWT_SECRET",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "incident-commander-postgrest-jwt",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key"
+          ],
+          "title": "jwtSecretKeyRef",
+          "type": "object"
+        },
+        "pganalyze": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "secretName": {
+              "default": "pganalyze",
+              "required": [],
+              "title": "secretName",
+              "type": "string"
+            },
+            "systemID": {
+              "default": "mission-control",
+              "required": [],
+              "title": "systemID",
+              "type": "string"
+            }
+          },
+          "required": [
+            "enabled",
+            "systemID",
+            "secretName"
+          ],
+          "title": "pganalyze",
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "requests": {
+              "additionalProperties": false,
+              "properties": {
+                "memory": {
+                  "default": "4Gi",
+                  "required": [],
+                  "title": "memory",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "memory"
+              ],
+              "title": "requests",
+              "type": "object"
+            }
+          },
+          "required": [
+            "requests"
+          ],
+          "title": "resources",
+          "type": "object"
+        },
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "default": "DB_URL",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "incident-commander-postgres",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        },
+        "shmVolume": {
+          "default": "256Mi",
+          "required": [],
+          "title": "shmVolume",
+          "type": "string"
+        },
+        "storage": {
+          "default": "20Gi",
+          "required": [],
+          "title": "storage",
+          "type": "string"
+        },
+        "storageClass": {
+          "default": "",
+          "required": [],
+          "title": "storageClass",
+          "type": "string"
+        }
+      },
+      "required": [
+        "create",
+        "conf",
+        "secretKeyRef",
+        "jwtSecretKeyRef",
+        "storageClass",
+        "storage",
+        "shmVolume",
+        "resources",
+        "pganalyze"
+      ],
+      "title": "db",
+      "type": "object"
+    },
+    "externalPostgrest": {
+      "additionalProperties": false,
+      "properties": {
+        "dbAnonRole": {
+          "default": "postgrest_anon",
+          "required": [],
+          "title": "dbAnonRole",
+          "type": "string"
+        },
+        "dbScema": {
+          "default": "public",
+          "required": [],
+          "title": "dbScema",
+          "type": "string"
+        },
+        "enable": {
+          "default": true,
+          "required": [],
+          "title": "enable",
+          "type": "boolean"
+        },
+        "imageName": {
+          "default": "",
+          "description": "supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io",
+          "required": [],
+          "title": "imageName",
+          "type": "string"
+        },
+        "logLevel": {
+          "default": "info",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "maxRows": {
+          "default": 2000,
+          "required": [],
+          "title": "maxRows",
+          "type": "integer"
+        },
+        "tag": {
+          "default": "v10.2.0",
+          "required": [],
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enable",
+        "tag",
+        "imageName",
+        "logLevel",
+        "dbScema",
+        "dbAnonRole",
+        "maxRows"
+      ],
+      "title": "externalPostgrest",
+      "type": "object"
+    },
+    "extraArgs": {
+      "additionalProperties": false,
+      "required": [],
+      "title": "extraArgs",
+      "type": "object"
+    },
+    "flanksource-ui": {
+      "additionalProperties": false,
+      "properties": {
+        "backendURL": {
+          "default": "http://mission-control:8080",
+          "required": [],
+          "title": "backendURL",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "fullnameOverride": {
+          "default": "incident-manager-ui",
+          "required": [],
+          "title": "fullnameOverride",
+          "type": "string"
+        },
+        "ingress": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "host": {
+              "default": "{{.Values.global.ui.host}}",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "tls": {
+              "items": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "hosts": {
+                        "items": {
+                          "anyOf": [
+                            {
+                              "required": [],
+                              "type": "string"
+                            }
+                          ],
+                          "required": []
+                        },
+                        "required": [],
+                        "title": "hosts",
+                        "type": "array"
+                      },
+                      "secretName": {
+                        "default": "{{.Values.global.ui.tlsSecretName}}",
+                        "required": [],
+                        "title": "secretName",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "hosts",
+                      "secretName"
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "required": []
+              },
+              "required": [],
+              "title": "tls",
+              "type": "array"
+            }
+          },
+          "required": [
+            "enabled",
+            "host",
+            "tls"
+          ],
+          "title": "ingress",
+          "type": "object"
+        },
+        "nameOverride": {
+          "default": "incident-manager-ui",
+          "required": [],
+          "title": "nameOverride",
+          "type": "string"
+        },
+        "oryKratosURL": {
+          "default": "http://{{.Values.global.ui.host}}/api/.ory",
+          "description": "This should be $host/api/.ory",
+          "required": [],
+          "title": "oryKratosURL",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enabled",
+        "nameOverride",
+        "fullnameOverride",
+        "oryKratosURL",
+        "backendURL",
+        "ingress"
+      ],
+      "title": "flanksource-ui",
+      "type": "object"
+    },
+    "global": {
+      "additionalProperties": false,
+      "properties": {
+        "api": {
+          "additionalProperties": false,
+          "properties": {
+            "host": {
+              "default": "mission-control-ui.local/api",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "tlsSecretName": {
+              "default": "",
+              "required": [],
+              "title": "tlsSecretName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "tlsSecretName"
+          ],
+          "title": "api",
+          "type": "object"
+        },
+        "db": {
+          "additionalProperties": false,
+          "properties": {
+            "connectionPooler": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "extraContainers": {
+                  "default": "",
+                  "required": [],
+                  "title": "extraContainers",
+                  "type": "string"
+                },
+                "image": {
+                  "default": "bitnami/pgbouncer:1.22.0",
+                  "required": [],
+                  "title": "image",
+                  "type": "string"
+                },
+                "secretKeyRef": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "default": "DB_URL",
+                      "required": [],
+                      "title": "key",
+                      "type": "string"
+                    },
+                    "name": {
+                      "default": "mission-control-connection-pooler",
+                      "required": [],
+                      "title": "name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "key"
+                  ],
+                  "title": "secretKeyRef",
+                  "type": "object"
+                },
+                "serviceAccount": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "annotations": {
+                      "additionalProperties": false,
+                      "required": [],
+                      "title": "annotations",
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "annotations"
+                  ],
+                  "title": "serviceAccount",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "enabled",
+                "secretKeyRef",
+                "serviceAccount",
+                "extraContainers",
+                "image"
+              ],
+              "title": "connectionPooler",
+              "type": "object"
+            }
+          },
+          "required": [
+            "connectionPooler"
+          ],
+          "title": "db",
+          "type": "object"
+        },
+        "imagePrefix": {
+          "default": "flanksource",
+          "required": [],
+          "title": "imagePrefix",
+          "type": "string"
+        },
+        "imageRegistry": {
+          "default": "public.ecr.aws",
+          "required": [],
+          "title": "imageRegistry",
+          "type": "string"
+        },
+        "labels": {
+          "additionalProperties": false,
+          "required": [],
+          "title": "labels",
+          "type": "object"
+        },
+        "logLevel": {
+          "default": "",
+          "description": "-v, -vv, -vvv",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "otel": {
+          "additionalProperties": false,
+          "properties": {
+            "collector": {
+              "default": "",
+              "required": [],
+              "title": "collector",
+              "type": "string"
+            },
+            "labels": {
+              "default": "",
+              "required": [],
+              "title": "labels",
+              "type": "string"
+            }
+          },
+          "required": [
+            "collector",
+            "labels"
+          ],
+          "title": "otel",
+          "type": "object"
+        },
+        "serviceMonitor": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "labels": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            }
+          },
+          "required": [
+            "enabled",
+            "labels"
+          ],
+          "title": "serviceMonitor",
+          "type": "object"
+        },
+        "ui": {
+          "additionalProperties": false,
+          "properties": {
+            "host": {
+              "default": "mission-control-ui.local",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "tlsSecretName": {
+              "default": "mission-control-ui-tls",
+              "required": [],
+              "title": "tlsSecretName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "tlsSecretName"
+          ],
+          "title": "ui",
+          "type": "object"
+        }
+      },
+      "required": [
+        "logLevel",
+        "imageRegistry",
+        "imagePrefix",
+        "serviceMonitor",
+        "ui",
+        "api",
+        "otel",
+        "db"
+      ],
+      "title": "global",
+      "type": "object"
+    },
+    "identityRoleMapper": {
+      "additionalProperties": false,
+      "description": "Specify the cel-go script or the file path to the cel script.\nScript is used to map the user identity to the role \u0026 teams.",
+      "properties": {
+        "configMap": {
+          "additionalProperties": false,
+          "description": "specify the script via a config map that'll be mounted to `mountPath`",
+          "properties": {
+            "key": {
+              "default": "",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "mountPath": {
+              "default": "/etc/identity-role-mapper",
+              "required": [],
+              "title": "mountPath",
+              "type": "string"
+            },
+            "name": {
+              "default": "",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key",
+            "mountPath"
+          ],
+          "title": "configMap",
+          "type": "object"
+        },
+        "script": {
+          "default": "",
+          "description": "specify the script inline",
+          "required": [],
+          "title": "script",
+          "type": "string"
+        }
+      },
+      "required": [
+        "script",
+        "configMap"
+      ],
+      "title": "identityRoleMapper",
+      "type": "object"
+    },
+    "image": {
+      "additionalProperties": false,
+      "properties": {
+        "pullPolicy": {
+          "default": "IfNotPresent",
+          "required": [],
+          "title": "pullPolicy",
+          "type": "string"
+        },
+        "repository": {
+          "default": "docker.io/flanksource/incident-commander",
+          "required": [],
+          "title": "repository",
+          "type": "string"
+        },
+        "tag": {
+          "default": "v0.0.982",
+          "required": [],
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "pullPolicy",
+        "tag"
+      ],
+      "title": "image",
+      "type": "object"
+    },
+    "ingress": {
+      "additionalProperties": false,
+      "description": "Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.",
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "properties": {
+            "kubernetes.io/ingress.class": {
+              "default": "nginx",
+              "required": [],
+              "title": "kubernetes.io/ingress.class",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kubernetes.io/ingress.class"
+          ],
+          "title": "annotations",
+          "type": "object"
+        },
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "host": {
+          "default": "{{.Values.global.api.host}}",
+          "required": [],
+          "title": "host",
+          "type": "string"
+        },
+        "tls": {
+          "items": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "hosts": {
+                    "items": {
+                      "anyOf": [
+                        {
+                          "required": [],
+                          "type": "string"
+                        }
+                      ],
+                      "required": []
+                    },
+                    "required": [],
+                    "title": "hosts",
+                    "type": "array"
+                  },
+                  "secretName": {
+                    "default": "{{.Values.global.api.tlsSecretName}}",
+                    "required": [],
+                    "title": "secretName",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "hosts",
+                  "secretName"
+                ],
+                "type": "object"
+              }
+            ],
+            "required": []
+          },
+          "required": [],
+          "title": "tls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "enabled",
+        "annotations",
+        "host",
+        "tls"
+      ],
+      "title": "ingress",
+      "type": "object"
+    },
+    "jsonLogs": {
+      "default": true,
+      "required": [],
+      "title": "jsonLogs",
+      "type": "boolean"
+    },
+    "kratos": {
+      "description": "A ORY Kratos Helm chart for Kubernetes",
+      "properties": {
+        "autoscaling": {
+          "additionalProperties": false,
+          "description": "Horizontal pod autoscaling configuration",
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "maxReplicas": {
+              "default": 3,
+              "required": [],
+              "title": "maxReplicas",
+              "type": "integer"
+            },
+            "minReplicas": {
+              "default": 1,
+              "required": [],
+              "title": "minReplicas",
+              "type": "integer"
+            },
+            "targetCPU": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "targetCPU",
+              "type": "object"
+            },
+            "targetMemory": {
+              "additionalProperties": false,
+              "description": "  type: Utilization\n  averageUtilization: 80",
+              "required": [],
+              "title": "targetMemory",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "autoscaling",
+          "type": "object"
+        },
+        "configmap": {
+          "additionalProperties": false,
+          "properties": {
+            "annotations": {
+              "additionalProperties": false,
+              "description": "If you do want to specify annotations for configmap, uncomment the following\nlines, adjust them as necessary, and remove the curly braces after 'annotations:'.",
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "hashSumEnabled": {
+              "default": true,
+              "description": "switch to false to prevent checksum annotations being maintained and propogated to the pods",
+              "required": [],
+              "title": "hashSumEnabled",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "configmap",
+          "type": "object"
+        },
+        "courier": {
+          "additionalProperties": false,
+          "description": "Configuration of the courier",
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "courier",
+          "type": "object"
+        },
+        "deployment": {
+          "additionalProperties": false,
+          "description": "Configuration options for the k8s deployment",
+          "properties": {
+            "affinity": {
+              "additionalProperties": false,
+              "description": "Configure node affinity",
+              "required": [],
+              "title": "affinity",
+              "type": "object"
+            },
+            "annotations": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "automigration": {
+              "additionalProperties": false,
+              "description": "Parameters for the automigration initContainer",
+              "properties": {
+                "extraEnv": {
+                  "description": "Array of extra envs to be passed to the initContainer. Kubernetes format is expected\n- name: FOO\n  value: BAR",
+                  "items": {
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "extraEnv",
+                  "type": "array"
+                }
+              },
+              "required": [],
+              "title": "automigration",
+              "type": "object"
+            },
+            "automountServiceAccountToken": {
+              "default": true,
+              "description": "https://github.com/kubernetes/kubernetes/issues/57601",
+              "required": [],
+              "title": "automountServiceAccountToken",
+              "type": "boolean"
+            },
+            "customLivenessProbe": {
+              "additionalProperties": false,
+              "description": "Configure a custom livenessProbe. This overwrites the default object",
+              "required": [],
+              "title": "customLivenessProbe",
+              "type": "object"
+            },
+            "customReadinessProbe": {
+              "additionalProperties": false,
+              "description": "Configure a custom readinessProbe. This overwrites the default object",
+              "required": [],
+              "title": "customReadinessProbe",
+              "type": "object"
+            },
+            "customStartupProbe": {
+              "additionalProperties": false,
+              "description": "Configure a custom startupProbe. This overwrites the default object",
+              "required": [],
+              "title": "customStartupProbe",
+              "type": "object"
+            },
+            "dnsConfig": {
+              "additionalProperties": false,
+              "description": "Configure pod dnsConfig.",
+              "required": [],
+              "title": "dnsConfig",
+              "type": "object"
+            },
+            "extraArgs": {
+              "description": "Array of extra arguments to be passed down to the deployment. Kubernetes args format is expected\n- --foo\n- --sqa-opt-out",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraArgs",
+              "type": "array"
+            },
+            "extraContainers": {
+              "default": "",
+              "description": "If you want to add extra sidecar containers.",
+              "required": [],
+              "title": "extraContainers",
+              "type": "string"
+            },
+            "extraEnv": {
+              "description": "Array of extra envs to be passed to the deployment. Kubernetes format is expected\n- name: FOO\n  value: BAR",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraEnv",
+              "type": "array"
+            },
+            "extraInitContainers": {
+              "default": "",
+              "description": "If you want to add extra init containers. These are processed before the migration init container.",
+              "required": [],
+              "title": "extraInitContainers",
+              "type": "string"
+            },
+            "extraVolumeMounts": {
+              "description": "- name: my-volume\n  secret:\n    secretName: my-secret",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraVolumeMounts",
+              "type": "array"
+            },
+            "extraVolumes": {
+              "description": "If you want to mount external volume\nFor example, mount a secret containing Certificate root CA to verify database\nTLS connection.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraVolumes",
+              "type": "array"
+            },
+            "labels": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            },
+            "lifecycle": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "lifecycle",
+              "type": "object"
+            },
+            "livenessProbe": {
+              "additionalProperties": false,
+              "description": "Configure the livenessProbe parameters",
+              "properties": {
+                "failureThreshold": {
+                  "default": 5,
+                  "required": [],
+                  "title": "failureThreshold",
+                  "type": "integer"
+                },
+                "initialDelaySeconds": {
+                  "default": 5,
+                  "required": [],
+                  "title": "initialDelaySeconds",
+                  "type": "integer"
+                },
+                "periodSeconds": {
+                  "default": 10,
+                  "required": [],
+                  "title": "periodSeconds",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "livenessProbe",
+              "type": "object"
+            },
+            "nodeSelector": {
+              "additionalProperties": false,
+              "description": "Node labels for pod assignment.",
+              "required": [],
+              "title": "nodeSelector",
+              "type": "object"
+            },
+            "podMetadata": {
+              "additionalProperties": false,
+              "description": "Specify pod metadata, this metadata is added directly to the pod, and not higher objects",
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level annotations",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level labels",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "podMetadata",
+              "type": "object"
+            },
+            "readinessProbe": {
+              "additionalProperties": false,
+              "description": "Configure the readinessProbe parameters",
+              "properties": {
+                "failureThreshold": {
+                  "default": 5,
+                  "required": [],
+                  "title": "failureThreshold",
+                  "type": "integer"
+                },
+                "initialDelaySeconds": {
+                  "default": 5,
+                  "required": [],
+                  "title": "initialDelaySeconds",
+                  "type": "integer"
+                },
+                "periodSeconds": {
+                  "default": 10,
+                  "required": [],
+                  "title": "periodSeconds",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "readinessProbe",
+              "type": "object"
+            },
+            "resources": {
+              "additionalProperties": false,
+              "description": "Set desired resource parameters\n We usually recommend not to specify default resources and to leave this as a conscious\n choice for the user. This also increases chances charts run on environments with little\n resources, such as Minikube. If you do want to specify resources, uncomment the following\n lines, adjust them as necessary, and remove the curly braces after 'resources:'.",
+              "required": [],
+              "title": "resources",
+              "type": "object"
+            },
+            "serviceAccount": {
+              "additionalProperties": false,
+              "description": "Specify the serviceAccountName value.\nIn some situations it is needed to provide specific permissions to Kratos deployments.\nLike for example installing Kratos on a cluster with a PosSecurityPolicy and Istio.\nUncomment if it is needed to provide a ServiceAccount for the Kratos deployment.",
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Annotations to add to the service account",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "create": {
+                  "default": true,
+                  "description": "Specifies whether a service account should be created",
+                  "required": [],
+                  "title": "create",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "",
+                  "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "serviceAccount",
+              "type": "object"
+            },
+            "startupProbe": {
+              "additionalProperties": false,
+              "description": "Configure the startupProbe parameters",
+              "properties": {
+                "failureThreshold": {
+                  "default": 60,
+                  "required": [],
+                  "title": "failureThreshold",
+                  "type": "integer"
+                },
+                "periodSeconds": {
+                  "default": 1,
+                  "required": [],
+                  "title": "periodSeconds",
+                  "type": "integer"
+                },
+                "successThreshold": {
+                  "default": 1,
+                  "required": [],
+                  "title": "successThreshold",
+                  "type": "integer"
+                },
+                "timeoutSeconds": {
+                  "default": 1,
+                  "required": [],
+                  "title": "timeoutSeconds",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "startupProbe",
+              "type": "object"
+            },
+            "tolerations": {
+              "description": "Configure node tolerations.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "tolerations",
+              "type": "array"
+            },
+            "topologySpreadConstraints": {
+              "description": "Configure pod topologySpreadConstraints.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "topologySpreadConstraints",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "deployment",
+          "type": "object"
+        },
+        "enabled": {
+          "description": "Conditional property used in parent chart",
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "fullnameOverride": {
+          "default": "",
+          "required": [],
+          "title": "fullnameOverride",
+          "type": "string"
+        },
+        "global": {
+          "description": "Global values are values that can be accessed from any chart or subchart by exactly the same name.",
+          "required": [],
+          "title": "global",
+          "type": "object"
+        },
+        "image": {
+          "additionalProperties": false,
+          "properties": {
+            "pullPolicy": {
+              "default": "IfNotPresent",
+              "required": [],
+              "title": "pullPolicy",
+              "type": "string"
+            },
+            "repository": {
+              "default": "oryd/kratos",
+              "description": "ORY KRATOS image",
+              "required": [],
+              "title": "repository",
+              "type": "string"
+            },
+            "tag": {
+              "default": "v0.13.0",
+              "description": "ORY KRATOS VERSION\nAlternative format: image: oryd/kratos:v0.6.3-alpha.1",
+              "required": [],
+              "title": "tag",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "image",
+          "type": "object"
+        },
+        "imagePullSecrets": {
+          "items": {
+            "required": []
+          },
+          "required": [],
+          "title": "imagePullSecrets",
+          "type": "array"
+        },
+        "ingress": {
+          "additionalProperties": false,
+          "properties": {
+            "admin": {
+              "additionalProperties": false,
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "className": {
+                  "default": "",
+                  "required": [],
+                  "title": "className",
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "hosts": {
+                  "description": "kubernetes.io/ingress.class: nginx\nkubernetes.io/tls-acme: \"true\"",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "host": {
+                            "default": "kratos.admin.local.com",
+                            "required": [],
+                            "title": "host",
+                            "type": "string"
+                          },
+                          "paths": {
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "path": {
+                                      "default": "/",
+                                      "required": [],
+                                      "title": "path",
+                                      "type": "string"
+                                    },
+                                    "pathType": {
+                                      "default": "ImplementationSpecific",
+                                      "required": [],
+                                      "title": "pathType",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [],
+                                  "type": "object"
+                                }
+                              ],
+                              "required": []
+                            },
+                            "required": [],
+                            "title": "paths",
+                            "type": "array"
+                          }
+                        },
+                        "required": [],
+                        "type": "object"
+                      }
+                    ],
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "hosts",
+                  "type": "array"
+                },
+                "tls": {
+                  "items": {
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "tls",
+                  "type": "array"
+                }
+              },
+              "required": [],
+              "title": "admin",
+              "type": "object"
+            },
+            "public": {
+              "additionalProperties": false,
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "className": {
+                  "default": "",
+                  "required": [],
+                  "title": "className",
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "hosts": {
+                  "description": "kubernetes.io/ingress.class: nginx\nkubernetes.io/tls-acme: \"true\"",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "host": {
+                            "default": "kratos.public.local.com",
+                            "required": [],
+                            "title": "host",
+                            "type": "string"
+                          },
+                          "paths": {
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "path": {
+                                      "default": "/",
+                                      "required": [],
+                                      "title": "path",
+                                      "type": "string"
+                                    },
+                                    "pathType": {
+                                      "default": "ImplementationSpecific",
+                                      "required": [],
+                                      "title": "pathType",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [],
+                                  "type": "object"
+                                }
+                              ],
+                              "required": []
+                            },
+                            "required": [],
+                            "title": "paths",
+                            "type": "array"
+                          }
+                        },
+                        "required": [],
+                        "type": "object"
+                      }
+                    ],
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "hosts",
+                  "type": "array"
+                },
+                "tls": {
+                  "items": {
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "tls",
+                  "type": "array"
+                }
+              },
+              "required": [],
+              "title": "public",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "ingress",
+          "type": "object"
+        },
+        "job": {
+          "additionalProperties": false,
+          "description": "Values for initialization job",
+          "properties": {
+            "annotations": {
+              "additionalProperties": false,
+              "description": "If you do want to specify annotations, uncomment the following\nlines, adjust them as necessary, and remove the curly braces after 'annotations:'.",
+              "properties": {
+                "helm.sh/hook": {
+                  "default": "pre-install, pre-upgrade",
+                  "required": [],
+                  "title": "helm.sh/hook",
+                  "type": "string"
+                },
+                "helm.sh/hook-delete-policy": {
+                  "default": "before-hook-creation,hook-succeeded",
+                  "required": [],
+                  "title": "helm.sh/hook-delete-policy",
+                  "type": "string"
+                },
+                "helm.sh/hook-weight": {
+                  "default": "1",
+                  "required": [],
+                  "title": "helm.sh/hook-weight",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "automountServiceAccountToken": {
+              "default": true,
+              "description": "Set automounting of the SA token",
+              "required": [],
+              "title": "automountServiceAccountToken",
+              "type": "boolean"
+            },
+            "extraContainers": {
+              "default": "",
+              "description": "If you want to add extra sidecar containers.",
+              "required": [],
+              "title": "extraContainers",
+              "type": "string"
+            },
+            "extraEnv": {
+              "description": "Array of extra envs to be passed to the job. This takes precedence over deployment variables. Kubernetes format is expected\n- name: FOO\n  value: BAR",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraEnv",
+              "type": "array"
+            },
+            "extraInitContainers": {
+              "default": "",
+              "description": "If you want to add extra init containers.",
+              "required": [],
+              "title": "extraInitContainers",
+              "type": "string"
+            },
+            "lifecycle": {
+              "default": "",
+              "description": "If you want to add lifecycle hooks.",
+              "required": [],
+              "title": "lifecycle",
+              "type": "string"
+            },
+            "nodeSelector": {
+              "additionalProperties": false,
+              "description": "Node labels for pod assignment.",
+              "required": [],
+              "title": "nodeSelector",
+              "type": "object"
+            },
+            "podMetadata": {
+              "additionalProperties": false,
+              "description": "Specify pod metadata, this metadata is added directly to the pod, and not higher objects",
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level annotations",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level labels",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "podMetadata",
+              "type": "object"
+            },
+            "serviceAccount": {
+              "additionalProperties": false,
+              "description": "Specify the serviceAccountName value.\nIn some situations it is needed to provides specific permissions to Hydra deployments\nLike for example installing Hydra on a cluster with a PosSecurityPolicy and Istio.\nUncoment if it is needed to provide a ServiceAccount for the Hydra deployment.",
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Annotations to add to the service account",
+                  "properties": {
+                    "helm.sh/hook": {
+                      "default": "pre-install, pre-upgrade",
+                      "required": [],
+                      "title": "helm.sh/hook",
+                      "type": "string"
+                    },
+                    "helm.sh/hook-delete-policy": {
+                      "default": "before-hook-creation",
+                      "required": [],
+                      "title": "helm.sh/hook-delete-policy",
+                      "type": "string"
+                    },
+                    "helm.sh/hook-weight": {
+                      "default": "0",
+                      "required": [],
+                      "title": "helm.sh/hook-weight",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "create": {
+                  "default": true,
+                  "description": "Specifies whether a service account should be created",
+                  "required": [],
+                  "title": "create",
+                  "type": "boolean"
+                },
+                "name": {
+                  "default": "",
+                  "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "serviceAccount",
+              "type": "object"
+            },
+            "shareProcessNamespace": {
+              "default": false,
+              "description": "Set sharing process namespace",
+              "required": [],
+              "title": "shareProcessNamespace",
+              "type": "boolean"
+            },
+            "spec": {
+              "additionalProperties": false,
+              "properties": {
+                "backoffLimit": {
+                  "default": 10,
+                  "description": "Set job back off limit",
+                  "required": [],
+                  "title": "backoffLimit",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "spec",
+              "type": "object"
+            },
+            "tolerations": {
+              "description": "Configure node tolerations.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "tolerations",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "job",
+          "type": "object"
+        },
+        "kratos": {
+          "additionalProperties": false,
+          "properties": {
+            "automigration": {
+              "additionalProperties": false,
+              "description": "Enables database migration",
+              "properties": {
+                "customArgs": {
+                  "description": "Ability to override arguments of the entrypoint. Can be used in-depended of customCommand\neg:\n- sleep 5;\n  - kratos",
+                  "items": {
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "customArgs",
+                  "type": "array"
+                },
+                "customCommand": {
+                  "description": "Ability to override the entrypoint of the automigration container\n(e.g. to source dynamic secrets or export environment dynamic variables)",
+                  "items": {
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "customCommand",
+                  "type": "array"
+                },
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "type": {
+                  "default": "job",
+                  "description": "Configure the way to execute database migration. Possible values: job, initContainer\nWhen set to job, the migration will be executed as a job on release or upgrade.\nWhen set to initContainer, the migration will be executed when kratos pod is created\nDefaults to job",
+                  "required": [],
+                  "title": "type",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "automigration",
+              "type": "object"
+            },
+            "config": {
+              "additionalProperties": false,
+              "properties": {
+                "courier": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "smtp": {
+                      "additionalProperties": false,
+                      "required": [],
+                      "title": "smtp",
+                      "type": "object"
+                    }
+                  },
+                  "required": [],
+                  "title": "courier",
+                  "type": "object"
+                },
+                "secrets": {
+                  "additionalProperties": false,
+                  "required": [],
+                  "title": "secrets",
+                  "type": "object"
+                },
+                "serve": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "admin": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "port": {
+                          "default": 4434,
+                          "required": [],
+                          "title": "port",
+                          "type": "integer"
+                        }
+                      },
+                      "required": [],
+                      "title": "admin",
+                      "type": "object"
+                    },
+                    "public": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "port": {
+                          "default": 4433,
+                          "required": [],
+                          "title": "port",
+                          "type": "integer"
+                        }
+                      },
+                      "required": [],
+                      "title": "public",
+                      "type": "object"
+                    }
+                  },
+                  "required": [],
+                  "title": "serve",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "config",
+              "type": "object"
+            },
+            "development": {
+              "default": false,
+              "required": [],
+              "title": "development",
+              "type": "boolean"
+            },
+            "emailTemplates": {
+              "additionalProperties": false,
+              "description": "You can customize the emails kratos is sending (also uncomment config.courier.template_override_path below)",
+              "required": [],
+              "title": "emailTemplates",
+              "type": "object"
+            },
+            "identitySchemas": {
+              "additionalProperties": false,
+              "description": "You can add multiple identity schemas here. You can pass JSON schema using `--set-file` Helm CLI argument.",
+              "required": [],
+              "title": "identitySchemas",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "kratos",
+          "type": "object"
+        },
+        "nameOverride": {
+          "default": "",
+          "required": [],
+          "title": "nameOverride",
+          "type": "string"
+        },
+        "pdb": {
+          "additionalProperties": false,
+          "description": "PodDistributionBudget configuration",
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "spec": {
+              "additionalProperties": false,
+              "properties": {
+                "minAvailable": {
+                  "default": 1,
+                  "required": [],
+                  "title": "minAvailable",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "spec",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "pdb",
+          "type": "object"
+        },
+        "replicaCount": {
+          "default": 1,
+          "description": "yaml-language-server: $schema=values.schema.json\nDefault values for kratos.\nThis is a YAML-formatted file.\nDeclare variables to be passed into your templates.\nNumber of replicas in deployment",
+          "required": [],
+          "title": "replicaCount",
+          "type": "integer"
+        },
+        "secret": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "description": "switch to false to prevent creating the secret",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "hashSumEnabled": {
+              "default": true,
+              "description": "switch to false to prevent checksum annotations being maintained and propogated to the pods",
+              "required": [],
+              "title": "hashSumEnabled",
+              "type": "boolean"
+            },
+            "nameOverride": {
+              "default": "",
+              "description": "Provide custom name of existing secret, or custom name of secret to be created",
+              "required": [],
+              "title": "nameOverride",
+              "type": "string"
+            },
+            "secretAnnotations": {
+              "additionalProperties": false,
+              "description": "nameOverride: \"myCustomSecret\"\nAnnotations to be added to secret. Annotations are added only when secret is being created. Existing secret will not be modified.",
+              "properties": {
+                "helm.sh/hook": {
+                  "default": "pre-install, pre-upgrade",
+                  "required": [],
+                  "title": "helm.sh/hook",
+                  "type": "string"
+                },
+                "helm.sh/hook-delete-policy": {
+                  "default": "before-hook-creation",
+                  "required": [],
+                  "title": "helm.sh/hook-delete-policy",
+                  "type": "string"
+                },
+                "helm.sh/hook-weight": {
+                  "default": "0",
+                  "description": "Create the secret before installation, and only then. This saves the secret from regenerating during an upgrade\npre-upgrade is needed to upgrade from 0.7.0 to newer. Can be deleted afterwards.",
+                  "required": [],
+                  "title": "helm.sh/hook-weight",
+                  "type": "string"
+                },
+                "helm.sh/resource-policy": {
+                  "default": "keep",
+                  "required": [],
+                  "title": "helm.sh/resource-policy",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "secretAnnotations",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "secret",
+          "type": "object"
+        },
+        "securityContext": {
+          "additionalProperties": false,
+          "properties": {
+            "allowPrivilegeEscalation": {
+              "default": false,
+              "required": [],
+              "title": "allowPrivilegeEscalation",
+              "type": "boolean"
+            },
+            "capabilities": {
+              "additionalProperties": false,
+              "properties": {
+                "drop": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "required": [],
+                        "type": "string"
+                      }
+                    ],
+                    "required": []
+                  },
+                  "required": [],
+                  "title": "drop",
+                  "type": "array"
+                }
+              },
+              "required": [],
+              "title": "capabilities",
+              "type": "object"
+            },
+            "privileged": {
+              "default": false,
+              "required": [],
+              "title": "privileged",
+              "type": "boolean"
+            },
+            "readOnlyRootFilesystem": {
+              "default": true,
+              "required": [],
+              "title": "readOnlyRootFilesystem",
+              "type": "boolean"
+            },
+            "runAsNonRoot": {
+              "default": true,
+              "required": [],
+              "title": "runAsNonRoot",
+              "type": "boolean"
+            },
+            "runAsUser": {
+              "default": 100,
+              "required": [],
+              "title": "runAsUser",
+              "type": "integer"
+            },
+            "seccompProfile": {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "default": "RuntimeDefault",
+                  "required": [],
+                  "title": "type",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "seccompProfile",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "securityContext",
+          "type": "object"
+        },
+        "service": {
+          "additionalProperties": false,
+          "properties": {
+            "admin": {
+              "additionalProperties": false,
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "If you do want to specify annotations, uncomment the following\nlines, adjust them as necessary, and remove the curly braces after 'annotations:'.",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Provide custom labels. Use the same syntax as for annotations.",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                },
+                "loadBalancerIP": {
+                  "default": "",
+                  "description": "Load balancer IP",
+                  "required": [],
+                  "title": "loadBalancerIP",
+                  "type": "string"
+                },
+                "name": {
+                  "default": "http",
+                  "description": "The service port name. Useful to set a custom service port name if it must follow a scheme (e.g. Istio)",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                },
+                "port": {
+                  "default": 80,
+                  "required": [],
+                  "title": "port",
+                  "type": "integer"
+                },
+                "type": {
+                  "default": "ClusterIP",
+                  "required": [],
+                  "title": "type",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "admin",
+              "type": "object"
+            },
+            "public": {
+              "additionalProperties": false,
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "If you do want to specify annotations, uncomment the following\nlines, adjust them as necessary, and remove the curly braces after 'annotations:'.",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Provide custom labels. Use the same syntax as for annotations.",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                },
+                "loadBalancerIP": {
+                  "default": "",
+                  "description": "Load balancer IP",
+                  "required": [],
+                  "title": "loadBalancerIP",
+                  "type": "string"
+                },
+                "name": {
+                  "default": "http",
+                  "description": "The service port name. Useful to set a custom service port name if it must follow a scheme (e.g. Istio)",
+                  "required": [],
+                  "title": "name",
+                  "type": "string"
+                },
+                "port": {
+                  "default": 80,
+                  "required": [],
+                  "title": "port",
+                  "type": "integer"
+                },
+                "type": {
+                  "default": "ClusterIP",
+                  "required": [],
+                  "title": "type",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "public",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "service",
+          "type": "object"
+        },
+        "serviceMonitor": {
+          "additionalProperties": false,
+          "description": "Parameters for the Prometheus ServiceMonitor objects.\nReference: https://docs.openshift.com/container-platform/4.6/rest_api/monitoring_apis/servicemonitor-monitoring-coreos-com-v1.html",
+          "properties": {
+            "enabled": {
+              "default": true,
+              "description": "switch to false to prevent creating the ServiceMonitor",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "labels": {
+              "additionalProperties": false,
+              "description": "Provide additionnal labels to the ServiceMonitor ressource metadata",
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            },
+            "scheme": {
+              "default": "http",
+              "description": "HTTP scheme to use for scraping.",
+              "required": [],
+              "title": "scheme",
+              "type": "string"
+            },
+            "scrapeInterval": {
+              "default": "60s",
+              "description": "Interval at which metrics should be scraped",
+              "required": [],
+              "title": "scrapeInterval",
+              "type": "string"
+            },
+            "scrapeTimeout": {
+              "default": "30s",
+              "description": "Timeout after which the scrape is ended",
+              "required": [],
+              "title": "scrapeTimeout",
+              "type": "string"
+            },
+            "tlsConfig": {
+              "additionalProperties": false,
+              "description": "TLS configuration to use when scraping the endpoint",
+              "required": [],
+              "title": "tlsConfig",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "serviceMonitor",
+          "type": "object"
+        },
+        "statefulSet": {
+          "additionalProperties": false,
+          "description": "# -- Configuration options for the k8s statefulSet",
+          "properties": {
+            "affinity": {
+              "additionalProperties": false,
+              "description": "Configure node affinity",
+              "required": [],
+              "title": "affinity",
+              "type": "object"
+            },
+            "annotations": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "dnsConfig": {
+              "additionalProperties": false,
+              "description": "Configure pod dnsConfig.",
+              "required": [],
+              "title": "dnsConfig",
+              "type": "object"
+            },
+            "extraArgs": {
+              "description": "Array of extra arguments to be passed down to the StatefulSet. Kubernetes args format is expected",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraArgs",
+              "type": "array"
+            },
+            "extraContainers": {
+              "default": "",
+              "description": "If you want to add extra sidecar containers.",
+              "required": [],
+              "title": "extraContainers",
+              "type": "string"
+            },
+            "extraEnv": {
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraEnv",
+              "type": "array"
+            },
+            "extraInitContainers": {
+              "default": "",
+              "description": "If you want to add extra init containers. These are processed before the migration init container.",
+              "required": [],
+              "title": "extraInitContainers",
+              "type": "string"
+            },
+            "extraVolumeMounts": {
+              "description": "- name: my-volume\n  secret:\n    secretName: my-secret",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraVolumeMounts",
+              "type": "array"
+            },
+            "extraVolumes": {
+              "description": "If you want to mount external volume\nFor example, mount a secret containing Certificate root CA to verify database\nTLS connection.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "extraVolumes",
+              "type": "array"
+            },
+            "labels": {
+              "additionalProperties": false,
+              "description": "The secret specified here will be used to load environment variables with envFrom.\nThis allows arbitrary environment variables to be provided to the application which is useful for\nsensitive values which should not be in a configMap.\nThis secret is not created by the helm chart and must already exist in the namespace.\nhttps://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables\nenvironmentSecretsName:",
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            },
+            "log": {
+              "additionalProperties": false,
+              "properties": {
+                "format": {
+                  "default": "json",
+                  "required": [],
+                  "title": "format",
+                  "type": "string"
+                },
+                "level": {
+                  "default": "trace",
+                  "required": [],
+                  "title": "level",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "log",
+              "type": "object"
+            },
+            "nodeSelector": {
+              "additionalProperties": false,
+              "description": "Node labels for pod assignment.",
+              "required": [],
+              "title": "nodeSelector",
+              "type": "object"
+            },
+            "podMetadata": {
+              "additionalProperties": false,
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level annotations",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level labels",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "podMetadata",
+              "type": "object"
+            },
+            "resources": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "resources",
+              "type": "object"
+            },
+            "tolerations": {
+              "description": "Configure node tolerations.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "tolerations",
+              "type": "array"
+            },
+            "topologySpreadConstraints": {
+              "description": "Configure pod topologySpreadConstraints.",
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "topologySpreadConstraints",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "statefulSet",
+          "type": "object"
+        },
+        "strategy": {
+          "additionalProperties": false,
+          "description": "Deployment update strategy",
+          "properties": {
+            "rollingUpdate": {
+              "additionalProperties": false,
+              "properties": {
+                "maxSurge": {
+                  "default": "30%",
+                  "required": [],
+                  "title": "maxSurge",
+                  "type": "string"
+                },
+                "maxUnavailable": {
+                  "default": 0,
+                  "required": [],
+                  "title": "maxUnavailable",
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "rollingUpdate",
+              "type": "object"
+            },
+            "type": {
+              "default": "RollingUpdate",
+              "required": [],
+              "title": "type",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "strategy",
+          "type": "object"
+        },
+        "watcher": {
+          "additionalProperties": false,
+          "description": "Configuration of the watcher sidecar",
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "image": {
+              "default": "oryd/k8s-toolbox:0.0.5",
+              "required": [],
+              "title": "image",
+              "type": "string"
+            },
+            "mountFile": {
+              "default": "",
+              "description": "Path to mounted file, which wil be monitored for changes. eg: /etc/secrets/my-secret/foo",
+              "required": [],
+              "title": "mountFile",
+              "type": "string"
+            },
+            "podMetadata": {
+              "additionalProperties": false,
+              "description": "Specify pod metadata, this metadata is added directly to the pod, and not higher objects",
+              "properties": {
+                "annotations": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level annotations",
+                  "required": [],
+                  "title": "annotations",
+                  "type": "object"
+                },
+                "labels": {
+                  "additionalProperties": false,
+                  "description": "Extra pod level labels",
+                  "required": [],
+                  "title": "labels",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "podMetadata",
+              "type": "object"
+            },
+            "watchLabelKey": {
+              "default": "ory.sh/watcher",
+              "description": "Label key used for managing applications",
+              "required": [],
+              "title": "watchLabelKey",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "watcher",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "kratos",
+      "type": "object"
+    },
+    "logLevel": {
+      "default": "{{.Values.global.logLevel}}",
+      "description": "-v, -vv, -vvv",
+      "required": [],
+      "title": "logLevel",
+      "type": "string"
+    },
+    "nameOverride": {
+      "default": "",
+      "description": "Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.",
+      "required": [],
+      "title": "nameOverride",
+      "type": "string"
+    },
+    "otel": {
+      "additionalProperties": false,
+      "properties": {
+        "collector": {
+          "default": "{{.Values.global.otel.collector}}",
+          "description": "OpenTelemetry gRPC collector endpoint in host:port format",
+          "required": [],
+          "title": "collector",
+          "type": "string"
+        },
+        "labels": {
+          "default": "{{ .Values.global.otel.labels }}",
+          "required": [],
+          "title": "labels",
+          "type": "string"
+        },
+        "serviceName": {
+          "default": "mission-control",
+          "required": [],
+          "title": "serviceName",
+          "type": "string"
+        }
+      },
+      "required": [
+        "collector",
+        "serviceName",
+        "labels"
+      ],
+      "title": "otel",
+      "type": "object"
+    },
+    "properties": {
+      "additionalProperties": false,
+      "description": "Properties to configure mission-control feature sets",
+      "properties": {
+        "incidents.disable": {
+          "default": true,
+          "required": [],
+          "title": "incidents.disable",
+          "type": "boolean"
+        },
+        "logs.disable": {
+          "default": true,
+          "required": [],
+          "title": "logs.disable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "incidents.disable",
+        "logs.disable"
+      ],
+      "title": "properties",
+      "type": "object"
+    },
+    "replicas": {
+      "default": 1,
+      "description": "yaml-language-server: $schema=values.schema.json",
+      "required": [],
+      "title": "replicas",
+      "type": "integer"
+    },
+    "resources": {
+      "additionalProperties": false,
+      "properties": {
+        "limits": {
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "default": "500m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "1024Mi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [
+            "memory",
+            "cpu"
+          ],
+          "title": "limits",
+          "type": "object"
+        },
+        "requests": {
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "default": "100m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "768Mi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [
+            "cpu",
+            "memory"
+          ],
+          "title": "requests",
+          "type": "object"
+        }
+      },
+      "required": [
+        "requests",
+        "limits"
+      ],
+      "title": "resources",
+      "type": "object"
+    },
+    "serviceAccount": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "name": {
+          "default": "mission-control-sa",
+          "description": "Annotations to add to the service account",
+          "required": [],
+          "title": "name",
+          "type": "string"
+        },
+        "rbac": {
+          "additionalProperties": false,
+          "properties": {
+            "clusterAdmin": {
+              "default": false,
+              "required": [],
+              "title": "clusterAdmin",
+              "type": "boolean"
+            },
+            "clusterRole": {
+              "default": true,
+              "description": "Whether to create cluster-wide or namespaced roles",
+              "required": [],
+              "title": "clusterRole",
+              "type": "boolean"
+            },
+            "configmaps": {
+              "default": true,
+              "required": [],
+              "title": "configmaps",
+              "type": "boolean"
+            },
+            "exec": {
+              "default": true,
+              "description": "Allows mission control to exec into pods",
+              "required": [],
+              "title": "exec",
+              "type": "boolean"
+            },
+            "extra": {
+              "default": [],
+              "items": {
+                "required": [],
+                "type": "object"
+              },
+              "required": [],
+              "title": "extra",
+              "type": "array"
+            },
+            "impersonate": {
+              "default": false,
+              "description": "Impersonate allows the service account to impersonate as\n- mission-control-reader-role\n- mission-control-writer-role\nThis is used by kubeproxy.",
+              "required": [],
+              "title": "impersonate",
+              "type": "boolean"
+            },
+            "podRun": {
+              "default": true,
+              "description": "Required for pod playbook actions",
+              "required": [],
+              "title": "podRun",
+              "type": "boolean"
+            },
+            "readAll": {
+              "default": true,
+              "description": "for use with kubernetes resource lookups",
+              "required": [],
+              "title": "readAll",
+              "type": "boolean"
+            },
+            "secrets": {
+              "default": true,
+              "required": [],
+              "title": "secrets",
+              "type": "boolean"
+            },
+            "tokenRequest": {
+              "default": true,
+              "description": "for secret management with valueFrom",
+              "required": [],
+              "title": "tokenRequest",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "impersonate",
+            "clusterRole",
+            "clusterAdmin",
+            "tokenRequest",
+            "secrets",
+            "configmaps",
+            "readAll",
+            "podRun",
+            "exec"
+          ],
+          "title": "rbac",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "annotations",
+        "rbac"
+      ],
+      "title": "serviceAccount",
+      "type": "object"
+    },
+    "serviceMonitor": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "labels": {
+          "additionalProperties": true,
+          "required": [],
+          "title": "labels"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "title": "serviceMonitor",
+      "type": "object"
+    },
+    "smtp": {
+      "additionalProperties": false,
+      "properties": {
+        "secretRef": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "default": "incident-commander-smtp",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "secretRef",
+          "type": "object"
+        }
+      },
+      "required": [
+        "secretRef"
+      ],
+      "title": "smtp",
+      "type": "object"
+    },
+    "upstream_push": {
+      "additionalProperties": false,
+      "description": "Configuration for pushing data to upstream\nupstream_push:\n  name: ''\n  host: ''\n  user: ''\n  password: ''\n  labels: 'key1=val1,key2=val2'",
+      "required": [],
+      "title": "upstream_push",
+      "type": "object"
+    }
+  },
+  "required": [
+    "replicas",
+    "nameOverride",
+    "image",
+    "global",
+    "serviceAccount",
+    "extraArgs",
+    "externalPostgrest",
+    "identityRoleMapper",
+    "serviceMonitor",
+    "upstream_push",
+    "authProvider",
+    "clerkJWKSURL",
+    "clerkOrgID",
+    "otel",
+    "properties",
+    "logLevel",
+    "jsonLogs",
+    "db",
+    "smtp",
+    "adminPassword",
+    "canary-checker",
+    "config-db",
+    "apm-hub",
+    "ingress",
+    "flanksource-ui",
+    "kratos",
+    "resources"
+  ],
+  "type": "object"
+}
