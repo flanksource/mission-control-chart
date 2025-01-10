@@ -1193,12 +1193,7 @@
     "db",
     "smtp",
     "adminPassword",
-    "canary-checker",
-    "config-db",
-    "apm-hub",
     "ingress",
-    "flanksource-ui",
-    "kratos",
     "resources"
   ],
   "type": "object"
