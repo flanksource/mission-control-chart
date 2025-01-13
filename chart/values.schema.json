@@ -40,8 +40,7 @@
       "required": [
         "secretKeyRef"
       ],
-      "title": "adminPassword",
-      "type": "object"
+      "title": "adminPassword"
     },
     "apm-hub": {
       "additionalProperties": true,
@@ -52,8 +51,7 @@
       "default": "kratos",
       "description": "Allowed values are [none, kratos,clerk]",
       "required": [],
-      "title": "authProvider",
-      "type": "string"
+      "title": "authProvider"
     },
     "canary-checker": {
       "additionalProperties": true,
@@ -63,14 +61,12 @@
     "clerkJWKSURL": {
       "default": "",
       "required": [],
-      "title": "clerkJWKSURL",
-      "type": "string"
+      "title": "clerkJWKSURL"
     },
     "clerkOrgID": {
       "default": "",
       "required": [],
-      "title": "clerkOrgID",
-      "type": "string"
+      "title": "clerkOrgID"
     },
     "config-db": {
       "additionalProperties": true,
@@ -223,8 +219,7 @@
         "resources",
         "pganalyze"
       ],
-      "title": "db",
-      "type": "object"
+      "title": "db"
     },
     "externalPostgrest": {
       "additionalProperties": false,
@@ -282,14 +277,12 @@
         "dbAnonRole",
         "maxRows"
       ],
-      "title": "externalPostgrest",
-      "type": "object"
+      "title": "externalPostgrest"
     },
     "extraArgs": {
       "additionalProperties": false,
       "required": [],
-      "title": "extraArgs",
-      "type": "object"
+      "title": "extraArgs"
     },
     "flanksource-ui": {
       "additionalProperties": true,
@@ -509,8 +502,7 @@
         "otel",
         "db"
       ],
-      "title": "global",
-      "type": "object"
+      "title": "global"
     },
     "identityRoleMapper": {
       "additionalProperties": false,
@@ -559,8 +551,7 @@
         "script",
         "configMap"
       ],
-      "title": "identityRoleMapper",
-      "type": "object"
+      "title": "identityRoleMapper"
     },
     "image": {
       "additionalProperties": false,
@@ -589,12 +580,10 @@
         "pullPolicy",
         "tag"
       ],
-      "title": "image",
-      "type": "object"
+      "title": "image"
     },
     "ingress": {
       "additionalProperties": false,
-      "description": "Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.",
       "properties": {
         "annotations": {
           "additionalProperties": false,
@@ -671,14 +660,12 @@
         "host",
         "tls"
       ],
-      "title": "ingress",
-      "type": "object"
+      "title": "ingress"
     },
     "jsonLogs": {
-      "default": true,
+      "default": "true",
       "required": [],
-      "title": "jsonLogs",
-      "type": "boolean"
+      "title": "jsonLogs"
     },
     "kratos": {
       "additionalProperties": true,
@@ -687,17 +674,14 @@
     },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
-      "description": "-v, -vv, -vvv",
       "required": [],
-      "title": "logLevel",
-      "type": "string"
+      "title": "logLevel"
     },
     "nameOverride": {
       "default": "",
       "description": "Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.",
       "required": [],
-      "title": "nameOverride",
-      "type": "string"
+      "title": "nameOverride"
     },
     "otel": {
       "additionalProperties": false,
@@ -727,12 +711,10 @@
         "serviceName",
         "labels"
       ],
-      "title": "otel",
-      "type": "object"
+      "title": "otel"
     },
     "properties": {
       "additionalProperties": false,
-      "description": "Properties to configure mission-control feature sets",
       "properties": {
         "incidents.disable": {
           "default": true,
@@ -751,15 +733,13 @@
         "incidents.disable",
         "logs.disable"
       ],
-      "title": "properties",
-      "type": "object"
+      "title": "properties"
     },
     "replicas": {
-      "default": 1,
-      "description": "yaml-language-server: $schema=values.schema.json",
+      "default": "1",
+      "description": "yaml-language-server: $schema=values.schema.json\n",
       "required": [],
-      "title": "replicas",
-      "type": "integer"
+      "title": "replicas"
     },
     "resources": {
       "additionalProperties": false,
@@ -815,8 +795,7 @@
         "requests",
         "limits"
       ],
-      "title": "resources",
-      "type": "object"
+      "title": "resources"
     },
     "serviceAccount": {
       "additionalProperties": false,
@@ -928,8 +907,7 @@
         "annotations",
         "rbac"
       ],
-      "title": "serviceAccount",
-      "type": "object"
+      "title": "serviceAccount"
     },
     "serviceMonitor": {
       "additionalProperties": false,
@@ -949,8 +927,7 @@
       "required": [
         "enabled"
       ],
-      "title": "serviceMonitor",
-      "type": "object"
+      "title": "serviceMonitor"
     },
     "smtp": {
       "additionalProperties": false,
@@ -975,45 +952,15 @@
       "required": [
         "secretRef"
       ],
-      "title": "smtp",
-      "type": "object"
+      "title": "smtp"
     },
     "upstream_push": {
       "additionalProperties": false,
       "description": "Configuration for pushing data to upstream\nupstream_push:\n  name: ''\n  host: ''\n  user: ''\n  password: ''\n  labels: 'key1=val1,key2=val2'",
       "required": [],
-      "title": "upstream_push",
-      "type": "object"
+      "title": "upstream_push"
     }
   },
-  "required": [
-    "replicas",
-    "nameOverride",
-    "image",
-    "global",
-    "serviceAccount",
-    "extraArgs",
-    "externalPostgrest",
-    "identityRoleMapper",
-    "serviceMonitor",
-    "upstream_push",
-    "authProvider",
-    "clerkJWKSURL",
-    "clerkOrgID",
-    "otel",
-    "properties",
-    "logLevel",
-    "jsonLogs",
-    "db",
-    "smtp",
-    "adminPassword",
-    "canary-checker",
-    "config-db",
-    "apm-hub",
-    "ingress",
-    "flanksource-ui",
-    "kratos",
-    "resources"
-  ],
+  "required": [],
   "type": "object"
 }

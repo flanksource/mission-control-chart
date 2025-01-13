@@ -1,11 +1,28 @@
 # yaml-language-server: $schema=values.schema.json
+#
+# @schema
+# required: false
+# @schema
 replicas: 1
+
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
+# @schema
+# required: false
+# @schema
 nameOverride: ""
+
+# @schema
+# required: false
+# @schema
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
   tag: "v0.0.990"
+
+# @schema
+# required: false
+# @schema
+>>>>>>> 48ef52e (chore: set root values to not required)
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -34,6 +51,10 @@ global:
         annotations: {}
       extraContainers: ""
       image: bitnami/pgbouncer:1.22.0
+
+# @schema
+# required: false
+# @schema
 serviceAccount:
   # Annotations to add to the service account
   name: mission-control-sa
@@ -65,7 +86,15 @@ serviceAccount:
     #   type: object
     # @schema
     extra: []
+
+# @schema
+# required: false
+# @schema
 extraArgs: {}
+
+# @schema
+# required: false
+# @schema
 externalPostgrest:
   enable: true
   tag: v10.2.0
@@ -75,8 +104,12 @@ externalPostgrest:
   dbScema: public
   dbAnonRole: postgrest_anon
   maxRows: 2000
+
 # Specify the cel-go script or the file path to the cel script.
 # Script is used to map the user identity to the role & teams.
+# @schema
+# required: false
+# @schema
 identityRoleMapper:
   # specify the script inline
   script: ""
@@ -85,12 +118,17 @@ identityRoleMapper:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
+
+# @schema
+# required: false
+# @schema
 serviceMonitor:
   enabled: false
   # @schema
   # additionalProperties: true
   # @schema
   labels: {}
+
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -98,23 +136,56 @@ serviceMonitor:
 #   user: ''
 #   password: ''
 #   labels: 'key1=val1,key2=val2'
+# @schema
+# required: false
+# @schema
 upstream_push: {}
+
 # Allowed values are [none, kratos,clerk]
+# @schema
+# required: false
+# @schema
 authProvider: kratos
+
+# @schema
+# required: false
+# @schema
 clerkJWKSURL: ""
+# @schema
+# required: false
+# @schema
 clerkOrgID: ""
+# @schema
+# required: false
+# @schema
 otel:
   # OpenTelemetry gRPC collector endpoint in host:port format
   collector: "{{.Values.global.otel.collector}}"
   serviceName: "mission-control"
   labels: "{{ .Values.global.otel.labels }}"
-# Properties to configure mission-control feature sets
+
+  # Properties to configure mission-control feature sets
+# @schema
+# required: false
+# @schema
 properties:
   incidents.disable: true
   logs.disable: true
-# -v, -vv, -vvv
+
+  # -v, -vv, -vvv
+# @schema
+# required: false
+# @schema
 logLevel: "{{.Values.global.logLevel}}"
+
+# @schema
+# required: false
+# @schema
 jsonLogs: true
+
+# @schema
+# required: false
+# @schema
 db:
   create: true
   # @schema
@@ -168,6 +239,10 @@ db:
     enabled: false
     systemID: mission-control
     secretName: pganalyze
+
+# @schema
+# required: false
+# @schema
 smtp:
   secretRef:
     name: incident-commander-smtp
@@ -176,6 +251,10 @@ smtp:
     # SMTP_PORT: <port>
     # SMTP_USER: <user>
     # SMTP_PASSWORD: <password>
+
+# @schema
+# required: false
+# @schema
 adminPassword:
   secretKeyRef:
     # set to false if you want to pass in an existing secret
@@ -183,6 +262,9 @@ adminPassword:
     name: mission-control-admin-password
     key: password
 
+# @schema
+# required: false
+# @schema
 canary-checker:
   image:
     type: full
@@ -204,6 +286,9 @@ canary-checker:
     # Disable UI via canary-checker by default.
     enabled: false
 
+# @schema
+# required: false
+# @schema
 config-db:
   disablePostgrest: true
   otel:
@@ -220,6 +305,9 @@ config-db:
         name: incident-commander-postgres
         key: DB_URL
 
+# @schema
+# required: false
+# @schema
 apm-hub:
   enabled: false
   db:
@@ -228,7 +316,11 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
-# Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
+
+      # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
+# @schema
+# required: false
+# @schema
 ingress:
   enabled: false
   annotations:
@@ -240,6 +332,9 @@ ingress:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
 
+# @schema
+# required: false
+# @schema
 flanksource-ui:
   enabled: true
   nameOverride: "incident-manager-ui"
@@ -264,6 +359,9 @@ flanksource-ui:
 #
 # - Disable kratos secret. Again, we explicitly generate secrets.yaml to include
 # database URL in it.
+# @schema
+# required: false
+# @schema
 kratos:
   enabled: true
   image:
@@ -327,6 +425,10 @@ kratos:
         lifespan: 336h
       log:
         level: warning
+
+# @schema
+# required: false
+# @schema
 resources:
   requests:
     cpu: 100m
