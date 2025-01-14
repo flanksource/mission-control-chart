@@ -4,21 +4,18 @@
 # required: false
 # @schema
 replicas: 1
-
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
 # @schema
 # required: false
 # @schema
 nameOverride: ""
-
 # @schema
 # required: false
 # @schema
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.990"
-
+  tag: "v0.0.991"
 # @schema
 # required: false
 # @schema
@@ -50,7 +47,6 @@ global:
         annotations: {}
       extraContainers: ""
       image: bitnami/pgbouncer:1.22.0
-
 # @schema
 # required: false
 # @schema
@@ -85,12 +81,10 @@ serviceAccount:
     #   type: object
     # @schema
     extra: []
-
 # @schema
 # required: false
 # @schema
 extraArgs: {}
-
 # @schema
 # required: false
 # @schema
@@ -103,7 +97,6 @@ externalPostgrest:
   dbScema: public
   dbAnonRole: postgrest_anon
   maxRows: 2000
-
 # Specify the cel-go script or the file path to the cel script.
 # Script is used to map the user identity to the role & teams.
 # @schema
@@ -117,7 +110,6 @@ identityRoleMapper:
     name: ""
     key: ""
     mountPath: "/etc/identity-role-mapper"
-
 # @schema
 # required: false
 # @schema
@@ -127,7 +119,6 @@ serviceMonitor:
   # additionalProperties: true
   # @schema
   labels: {}
-
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -139,13 +130,11 @@ serviceMonitor:
 # required: false
 # @schema
 upstream_push: {}
-
 # Allowed values are [none, kratos,clerk]
 # @schema
 # required: false
 # @schema
 authProvider: kratos
-
 # @schema
 # required: false
 # @schema
@@ -162,7 +151,6 @@ otel:
   collector: "{{.Values.global.otel.collector}}"
   serviceName: "mission-control"
   labels: "{{ .Values.global.otel.labels }}"
-
   # Properties to configure mission-control feature sets
 # @schema
 # required: false
@@ -170,18 +158,15 @@ otel:
 properties:
   incidents.disable: true
   logs.disable: true
-
   # -v, -vv, -vvv
 # @schema
 # required: false
 # @schema
 logLevel: "{{.Values.global.logLevel}}"
-
 # @schema
 # required: false
 # @schema
 jsonLogs: true
-
 # @schema
 # required: false
 # @schema
@@ -238,7 +223,6 @@ db:
     enabled: false
     systemID: mission-control
     secretName: pganalyze
-
 # @schema
 # required: false
 # @schema
@@ -250,7 +234,6 @@ smtp:
     # SMTP_PORT: <port>
     # SMTP_USER: <user>
     # SMTP_PASSWORD: <password>
-
 # @schema
 # required: false
 # @schema
@@ -260,7 +243,6 @@ adminPassword:
     create: true
     name: mission-control-admin-password
     key: password
-
 # @schema
 # required: false
 # @schema
@@ -280,11 +262,9 @@ canary-checker:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
-
   flanksource-ui:
     # Disable UI via canary-checker by default.
     enabled: false
-
 # @schema
 # required: false
 # @schema
@@ -303,7 +283,6 @@ config-db:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
-
 # @schema
 # required: false
 # @schema
@@ -315,7 +294,6 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
-
       # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 # @schema
 # required: false
@@ -330,7 +308,6 @@ ingress:
     - hosts:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
-
 # @schema
 # required: false
 # @schema
@@ -424,7 +401,6 @@ kratos:
         lifespan: 336h
       log:
         level: warning
-
 # @schema
 # required: false
 # @schema
