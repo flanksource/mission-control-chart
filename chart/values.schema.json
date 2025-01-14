@@ -1,0 +1,966 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": true,
+  "properties": {
+    "adminPassword": {
+      "additionalProperties": false,
+      "properties": {
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "default": true,
+              "description": "set to false if you want to pass in an existing secret",
+              "required": [],
+              "title": "create",
+              "type": "boolean"
+            },
+            "key": {
+              "default": "password",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "mission-control-admin-password",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "create",
+            "name",
+            "key"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        }
+      },
+      "required": [
+        "secretKeyRef"
+      ],
+      "title": "adminPassword"
+    },
+    "apm-hub": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "authProvider": {
+      "default": "kratos",
+      "description": "Allowed values are [none, kratos,clerk]",
+      "required": [],
+      "title": "authProvider"
+    },
+    "canary-checker": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "clerkJWKSURL": {
+      "default": "",
+      "required": [],
+      "title": "clerkJWKSURL"
+    },
+    "clerkOrgID": {
+      "default": "",
+      "required": [],
+      "title": "clerkOrgID"
+    },
+    "config-db": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "db": {
+      "additionalProperties": false,
+      "properties": {
+        "conf": {
+          "additionalProperties": true,
+          "required": [],
+          "title": "conf",
+          "type": "object"
+        },
+        "create": {
+          "default": true,
+          "required": [],
+          "title": "create",
+          "type": "boolean"
+        },
+        "jwtSecretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "default": "PGRST_JWT_SECRET",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "incident-commander-postgrest-jwt",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key"
+          ],
+          "title": "jwtSecretKeyRef",
+          "type": "object"
+        },
+        "pganalyze": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "secretName": {
+              "default": "pganalyze",
+              "required": [],
+              "title": "secretName",
+              "type": "string"
+            },
+            "systemID": {
+              "default": "mission-control",
+              "required": [],
+              "title": "systemID",
+              "type": "string"
+            }
+          },
+          "required": [
+            "enabled",
+            "systemID",
+            "secretName"
+          ],
+          "title": "pganalyze",
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "requests": {
+              "additionalProperties": false,
+              "properties": {
+                "memory": {
+                  "default": "4Gi",
+                  "required": [],
+                  "title": "memory",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "memory"
+              ],
+              "title": "requests",
+              "type": "object"
+            }
+          },
+          "required": [
+            "requests"
+          ],
+          "title": "resources",
+          "type": "object"
+        },
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "default": "DB_URL",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "incident-commander-postgres",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        },
+        "shmVolume": {
+          "default": "256Mi",
+          "required": [],
+          "title": "shmVolume",
+          "type": "string"
+        },
+        "storage": {
+          "default": "20Gi",
+          "required": [],
+          "title": "storage",
+          "type": "string"
+        },
+        "storageClass": {
+          "default": "",
+          "required": [],
+          "title": "storageClass",
+          "type": "string"
+        }
+      },
+      "required": [
+        "create",
+        "secretKeyRef",
+        "jwtSecretKeyRef",
+        "storageClass",
+        "storage",
+        "shmVolume",
+        "resources",
+        "pganalyze"
+      ],
+      "title": "db"
+    },
+    "externalPostgrest": {
+      "additionalProperties": false,
+      "properties": {
+        "dbAnonRole": {
+          "default": "postgrest_anon",
+          "required": [],
+          "title": "dbAnonRole",
+          "type": "string"
+        },
+        "dbScema": {
+          "default": "public",
+          "required": [],
+          "title": "dbScema",
+          "type": "string"
+        },
+        "enable": {
+          "default": true,
+          "required": [],
+          "title": "enable",
+          "type": "boolean"
+        },
+        "imageName": {
+          "default": "",
+          "description": "supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io",
+          "required": [],
+          "title": "imageName",
+          "type": "string"
+        },
+        "logLevel": {
+          "default": "info",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "maxRows": {
+          "default": 2000,
+          "required": [],
+          "title": "maxRows",
+          "type": "integer"
+        },
+        "tag": {
+          "default": "v10.2.0",
+          "required": [],
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enable",
+        "tag",
+        "imageName",
+        "logLevel",
+        "dbScema",
+        "dbAnonRole",
+        "maxRows"
+      ],
+      "title": "externalPostgrest"
+    },
+    "extraArgs": {
+      "additionalProperties": false,
+      "required": [],
+      "title": "extraArgs"
+    },
+    "flanksource-ui": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "global": {
+      "additionalProperties": false,
+      "properties": {
+        "api": {
+          "additionalProperties": false,
+          "properties": {
+            "host": {
+              "default": "mission-control-ui.local/api",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "tlsSecretName": {
+              "default": "",
+              "required": [],
+              "title": "tlsSecretName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "tlsSecretName"
+          ],
+          "title": "api",
+          "type": "object"
+        },
+        "db": {
+          "additionalProperties": false,
+          "properties": {
+            "connectionPooler": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": false,
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "extraContainers": {
+                  "default": "",
+                  "required": [],
+                  "title": "extraContainers",
+                  "type": "string"
+                },
+                "image": {
+                  "default": "bitnami/pgbouncer:1.22.0",
+                  "required": [],
+                  "title": "image",
+                  "type": "string"
+                },
+                "secretKeyRef": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "default": "DB_URL",
+                      "required": [],
+                      "title": "key",
+                      "type": "string"
+                    },
+                    "name": {
+                      "default": "mission-control-connection-pooler",
+                      "required": [],
+                      "title": "name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "key"
+                  ],
+                  "title": "secretKeyRef",
+                  "type": "object"
+                },
+                "serviceAccount": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "annotations": {
+                      "additionalProperties": false,
+                      "required": [],
+                      "title": "annotations",
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "annotations"
+                  ],
+                  "title": "serviceAccount",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "enabled",
+                "secretKeyRef",
+                "serviceAccount",
+                "extraContainers",
+                "image"
+              ],
+              "title": "connectionPooler",
+              "type": "object"
+            }
+          },
+          "required": [
+            "connectionPooler"
+          ],
+          "title": "db",
+          "type": "object"
+        },
+        "imagePrefix": {
+          "default": "flanksource",
+          "required": [],
+          "title": "imagePrefix",
+          "type": "string"
+        },
+        "imageRegistry": {
+          "default": "public.ecr.aws",
+          "required": [],
+          "title": "imageRegistry",
+          "type": "string"
+        },
+        "labels": {
+          "additionalProperties": false,
+          "required": [],
+          "title": "labels",
+          "type": "object"
+        },
+        "logLevel": {
+          "default": "",
+          "description": "-v, -vv, -vvv",
+          "required": [],
+          "title": "logLevel",
+          "type": "string"
+        },
+        "otel": {
+          "additionalProperties": false,
+          "properties": {
+            "collector": {
+              "default": "",
+              "required": [],
+              "title": "collector",
+              "type": "string"
+            },
+            "labels": {
+              "default": "",
+              "required": [],
+              "title": "labels",
+              "type": "string"
+            }
+          },
+          "required": [
+            "collector",
+            "labels"
+          ],
+          "title": "otel",
+          "type": "object"
+        },
+        "serviceMonitor": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "labels": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            }
+          },
+          "required": [
+            "enabled",
+            "labels"
+          ],
+          "title": "serviceMonitor",
+          "type": "object"
+        },
+        "ui": {
+          "additionalProperties": false,
+          "properties": {
+            "host": {
+              "default": "mission-control-ui.local",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "tlsSecretName": {
+              "default": "mission-control-ui-tls",
+              "required": [],
+              "title": "tlsSecretName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "tlsSecretName"
+          ],
+          "title": "ui",
+          "type": "object"
+        }
+      },
+      "required": [
+        "logLevel",
+        "imageRegistry",
+        "imagePrefix",
+        "labels",
+        "serviceMonitor",
+        "ui",
+        "api",
+        "otel",
+        "db"
+      ],
+      "title": "global"
+    },
+    "identityRoleMapper": {
+      "additionalProperties": false,
+      "description": "Specify the cel-go script or the file path to the cel script.\nScript is used to map the user identity to the role & teams.",
+      "properties": {
+        "configMap": {
+          "additionalProperties": false,
+          "description": "specify the script via a config map that'll be mounted to `mountPath`",
+          "properties": {
+            "key": {
+              "default": "",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "mountPath": {
+              "default": "/etc/identity-role-mapper",
+              "required": [],
+              "title": "mountPath",
+              "type": "string"
+            },
+            "name": {
+              "default": "",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "key",
+            "mountPath"
+          ],
+          "title": "configMap",
+          "type": "object"
+        },
+        "script": {
+          "default": "",
+          "description": "specify the script inline",
+          "required": [],
+          "title": "script",
+          "type": "string"
+        }
+      },
+      "required": [
+        "script",
+        "configMap"
+      ],
+      "title": "identityRoleMapper"
+    },
+    "image": {
+      "additionalProperties": false,
+      "properties": {
+        "pullPolicy": {
+          "default": "IfNotPresent",
+          "required": [],
+          "title": "pullPolicy",
+          "type": "string"
+        },
+        "repository": {
+          "default": "docker.io/flanksource/incident-commander",
+          "required": [],
+          "title": "repository",
+          "type": "string"
+        },
+        "tag": {
+          "default": "v0.0.982",
+          "required": [],
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "pullPolicy",
+        "tag"
+      ],
+      "title": "image"
+    },
+    "ingress": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "properties": {
+            "kubernetes.io/ingress.class": {
+              "default": "nginx",
+              "required": [],
+              "title": "kubernetes.io/ingress.class",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kubernetes.io/ingress.class"
+          ],
+          "title": "annotations",
+          "type": "object"
+        },
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "host": {
+          "default": "{{.Values.global.api.host}}",
+          "required": [],
+          "title": "host",
+          "type": "string"
+        },
+        "tls": {
+          "items": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "hosts": {
+                    "items": {
+                      "anyOf": [
+                        {
+                          "required": [],
+                          "type": "string"
+                        }
+                      ],
+                      "required": []
+                    },
+                    "required": [],
+                    "title": "hosts",
+                    "type": "array"
+                  },
+                  "secretName": {
+                    "default": "{{.Values.global.api.tlsSecretName}}",
+                    "required": [],
+                    "title": "secretName",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "hosts",
+                  "secretName"
+                ],
+                "type": "object"
+              }
+            ],
+            "required": []
+          },
+          "required": [],
+          "title": "tls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "enabled",
+        "annotations",
+        "host",
+        "tls"
+      ],
+      "title": "ingress"
+    },
+    "jsonLogs": {
+      "default": "true",
+      "required": [],
+      "title": "jsonLogs"
+    },
+    "kratos": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "logLevel": {
+      "default": "{{.Values.global.logLevel}}",
+      "required": [],
+      "title": "logLevel"
+    },
+    "nameOverride": {
+      "default": "",
+      "description": "Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.",
+      "required": [],
+      "title": "nameOverride"
+    },
+    "otel": {
+      "additionalProperties": false,
+      "properties": {
+        "collector": {
+          "default": "{{.Values.global.otel.collector}}",
+          "description": "OpenTelemetry gRPC collector endpoint in host:port format",
+          "required": [],
+          "title": "collector",
+          "type": "string"
+        },
+        "labels": {
+          "default": "{{ .Values.global.otel.labels }}",
+          "required": [],
+          "title": "labels",
+          "type": "string"
+        },
+        "serviceName": {
+          "default": "mission-control",
+          "required": [],
+          "title": "serviceName",
+          "type": "string"
+        }
+      },
+      "required": [
+        "collector",
+        "serviceName",
+        "labels"
+      ],
+      "title": "otel"
+    },
+    "properties": {
+      "additionalProperties": false,
+      "properties": {
+        "incidents.disable": {
+          "default": true,
+          "required": [],
+          "title": "incidents.disable",
+          "type": "boolean"
+        },
+        "logs.disable": {
+          "default": true,
+          "required": [],
+          "title": "logs.disable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "incidents.disable",
+        "logs.disable"
+      ],
+      "title": "properties"
+    },
+    "replicas": {
+      "default": "1",
+      "description": "yaml-language-server: $schema=values.schema.json\n",
+      "required": [],
+      "title": "replicas"
+    },
+    "resources": {
+      "additionalProperties": false,
+      "properties": {
+        "limits": {
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "default": "500m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "1024Mi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [
+            "memory",
+            "cpu"
+          ],
+          "title": "limits",
+          "type": "object"
+        },
+        "requests": {
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "default": "100m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "768Mi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [
+            "cpu",
+            "memory"
+          ],
+          "title": "requests",
+          "type": "object"
+        }
+      },
+      "required": [
+        "requests",
+        "limits"
+      ],
+      "title": "resources"
+    },
+    "serviceAccount": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "name": {
+          "default": "mission-control-sa",
+          "description": "Annotations to add to the service account",
+          "required": [],
+          "title": "name",
+          "type": "string"
+        },
+        "rbac": {
+          "additionalProperties": false,
+          "properties": {
+            "clusterAdmin": {
+              "default": false,
+              "required": [],
+              "title": "clusterAdmin",
+              "type": "boolean"
+            },
+            "clusterRole": {
+              "default": true,
+              "description": "Whether to create cluster-wide or namespaced roles",
+              "required": [],
+              "title": "clusterRole",
+              "type": "boolean"
+            },
+            "configmaps": {
+              "default": true,
+              "required": [],
+              "title": "configmaps",
+              "type": "boolean"
+            },
+            "exec": {
+              "default": true,
+              "description": "Allows mission control to exec into pods",
+              "required": [],
+              "title": "exec",
+              "type": "boolean"
+            },
+            "extra": {
+              "default": [],
+              "items": {
+                "required": [],
+                "type": "object"
+              },
+              "required": [],
+              "title": "extra",
+              "type": "array"
+            },
+            "impersonate": {
+              "default": false,
+              "description": "Impersonate allows the service account to impersonate as\n- mission-control-reader-role\n- mission-control-writer-role\nThis is used by kubeproxy.",
+              "required": [],
+              "title": "impersonate",
+              "type": "boolean"
+            },
+            "podRun": {
+              "default": true,
+              "description": "Required for pod playbook actions",
+              "required": [],
+              "title": "podRun",
+              "type": "boolean"
+            },
+            "readAll": {
+              "default": true,
+              "description": "for use with kubernetes resource lookups",
+              "required": [],
+              "title": "readAll",
+              "type": "boolean"
+            },
+            "secrets": {
+              "default": true,
+              "required": [],
+              "title": "secrets",
+              "type": "boolean"
+            },
+            "tokenRequest": {
+              "default": true,
+              "description": "for secret management with valueFrom",
+              "required": [],
+              "title": "tokenRequest",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "impersonate",
+            "clusterRole",
+            "clusterAdmin",
+            "tokenRequest",
+            "secrets",
+            "configmaps",
+            "readAll",
+            "podRun",
+            "exec"
+          ],
+          "title": "rbac",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "annotations",
+        "rbac"
+      ],
+      "title": "serviceAccount"
+    },
+    "serviceMonitor": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "labels": {
+          "additionalProperties": true,
+          "required": [],
+          "title": "labels"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "title": "serviceMonitor"
+    },
+    "smtp": {
+      "additionalProperties": false,
+      "properties": {
+        "secretRef": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "default": "incident-commander-smtp",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "secretRef",
+          "type": "object"
+        }
+      },
+      "required": [
+        "secretRef"
+      ],
+      "title": "smtp"
+    },
+    "upstream_push": {
+      "additionalProperties": false,
+      "description": "Configuration for pushing data to upstream\nupstream_push:\n  name: ''\n  host: ''\n  user: ''\n  password: ''\n  labels: 'key1=val1,key2=val2'",
+      "required": [],
+      "title": "upstream_push"
+    }
+  },
+  "required": [],
+  "type": "object"
+}
