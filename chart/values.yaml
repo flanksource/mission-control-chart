@@ -22,7 +22,6 @@ image:
 # @schema
 # required: false
 # @schema
->>>>>>> 48ef52e (chore: set root values to not required)
 global:
   # -v, -vv, -vvv
   logLevel: ""
