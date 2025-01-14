@@ -569,7 +569,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.982",
+          "default": "v0.0.991",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -714,7 +714,8 @@
       "title": "otel"
     },
     "properties": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "description": "Properties to configure mission-control feature sets",
       "properties": {
         "incidents.disable": {
           "default": true,
@@ -737,7 +738,6 @@
     },
     "replicas": {
       "default": "1",
-      "description": "yaml-language-server: $schema=values.schema.json\n",
       "required": [],
       "title": "replicas"
     },
@@ -955,7 +955,7 @@
       "title": "smtp"
     },
     "upstream_push": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Configuration for pushing data to upstream\nupstream_push:\n  name: ''\n  host: ''\n  user: ''\n  password: ''\n  labels: 'key1=val1,key2=val2'",
       "required": [],
       "title": "upstream_push"

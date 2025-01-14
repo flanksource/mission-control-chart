@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=values.schema.json
-#
+
 # @schema
 # required: false
 # @schema
@@ -128,6 +128,7 @@ serviceMonitor:
 #   labels: 'key1=val1,key2=val2'
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 upstream_push: {}
 # Allowed values are [none, kratos,clerk]
@@ -151,9 +152,11 @@ otel:
   collector: "{{.Values.global.otel.collector}}"
   serviceName: "mission-control"
   labels: "{{ .Values.global.otel.labels }}"
-  # Properties to configure mission-control feature sets
+
+# Properties to configure mission-control feature sets
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 properties:
   incidents.disable: true
