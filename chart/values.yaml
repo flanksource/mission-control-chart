@@ -24,7 +24,13 @@ global:
   logLevel: ""
   imageRegistry: public.ecr.aws
   imagePrefix: flanksource
+
+  # @schema
+  # type: object
+  # additionalProperties: true
+  # @schema
   labels: {}
+
   serviceMonitor:
     enabled: false
     labels: {}
@@ -126,8 +132,10 @@ serviceMonitor:
   enabled: false
   # @schema
   # additionalProperties: true
+  # type: object
   # @schema
   labels: {}
+
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -165,11 +173,20 @@ otel:
 # @schema
 # required: false
 # additionalProperties: true
+# type: object
 # @schema
 properties:
+  # @schema
+  # type: [string,boolean]
+  # @schema
   incidents.disable: true
+
+  # @schema
+  # type: [string,boolean]
+  # @schema
   logs.disable: true
-  # -v, -vv, -vvv
+
+# -v, -vv, -vvv
 # @schema
 # required: false
 # @schema

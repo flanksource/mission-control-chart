@@ -409,7 +409,7 @@
           "type": "string"
         },
         "labels": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "required": [],
           "title": "labels",
           "type": "object"
@@ -495,7 +495,6 @@
         "logLevel",
         "imageRegistry",
         "imagePrefix",
-        "labels",
         "serviceMonitor",
         "ui",
         "api",
@@ -704,6 +703,7 @@
     },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
+      "description": "-v, -vv, -vvv",
       "required": [],
       "title": "logLevel"
     },
@@ -751,20 +751,24 @@
           "default": true,
           "required": [],
           "title": "incidents.disable",
-          "type": "boolean"
+          "type": [
+            "string",
+            "boolean"
+          ]
         },
         "logs.disable": {
           "default": true,
           "required": [],
           "title": "logs.disable",
-          "type": "boolean"
+          "type": [
+            "string",
+            "boolean"
+          ]
         }
       },
-      "required": [
-        "incidents.disable",
-        "logs.disable"
-      ],
-      "title": "properties"
+      "required": [],
+      "title": "properties",
+      "type": "object"
     },
     "replicas": {
       "default": "1",
@@ -951,7 +955,8 @@
         "labels": {
           "additionalProperties": true,
           "required": [],
-          "title": "labels"
+          "title": "labels",
+          "type": "object"
         }
       },
       "required": [
