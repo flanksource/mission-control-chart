@@ -569,7 +569,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.991",
+          "default": "v0.0.992",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -581,6 +581,36 @@
         "tag"
       ],
       "title": "image"
+    },
+    "impersonationRole": {
+      "additionalProperties": false,
+      "properties": {
+        "createNamespaces": {
+          "default": true,
+          "required": [],
+          "title": "createNamespaces",
+          "type": "boolean"
+        },
+        "namespaces": {
+          "items": {
+            "anyOf": [
+              {
+                "required": [],
+                "type": "string"
+              }
+            ],
+            "required": []
+          },
+          "required": [],
+          "title": "namespaces",
+          "type": "array"
+        }
+      },
+      "required": [
+        "namespaces",
+        "createNamespaces"
+      ],
+      "title": "impersonationRole"
     },
     "ingress": {
       "additionalProperties": false,
