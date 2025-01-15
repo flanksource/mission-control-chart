@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.992"
+  tag: "v0.0.993"
 # @schema
 # required: false
 # @schema
@@ -24,13 +24,11 @@ global:
   logLevel: ""
   imageRegistry: public.ecr.aws
   imagePrefix: flanksource
-
   # @schema
   # type: object
   # additionalProperties: true
   # @schema
   labels: {}
-
   serviceMonitor:
     enabled: false
     labels: {}
@@ -87,19 +85,16 @@ serviceAccount:
     #   type: object
     # @schema
     extra: []
-
 # @schema
 # required: false
 # @schema
 impersonationRole:
   namespaces: [default]
   createNamespaces: true
-
 # @schema
 # required: false
 # @schema
 extraArgs: {}
-
 # @schema
 # required: false
 # @schema
@@ -135,7 +130,6 @@ serviceMonitor:
   # type: object
   # @schema
   labels: {}
-
 # Configuration for pushing data to upstream
 # upstream_push:
 #   name: ''
@@ -180,12 +174,10 @@ properties:
   # type: [string,boolean]
   # @schema
   incidents.disable: true
-
   # @schema
   # type: [string,boolean]
   # @schema
   logs.disable: true
-
 # -v, -vv, -vvv
 # @schema
 # required: false
