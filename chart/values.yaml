@@ -48,6 +48,10 @@ global:
         name: mission-control-connection-pooler
         key: DB_URL
       serviceAccount:
+        # @schema
+        # type: object
+        # additionalProperties: true
+        # @schema
         annotations: {}
       extraContainers: ""
       image: bitnami/pgbouncer:1.22.0

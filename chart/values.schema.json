@@ -366,15 +366,13 @@
                   "additionalProperties": false,
                   "properties": {
                     "annotations": {
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "required": [],
                       "title": "annotations",
                       "type": "object"
                     }
                   },
-                  "required": [
-                    "annotations"
-                  ],
+                  "required": [],
                   "title": "serviceAccount",
                   "type": "object"
                 }
@@ -568,7 +566,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.992",
+          "default": "v0.0.1012",
           "required": [],
           "title": "tag",
           "type": "string"
