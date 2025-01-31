@@ -53,6 +53,18 @@ rules:
     verbs: ['get', 'list', 'watch']
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mission-control-crd-reader-role
+rules:
+  - apiGroups:
+      - 'configs.flanksource.com'
+      - 'canaries.flanksource.com'
+      - 'mission-control.flanksource.com'
+    resources: ['*']
+    verbs: ['get', 'list', 'watch']
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: mission-control-reader-role-binding
@@ -63,6 +75,18 @@ subjects:
 roleRef:
   kind: Role
   name: mission-control-reader-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mission-control-crd-reader-role-binding
+subjects:
+  - kind: User
+    name: mission-control-reader
+roleRef:
+  kind: Role
+  name: mission-control-crd-reader-role
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -82,6 +106,18 @@ rules:
     verbs: ['*']
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mission-control-crd-writer-role
+rules:
+  - apiGroups:
+      - 'configs.flanksource.com'
+      - 'canaries.flanksource.com'
+      - 'mission-control.flanksource.com'
+    resources: ['*']
+    verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: mission-control-writer-role-binding
@@ -92,6 +128,18 @@ subjects:
 roleRef:
   kind: Role
   name: mission-control-writer-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mission-control-crd-writer-role-binding
+subjects:
+  - kind: User
+    name: mission-control-writer
+roleRef:
+  kind: Role
+  name: mission-control-crd-writer-role
   apiGroup: rbac.authorization.k8s.io
 
 {{- end}}
