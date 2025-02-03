@@ -85,7 +85,7 @@ subjects:
   - kind: User
     name: mission-control-reader
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: mission-control-crd-reader-role
   apiGroup: rbac.authorization.k8s.io
 ---
@@ -138,7 +138,7 @@ subjects:
   - kind: User
     name: mission-control-writer
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: mission-control-crd-writer-role
   apiGroup: rbac.authorization.k8s.io
 
