@@ -566,7 +566,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1012",
+          "default": "v0.0.1037",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -740,6 +740,20 @@
         "labels"
       ],
       "title": "otel"
+    },
+    "permissions": {
+      "additionalProperties": false,
+      "properties": {
+        "playbooks": {
+          "default": false,
+          "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",
+          "required": [],
+          "title": "playbooks",
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "title": "permissions"
     },
     "properties": {
       "additionalProperties": true,

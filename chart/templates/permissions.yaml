@@ -1,0 +1,16 @@
+{{- if not .Values.permissions.playbooks }}
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-editors-to-run-playbooks
+spec:
+  description: Grant editors to run playbooks
+  subject:
+    group: editor
+  actions:
+    - playbook:*
+  object:
+    playbooks:
+      - name: '*'
+{{- end}}
