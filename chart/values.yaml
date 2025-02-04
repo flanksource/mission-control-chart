@@ -201,8 +201,9 @@ permissions:
   # type: boolean
   # required: false
   # @schema
-  # -- Creates the necessary permissions to allow all users to run playbooks
-  allowAllUsersPlaybookRun: false
+  # -- when enabled, users must have explicit permissions to run playbooks
+  # otherwise, editors automatically have permission to run playbooks.
+  playbooks: false
 
 # @schema
 # required: false

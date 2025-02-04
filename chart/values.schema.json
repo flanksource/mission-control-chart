@@ -779,11 +779,11 @@
     "permissions": {
       "additionalProperties": false,
       "properties": {
-        "allowAllUsersPlaybookRun": {
+        "playbooks": {
           "default": false,
-          "description": "Creates the necessary permissions to allow all users to run playbooks",
+          "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",
           "required": [],
-          "title": "allowAllUsersPlaybookRun",
+          "title": "playbooks",
           "type": "boolean"
         }
       },

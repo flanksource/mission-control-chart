@@ -1,41 +1,16 @@
-{{- if .Values.permissions.allowAllUsersPlaybookRun }}
+{{- if not .Values.permissions.playbooks }}
 ---
 apiVersion: mission-control.flanksource.com/v1
 kind: Permission
 metadata:
-  name: allow-all-users-to-run-playbooks
+  name: allow-editors-to-run-playbooks
 spec:
-  description: Grant all-users read permissions to catalogs
+  description: Grant editors to run playbooks
   subject:
-    group: all-users
+    group: editor
   actions:
     - playbook:*
   object:
     playbooks:
       - name: '*'
-    configs:
-      - name: '*'
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Permission
-metadata:
-  name: allow-all-users-to-read-configs
-spec:
-  description: Grant all-users read permissions to catalogs
-  subject:
-    group: all-users
-  actions:
-    - read
-  object:
-    configs:
-      - name: "*"
----
-apiVersion: mission-control.flanksource.com/v1
-kind: PermissionGroup
-metadata:
-  name: all-users
-spec:
-  name: all-users
-  people:
-    - '*'
 {{- end}}
