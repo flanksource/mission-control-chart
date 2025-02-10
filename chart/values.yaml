@@ -435,3 +435,13 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
+
+grafana:
+  scrapeMetricsDashboard:
+    enabled: false
+    # @schema
+    # type: object
+    # additionalProperties: true
+    # @schema
+    labels:
+      grafana_dashboard: "1"
