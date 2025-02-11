@@ -501,6 +501,41 @@
       ],
       "title": "global"
     },
+    "grafana": {
+      "additionalProperties": false,
+      "properties": {
+        "scrapeMetricsDashboard": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "labels": {
+              "additionalProperties": true,
+              "properties": {
+                "grafana_dashboard": {
+                  "default": "1",
+                  "required": [],
+                  "title": "grafana_dashboard"
+                }
+              },
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "title": "scrapeMetricsDashboard"
+        }
+      },
+      "required": [],
+      "title": "grafana"
+    },
     "identityRoleMapper": {
       "additionalProperties": false,
       "description": "Specify the cel-go script or the file path to the cel script.\nScript is used to map the user identity to the role & teams.",
@@ -566,7 +601,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1012",
+          "default": "v0.0.1042",
           "required": [],
           "title": "tag",
           "type": "string"
