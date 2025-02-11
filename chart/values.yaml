@@ -436,12 +436,22 @@ resources:
     memory: 1024Mi
     cpu: 500m
 
+# @schema
+# required: false
+# @schema
 grafana:
+  # @schema
+  # required: false
+  # @schema
   scrapeMetricsDashboard:
     enabled: false
     # @schema
     # type: object
     # additionalProperties: true
+    # required: false
     # @schema
     labels:
+      # @schema
+      # required: false
+      # @schema
       grafana_dashboard: "1"
