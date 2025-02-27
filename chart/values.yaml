@@ -187,10 +187,23 @@ properties:
 # required: false
 # @schema
 logLevel: "{{.Values.global.logLevel}}"
+
 # @schema
 # required: false
 # @schema
 jsonLogs: true
+
+# @schema
+# required: false
+# @schema
+permissions:
+  # @schema
+  # type: boolean
+  # required: false
+  # @schema
+  # -- Creates the necessary permissions to allow all users to run playbooks
+  allowAllUsersPlaybookRun: false
+
 # @schema
 # required: false
 # @schema
