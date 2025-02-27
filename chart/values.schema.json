@@ -601,7 +601,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1042",
+          "default": "v0.0.1076",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -775,6 +775,20 @@
         "labels"
       ],
       "title": "otel"
+    },
+    "permissions": {
+      "additionalProperties": false,
+      "properties": {
+        "allowAllUsersPlaybookRun": {
+          "default": false,
+          "description": "Creates the necessary permissions to allow all users to run playbooks",
+          "required": [],
+          "title": "allowAllUsersPlaybookRun",
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "title": "permissions"
     },
     "properties": {
       "additionalProperties": true,
