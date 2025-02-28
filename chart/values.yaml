@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1076"
+  tag: "v0.0.1077"
 # @schema
 # required: false
 # @schema
@@ -187,12 +187,10 @@ properties:
 # required: false
 # @schema
 logLevel: "{{.Values.global.logLevel}}"
-
 # @schema
 # required: false
 # @schema
 jsonLogs: true
-
 # @schema
 # required: false
 # @schema
@@ -204,7 +202,6 @@ permissions:
   # -- when enabled, users must have explicit permissions to run playbooks
   # otherwise, editors automatically have permission to run playbooks.
   playbooks: false
-
 # @schema
 # required: false
 # @schema
