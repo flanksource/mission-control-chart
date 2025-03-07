@@ -202,6 +202,13 @@ permissions:
   # -- when enabled, users must have explicit permissions to run playbooks
   # otherwise, editors automatically have permission to run playbooks.
   playbooks: false
+  # @schema
+  # type: boolean
+  # required: false
+  # @schema
+  # -- when enabled, users must have explicit permissions to run connections
+  # otherwise, editors automatically have permission to run connections.
+  connections: false
 # @schema
 # required: false
 # @schema
