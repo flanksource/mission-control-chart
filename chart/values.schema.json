@@ -601,7 +601,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1076",
+          "default": "v0.0.1093",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -779,6 +779,13 @@
     "permissions": {
       "additionalProperties": false,
       "properties": {
+        "connections": {
+          "default": false,
+          "description": "when enabled, users must have explicit permissions to run connections\notherwise, editors automatically have permission to run connections.",
+          "required": [],
+          "title": "connections",
+          "type": "boolean"
+        },
         "playbooks": {
           "default": false,
           "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",

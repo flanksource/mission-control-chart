@@ -1,6 +1,28 @@
 {{- if not .Values.permissions.playbooks }}
 ---
 apiVersion: mission-control.flanksource.com/v1
+kind: PermissionGroup
+metadata:
+  name: all-notification
+spec:
+  notifications:
+    - name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-all-notifications-to-run-playbooks
+spec:
+  description: Grant all notifications to run playbooks
+  subject:
+    group: all-notifications
+  actions:
+    - playbook:*
+  object:
+    playbooks:
+      - name: '*'
+---
+apiVersion: mission-control.flanksource.com/v1
 kind: Permission
 metadata:
   name: allow-editors-to-run-playbooks
@@ -13,4 +35,36 @@ spec:
   object:
     playbooks:
       - name: '*'
+{{- end}}
+{{- if not .Values.permissions.connections }}
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: PermissionGroup
+metadata:
+  name: system
+spec:
+  canaries:
+    - name: "*"
+  scrapers:
+    - name: "*"
+  playbooks:
+    - name: "*"
+  topologies:
+    - name: "*"
+  notifications:
+    - name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: system-connections-read
+spec:
+  description: allow all mission control services access to read all the connections
+  subject:
+    group: system
+  actions:
+    - read
+  object:
+    connections:
+      - name: "*"
 {{- end}}
