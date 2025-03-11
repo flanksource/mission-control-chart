@@ -3,7 +3,7 @@
 apiVersion: mission-control.flanksource.com/v1
 kind: PermissionGroup
 metadata:
-  name: all-notification
+  name: all-notifications
 spec:
   notifications:
     - name: "*"
@@ -17,10 +17,26 @@ spec:
   subject:
     group: all-notifications
   actions:
-    - playbook:*
+    - "playbook:*"
   object:
     playbooks:
       - name: '*'
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-all-notifications-config-component-read
+spec:
+  description: Grant all notifications to read configs & components
+  subject:
+    group: all-notifications
+  actions:
+    - read
+  object:
+    configs:
+      - name: "*"
+    components:
+      - name: "*"    
 ---
 apiVersion: mission-control.flanksource.com/v1
 kind: Permission
@@ -31,7 +47,7 @@ spec:
   subject:
     group: editor
   actions:
-    - playbook:*
+    - "playbook:*"
   object:
     playbooks:
       - name: '*'
