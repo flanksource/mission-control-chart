@@ -1,0 +1,16 @@
+{{- if not .Values.permissions.connections }}
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: system-connections-read
+spec:
+  description: allow all mission control services access to read all the connections
+  subject:
+    group: system
+  actions:
+    - read
+  object:
+    connections:
+      - name: "*"
+{{- end}}

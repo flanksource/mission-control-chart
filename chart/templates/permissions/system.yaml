@@ -1,0 +1,16 @@
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: PermissionGroup
+metadata:
+  name: system
+spec:
+  canaries:
+    - name: "*"
+  scrapers:
+    - name: "*"
+  playbooks:
+    - name: "*"
+  topologies:
+    - name: "*"
+  notifications:
+    - name: "*"
