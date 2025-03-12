@@ -2,3 +2,4 @@ Chart.lock
 charts/
 .vscode
 .bin/
+*.tgz

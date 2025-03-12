@@ -752,6 +752,10 @@ spec:
                                 tenantID:
                                   type: string
                               type: object
+                            eksPodIdentity:
+                              description: EKSPodIdentity when enabled will allow
+                                access to AWS_* env vars
+                              type: boolean
                             fromConfigItem:
                               type: string
                             gcp:
@@ -813,8 +817,313 @@ spec:
                               type: object
                             kubernetes:
                               properties:
+                                cnrm:
+                                  properties:
+                                    clusterResource:
+                                      type: string
+                                    clusterResourceNamespace:
+                                      type: string
+                                    gke:
+                                      properties:
+                                        cluster:
+                                          type: string
+                                        connection:
+                                          description: ConnectionName of the connection.
+                                            It'll be used to populate the endpoint
+                                            and credentials.
+                                          type: string
+                                        credentials:
+                                          properties:
+                                            name:
+                                              type: string
+                                            value:
+                                              type: string
+                                            valueFrom:
+                                              properties:
+                                                configMapKeyRef:
+                                                  properties:
+                                                    key:
+                                                      type: string
+                                                    name:
+                                                      type: string
+                                                  required:
+                                                  - key
+                                                  type: object
+                                                helmRef:
+                                                  properties:
+                                                    key:
+                                                      description: Key is a JSONPath
+                                                        expression used to fetch the
+                                                        key from the merged JSON.
+                                                      type: string
+                                                    name:
+                                                      type: string
+                                                  required:
+                                                  - key
+                                                  type: object
+                                                secretKeyRef:
+                                                  properties:
+                                                    key:
+                                                      type: string
+                                                    name:
+                                                      type: string
+                                                  required:
+                                                  - key
+                                                  type: object
+                                                serviceAccount:
+                                                  description: ServiceAccount specifies
+                                                    the service account whose token
+                                                    should be fetched
+                                                  type: string
+                                              type: object
+                                          type: object
+                                        endpoint:
+                                          type: string
+                                        projectID:
+                                          type: string
+                                        skipTLSVerify:
+                                          description: Skip TLS verify
+                                          type: boolean
+                                        zone:
+                                          type: string
+                                      required:
+                                      - cluster
+                                      - projectID
+                                      - zone
+                                      type: object
+                                  required:
+                                  - clusterResource
+                                  - clusterResourceNamespace
+                                  - gke
+                                  type: object
                                 connection:
+                                  description: Connection name to populate kubeconfig
                                   type: string
+                                eks:
+                                  properties:
+                                    accessKey:
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: string
+                                        valueFrom:
+                                          properties:
+                                            configMapKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            helmRef:
+                                              properties:
+                                                key:
+                                                  description: Key is a JSONPath expression
+                                                    used to fetch the key from the
+                                                    merged JSON.
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            secretKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            serviceAccount:
+                                              description: ServiceAccount specifies
+                                                the service account whose token should
+                                                be fetched
+                                              type: string
+                                          type: object
+                                      type: object
+                                    assumeRole:
+                                      type: string
+                                    cluster:
+                                      type: string
+                                    connection:
+                                      description: ConnectionName of the connection.
+                                        It'll be used to populate the endpoint, accessKey
+                                        and secretKey.
+                                      type: string
+                                    endpoint:
+                                      type: string
+                                    region:
+                                      type: string
+                                    secretKey:
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: string
+                                        valueFrom:
+                                          properties:
+                                            configMapKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            helmRef:
+                                              properties:
+                                                key:
+                                                  description: Key is a JSONPath expression
+                                                    used to fetch the key from the
+                                                    merged JSON.
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            secretKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            serviceAccount:
+                                              description: ServiceAccount specifies
+                                                the service account whose token should
+                                                be fetched
+                                              type: string
+                                          type: object
+                                      type: object
+                                    sessionToken:
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: string
+                                        valueFrom:
+                                          properties:
+                                            configMapKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            helmRef:
+                                              properties:
+                                                key:
+                                                  description: Key is a JSONPath expression
+                                                    used to fetch the key from the
+                                                    merged JSON.
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            secretKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            serviceAccount:
+                                              description: ServiceAccount specifies
+                                                the service account whose token should
+                                                be fetched
+                                              type: string
+                                          type: object
+                                      type: object
+                                    skipTLSVerify:
+                                      description: Skip TLS verify when connecting
+                                        to aws
+                                      type: boolean
+                                  required:
+                                  - cluster
+                                  type: object
+                                gke:
+                                  properties:
+                                    cluster:
+                                      type: string
+                                    connection:
+                                      description: ConnectionName of the connection.
+                                        It'll be used to populate the endpoint and
+                                        credentials.
+                                      type: string
+                                    credentials:
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: string
+                                        valueFrom:
+                                          properties:
+                                            configMapKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            helmRef:
+                                              properties:
+                                                key:
+                                                  description: Key is a JSONPath expression
+                                                    used to fetch the key from the
+                                                    merged JSON.
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            secretKeyRef:
+                                              properties:
+                                                key:
+                                                  type: string
+                                                name:
+                                                  type: string
+                                              required:
+                                              - key
+                                              type: object
+                                            serviceAccount:
+                                              description: ServiceAccount specifies
+                                                the service account whose token should
+                                                be fetched
+                                              type: string
+                                          type: object
+                                      type: object
+                                    endpoint:
+                                      type: string
+                                    projectID:
+                                      type: string
+                                    skipTLSVerify:
+                                      description: Skip TLS verify
+                                      type: boolean
+                                    zone:
+                                      type: string
+                                  required:
+                                  - cluster
+                                  - projectID
+                                  - zone
+                                  type: object
                                 kubeconfig:
                                   properties:
                                     name:
@@ -861,6 +1170,10 @@ spec:
                                       type: object
                                   type: object
                               type: object
+                            serviceAccount:
+                              description: ServiceAccount when enabled will allow
+                                access to KUBERNETES env vars
+                              type: boolean
                           type: object
                         env:
                           description: EnvVars are the environment variables that
@@ -1403,6 +1716,38 @@ spec:
                       required:
                       - name
                       - spec
+                      type: object
+                    retry:
+                      description: Retry specifies the retry policy for the action.
+                      properties:
+                        duration:
+                          description: Duration is the duration to wait before retrying
+                            the action.
+                          type: string
+                        exponent:
+                          description: Exponent is the exponential backoff configuration.
+                          properties:
+                            multiplier:
+                              type: integer
+                          required:
+                          - multiplier
+                          type: object
+                        jitter:
+                          description: |-
+                            Jitter is the random factor to apply to the duration.
+                            Ranges from 0 to 100.
+                          maximum: 100
+                          minimum: 0
+                          type: integer
+                        limit:
+                          description: |-
+                            Limit is the number of times to retry the action.
+                            With limit = 3, there will be a max of 4 attempts for the action (initial attempt + 3 retries).
+                          type: integer
+                      required:
+                      - duration
+                      - exponent
+                      - limit
                       type: object
                     runsOn:
                       description: |-
@@ -2041,6 +2386,7 @@ spec:
                       - text
                       - bytes
                       - millicores
+                      - secret
                       type: string
                   required:
                   - name
