@@ -104,6 +104,9 @@ spec:
            {{- else if ne .Values.identityRoleMapper.configMap.name ""}}
             - --identity-role-mapper=file://{{ .Values.identityRoleMapper.configMap.mountPath }}/{{ .Values.identityRoleMapper.configMap.key}}
            {{- end}}
+           {{- if ne .Values.artifactConnection "" }}
+            - --artifact-connection={{ .Values.artifactConnection }}
+           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           startupProbe:

@@ -14,8 +14,8 @@ A Helm chart for flanksource mission control agent
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://flanksource.github.io/charts | canary-checker | 1.1.1-beta.26 |
-| https://flanksource.github.io/charts | config-db | 0.0.830 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.32 |
+| https://flanksource.github.io/charts | config-db | 0.0.857 |
 | https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.27 |
 
 ## Values
@@ -89,7 +89,7 @@ A Helm chart for flanksource mission control agent
 | global.logLevel | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1093"` |  |
+| image.tag | string | `"v0.0.1127"` |  |
 | jsonLogs | bool | `true` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | pushTelemetry.enabled | bool | `false` |  |

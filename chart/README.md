@@ -15,9 +15,9 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.1-beta.26 |
-| https://flanksource.github.io/charts | config-db | 0.0.830 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.0.840 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.32 |
+| https://flanksource.github.io/charts | config-db | 0.0.857 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.0.845 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -32,6 +32,7 @@ A Helm chart for flanksource mission control
 | apm-hub.db.secretKeyRef.key | string | `"DB_URL"` |  |
 | apm-hub.db.secretKeyRef.name | string | `"incident-commander-postgres"` |  |
 | apm-hub.enabled | bool | `false` |  |
+| artifactConnection | string | `""` | artifact connection string |
 | authProvider | string | `"kratos"` |  |
 | canary-checker.db.external.create | bool | `false` |  |
 | canary-checker.db.external.enabled | bool | `true` |  |
@@ -139,7 +140,7 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1093"` |  |
+| image.tag | string | `"v0.0.1127"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
