@@ -167,6 +167,11 @@ otel:
   collector: "{{.Values.global.otel.collector}}"
   serviceName: "mission-control"
   labels: "{{ .Values.global.otel.labels }}"
+# @schema
+# required: false
+# @schema
+# -- artifact connection string
+artifactConnection: ""
 # Properties to configure mission-control feature sets
 # @schema
 # required: false

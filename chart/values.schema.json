@@ -47,6 +47,12 @@
       "required": [],
       "type": "object"
     },
+    "artifactConnection": {
+      "default": "",
+      "description": "artifact connection string",
+      "required": [],
+      "title": "artifactConnection"
+    },
     "authProvider": {
       "default": "kratos",
       "description": "Allowed values are [none, kratos,clerk]",
@@ -601,7 +607,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1093",
+          "default": "v0.0.1127",
           "required": [],
           "title": "tag",
           "type": "string"
