@@ -2,6 +2,7 @@ download:
 	rm -rf templates/
 	mkdir -p templates
 	cp ../chart/crds/* templates/
+
 download:
 	rm -rf templates/
 	mkdir -p templates
