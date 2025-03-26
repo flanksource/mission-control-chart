@@ -13,4 +13,18 @@ spec:
   object:
     connections:
       - name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: editor-connections-read
+spec:
+  description: allow editors to read all connections
+  subject:
+    group: editor
+  actions:
+    - read
+  object:
+    connections:
+      - name: "*"
 {{- end}}
