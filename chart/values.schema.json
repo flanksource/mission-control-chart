@@ -607,7 +607,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1127",
+          "default": "v0.0.1176",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -785,16 +785,30 @@
     "permissions": {
       "additionalProperties": false,
       "properties": {
+        "components": {
+          "default": false,
+          "description": "when enabled, services must have explicit permissions to read components\notherwise, system automatically has permission to read all components.",
+          "required": [],
+          "title": "components",
+          "type": "boolean"
+        },
+        "configs": {
+          "default": false,
+          "description": "when enabled, services must have explicit permissions to read configs\notherwise, system automatically has permission to read all configs.",
+          "required": [],
+          "title": "configs",
+          "type": "boolean"
+        },
         "connections": {
           "default": false,
-          "description": "when enabled, users must have explicit permissions to run connections\notherwise, editors automatically have permission to run connections.",
+          "description": "when enabled, users & services must have explicit permissions to run connections\notherwise, editors automatically have permission to run connections.",
           "required": [],
           "title": "connections",
           "type": "boolean"
         },
         "playbooks": {
           "default": false,
-          "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",
+          "description": "when enabled, users & services must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",
           "required": [],
           "title": "playbooks",
           "type": "boolean"

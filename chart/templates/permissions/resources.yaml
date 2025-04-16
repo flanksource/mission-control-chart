@@ -1,0 +1,32 @@
+{{- if not .Values.permissions.configs }}
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-system-to-read-all-configs
+spec:
+  description: Grant system to read all configs
+  subject:
+    group: system
+  actions:
+    - read
+  object:
+    configs:
+      - name: "*"
+{{- end }}
+{{- if not .Values.permissions.components }}
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-system-to-read-all-components
+spec:
+  description: Grant system to read all components
+  subject:
+    group: system
+  actions:
+    - read
+  object:
+    components:
+      - name: "*"
+{{- end }}

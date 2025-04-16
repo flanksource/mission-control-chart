@@ -15,9 +15,9 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.32 |
-| https://flanksource.github.io/charts | config-db | 0.0.857 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.0.845 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.66 |
+| https://flanksource.github.io/charts | config-db | 0.0.903 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.0.871 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -140,7 +140,7 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1127"` |  |
+| image.tag | string | `"v0.0.1176"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -183,8 +183,10 @@ A Helm chart for flanksource mission control
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
-| permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
-| permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
+| permissions.components | bool | `false` | when enabled, services must have explicit permissions to read components otherwise, system automatically has permission to read all components. |
+| permissions.configs | bool | `false` | when enabled, services must have explicit permissions to read configs otherwise, system automatically has permission to read all configs. |
+| permissions.connections | bool | `false` | when enabled, users & services must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
+| permissions.playbooks | bool | `false` | when enabled, users & services must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
