@@ -1,8 +1,4 @@
-download:
-	rm -rf templates/
-	mkdir -p templates
-	cp ../chart/crds/* templates/
-
+.PHONY: download
 download:
 	rm -rf templates/
 	mkdir -p templates

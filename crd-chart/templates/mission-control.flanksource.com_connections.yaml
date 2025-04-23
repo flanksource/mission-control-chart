@@ -3858,6 +3858,14 @@ spec:
                   fromAddress:
                     description: Email address that the mail are sent from
                     type: string
+                  fromName:
+                    description: Name that the mail are sent from
+                    type: string
+                  headers:
+                    additionalProperties:
+                      type: string
+                    description: Headers for SMTP Server
+                    type: object
                   host:
                     type: string
                   insecureTLS:
@@ -3962,6 +3970,7 @@ spec:
                     type: object
                 required:
                 - fromAddress
+                - fromName
                 - host
                 type: object
               telegram:
