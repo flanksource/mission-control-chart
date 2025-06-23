@@ -372,6 +372,7 @@ ingress:
 
 # @schema
 # required: false
+# type: boolean
 # @schema
 cleanupResourcesOnDelete: false
 
