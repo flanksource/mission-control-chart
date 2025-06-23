@@ -369,6 +369,12 @@ ingress:
     - hosts:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
+
+# @schema
+# required: false
+# @schema
+cleanupResourcesOnDelete: false
+
 # @schema
 # required: false
 # @schema

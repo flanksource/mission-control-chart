@@ -64,6 +64,11 @@
       "required": [],
       "type": "object"
     },
+    "cleanupResourcesOnDelete": {
+      "default": "false",
+      "required": [],
+      "title": "cleanupResourcesOnDelete"
+    },
     "clerkJWKSURL": {
       "default": "",
       "required": [],
@@ -607,7 +612,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1176",
+          "default": "v0.0.1227",
           "required": [],
           "title": "tag",
           "type": "string"
