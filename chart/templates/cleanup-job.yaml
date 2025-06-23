@@ -1,0 +1,101 @@
+{{- if .Values.cleanupResourcesOnDelete -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flanksource-resource-cleanup
+  annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      serviceAccountName: flanksource-resource-cleanup 
+      restartPolicy: Never
+      containers:
+      - name: cleanup
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Starting cleanup of flanksource.com CRDs across all namespaces..."
+         
+          # Get all CRD names that match flanksource.com
+          CRD_NAMES=$(kubectl get crd | grep 'flanksource.com' | awk '{print $1}')
+         
+          if [ -z "$CRD_NAMES" ]; then
+            echo "No flanksource.com CRDs found"
+            exit 0
+          fi
+          
+          echo "Found CRDs:"
+          echo "$CRD_NAMES"
+          
+          # For each CRD, delete all instances across all namespaces
+          for crd in $CRD_NAMES; do
+            echo "Processing CRD: $crd"
+            
+            # Get the resource name (plural) from the CRD
+            RESOURCE=$(kubectl get crd $crd -o jsonpath='{.spec.names.plural}')
+            
+            if [ -n "$RESOURCE" ]; then
+              echo "Deleting all $RESOURCE instances across all namespaces..."
+              
+              # Delete instances in all namespaces
+              kubectl delete $RESOURCE --all --all-namespaces --timeout=300s --ignore-not-found=true
+              
+              # Also try without --all-namespaces flag for cluster-scoped resources
+              kubectl delete $RESOURCE --all --timeout=300s --ignore-not-found=true
+              
+              echo "Completed deletion of $RESOURCE instances"
+            else
+              echo "Could not determine resource name for CRD: $crd"
+            fi
+          done
+          
+          echo "Cleanup completed for all flanksource.com CRDs"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flanksource-resource-cleanup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: flanksource-resource-cleanup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+rules:
+- apiGroups: ["configs.flanksource.com", "mission-control.flanksource.com", "canaries.flanksource.com"]
+  resources: ["*"]
+  verbs: ["delete", "list", "get", "watch"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flanksource-resource-cleanup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+subjects:
+- kind: ServiceAccount
+  name: flanksource-resource-cleanup
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: flanksource-resource-cleanup
+  apiGroup: rbac.authorization.k8s.io
+
+{{- end -}}
