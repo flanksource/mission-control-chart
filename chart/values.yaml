@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1244"
+  tag: "v0.0.1245"
 # @schema
 # required: false
 # @schema
@@ -369,13 +369,11 @@ ingress:
     - hosts:
         - "{{.Values.global.api.host}}"
       secretName: "{{.Values.global.api.tlsSecretName}}"
-
 # @schema
 # required: false
 # type: boolean
 # @schema
 cleanupResourcesOnDelete: false
-
 # @schema
 # required: false
 # @schema
