@@ -32,6 +32,8 @@ rules:
   - notificationsilences
   - permissiongroups
   - permissions
+  - views
+  - applications
   verbs:
   - create
   - delete
@@ -50,6 +52,8 @@ rules:
   - notificationsilences/finalizers
   - permissiongroups/finalizers
   - permissions/finalizers
+  - views/finalizers
+  - applications/finalizers
   verbs:
   - update
 - apiGroups:
@@ -62,6 +66,8 @@ rules:
   - notificationsilences/status
   - permissiongroups/status
   - permissions/status
+  - views/status
+  - applications/status
   verbs:
   - get
   - patch
