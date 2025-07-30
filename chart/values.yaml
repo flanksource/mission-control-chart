@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1285"
+  tag: "v0.0.1286"
 # @schema
 # required: false
 # @schema
