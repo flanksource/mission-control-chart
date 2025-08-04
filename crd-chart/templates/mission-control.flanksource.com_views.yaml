@@ -1,0 +1,805 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: views.mission-control.flanksource.com
+spec:
+  group: mission-control.flanksource.com
+  names:
+    kind: View
+    listKind: ViewList
+    plural: views
+    singular: view
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: View is the schema for the Views API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ViewSpec defines the desired state of View
+            properties:
+              cache:
+                description: Cache configuration
+                properties:
+                  maxAge:
+                    description: |-
+                      MaxAge is the maximum age of a cache before it's deemed stale.
+                      Can be overridden with cache-control headers.
+                      Default: 15m
+                    type: string
+                  minAge:
+                    description: |-
+                      MinAge is the minimum age of a cache a user can request.
+                      Default: 10s
+                    type: string
+                  refreshTimeout:
+                    description: |-
+                      RefreshTimeout is the duration to wait for a view to process before returning stale data.
+                      Default: 5s
+                    type: string
+                type: object
+              columns:
+                description: Columns define the structure of the view
+                items:
+                  description: ViewColumnDef defines a column in the view
+                  properties:
+                    description:
+                      description: Description of the column
+                      type: string
+                    for:
+                      description: |-
+                        For references the column this column is for.
+                        Applicable only for type=url.
+
+
+                        When a column is designated for a different column,
+                        it's not rendered on the UI but the designated column uses it to render itself.
+                      type: string
+                    gauge:
+                      description: Configuration for gauge visualization
+                      properties:
+                        max:
+                          type: integer
+                        min:
+                          type: integer
+                        thresholds:
+                          items:
+                            description: GaugeThreshold defines a threshold configuration
+                              for gauge charts
+                            properties:
+                              color:
+                                type: string
+                              value:
+                                type: integer
+                            required:
+                            - color
+                            - value
+                            type: object
+                          type: array
+                      type: object
+                    hidden:
+                      description: Hidden indicates if the column should be hidden
+                        from view
+                      type: boolean
+                    name:
+                      description: Name of the column
+                      type: string
+                    primaryKey:
+                      description: PrimaryKey indicates if the column is a primary
+                        key
+                      type: boolean
+                    type:
+                      enum:
+                      - string
+                      - number
+                      - boolean
+                      - datetime
+                      - duration
+                      - health
+                      - status
+                      - gauge
+                      - bytes
+                      - decimal
+                      - millicore
+                      - url
+                      type: string
+                  required:
+                  - name
+                  - type
+                  type: object
+                  x-kubernetes-validations:
+                  - message: gauge config required when type is gauge, not allowed
+                      for other types
+                    rule: 'self.type==''gauge'' ? has(self.gauge) : !has(self.gauge)'
+                type: array
+              display:
+                description: Display properties for the view
+                properties:
+                  icon:
+                    description: Icon to use for the view
+                    type: string
+                  ordinal:
+                    description: Ordinal defines the order of the view
+                    type: integer
+                  sidebar:
+                    description: Sidebar indicates if the view should be shown in
+                      sidebar
+                    type: boolean
+                  title:
+                    description: Title of the view to be displayed in the UI
+                    type: string
+                type: object
+              mapping:
+                description: Mapping defines how to map query results to view columns
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              merge:
+                description: Merge defines how to merge/join data from multiple queries
+                type: string
+              panels:
+                description: Panels for the view
+                items:
+                  description: PanelDef defines a panel for the view
+                  properties:
+                    description:
+                      description: Description of what this panel represents
+                      type: string
+                    gauge:
+                      description: Configuration for gauge visualization
+                      properties:
+                        max:
+                          type: integer
+                        min:
+                          type: integer
+                        thresholds:
+                          items:
+                            description: GaugeThreshold defines a threshold configuration
+                              for gauge charts
+                            properties:
+                              color:
+                                type: string
+                              value:
+                                type: integer
+                            required:
+                            - color
+                            - value
+                            type: object
+                          type: array
+                      required:
+                      - max
+                      - min
+                      type: object
+                    name:
+                      description: Name of the panel
+                      type: string
+                    number:
+                      description: Configuration for number visualization
+                      properties:
+                        precision:
+                          type: integer
+                        unit:
+                          type: string
+                      type: object
+                    piechart:
+                      description: Configuration for piechart visualization
+                      properties:
+                        colors:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        showLabels:
+                          type: boolean
+                      type: object
+                    query:
+                      description: Query is a raw SQL query that has access to the
+                        queries as tables
+                      type: string
+                    table:
+                      description: Configuration for breakdown visualization
+                      type: object
+                    type:
+                      description: Type of panel visualization (piechart, text, gauge,
+                        number)
+                      enum:
+                      - piechart
+                      - text
+                      - gauge
+                      - number
+                      - table
+                      type: string
+                  required:
+                  - name
+                  - query
+                  - type
+                  type: object
+                  x-kubernetes-validations:
+                  - message: gauge config required when type is gauge, not allowed
+                      for other types
+                    rule: 'self.type==''gauge'' ? has(self.gauge) : !has(self.gauge)'
+                  - message: piechart config not allowed for this type
+                    rule: 'self.type!=''piechart'' ? !has(self.piechart) : true'
+                  - message: number config not allowed for this type
+                    rule: 'self.type!=''number'' ? !has(self.number) : true'
+                  - message: table config not allowed for this type
+                    rule: 'self.type!=''table'' ? !has(self.table) : true'
+                type: array
+              queries:
+                additionalProperties:
+                  properties:
+                    changes:
+                      description: Changes queries config changes
+                      properties:
+                        agent:
+                          description: |-
+                            Agent can be the agent id or the name of the agent.
+                             Additionally, the special "self" value can be used to select resources without an agent.
+                          type: string
+                        cache:
+                          description: |-
+                            Cache directives
+                             'no-cache' (should not fetch from cache but can be cached)
+                             'no-store' (should not cache)
+                             'max-age=X' (cache for X duration)
+                          type: string
+                        fieldSelector:
+                          type: string
+                        health:
+                          description: |-
+                            Health filters resources by the health.
+                            Multiple healths can be provided separated by comma.
+                          type: string
+                        id:
+                          type: string
+                        includeDeleted:
+                          type: boolean
+                        labelSelector:
+                          type: string
+                        limit:
+                          type: integer
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                        scope:
+                          description: |-
+                            Scope is the reference for parent of the resource to select.
+                            For config items, the scope is the scraper id
+                            For checks, it's canaries and
+                            For components, it's topology.
+                            It can either be a uuid or namespace/name
+                          type: string
+                        search:
+                          description: Search query that applies to the resource name,
+                            tag & labels.
+                          type: string
+                        statuses:
+                          description: Statuses filter resources by the status
+                          items:
+                            type: string
+                          type: array
+                        tagSelector:
+                          type: string
+                        types:
+                          description: Types filter resources by the type
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    columns:
+                      additionalProperties:
+                        type: string
+                      description: |-
+                        Define the column types for the results from the query.
+                        It's optional for configs and changes.
+
+
+                        This information is used to create the Sqlite table for the query.
+                        If not provided, the column types will be inferred from the query results.
+                        However, if this isn't provided and the query results are empty, the query will result in an error.
+                      type: object
+                    configs:
+                      description: Configs queries config items
+                      properties:
+                        agent:
+                          description: |-
+                            Agent can be the agent id or the name of the agent.
+                             Additionally, the special "self" value can be used to select resources without an agent.
+                          type: string
+                        cache:
+                          description: |-
+                            Cache directives
+                             'no-cache' (should not fetch from cache but can be cached)
+                             'no-store' (should not cache)
+                             'max-age=X' (cache for X duration)
+                          type: string
+                        fieldSelector:
+                          type: string
+                        health:
+                          description: |-
+                            Health filters resources by the health.
+                            Multiple healths can be provided separated by comma.
+                          type: string
+                        id:
+                          type: string
+                        includeDeleted:
+                          type: boolean
+                        labelSelector:
+                          type: string
+                        limit:
+                          type: integer
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                        scope:
+                          description: |-
+                            Scope is the reference for parent of the resource to select.
+                            For config items, the scope is the scraper id
+                            For checks, it's canaries and
+                            For components, it's topology.
+                            It can either be a uuid or namespace/name
+                          type: string
+                        search:
+                          description: Search query that applies to the resource name,
+                            tag & labels.
+                          type: string
+                        statuses:
+                          description: Statuses filter resources by the status
+                          items:
+                            type: string
+                          type: array
+                        tagSelector:
+                          type: string
+                        types:
+                          description: Types filter resources by the type
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    prometheus:
+                      description: Prometheus queries metrics from Prometheus
+                      properties:
+                        bearer:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                            valueFrom:
+                              properties:
+                                configMapKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                helmRef:
+                                  properties:
+                                    key:
+                                      description: Key is a JSONPath expression used
+                                        to fetch the key from the merged JSON.
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                secretKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                serviceAccount:
+                                  description: ServiceAccount specifies the service
+                                    account whose token should be fetched
+                                  type: string
+                              type: object
+                          type: object
+                        connection:
+                          type: string
+                        digest:
+                          type: boolean
+                        ntlm:
+                          type: boolean
+                        ntlmv2:
+                          type: boolean
+                        oauth:
+                          properties:
+                            clientID:
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                                valueFrom:
+                                  properties:
+                                    configMapKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    helmRef:
+                                      properties:
+                                        key:
+                                          description: Key is a JSONPath expression
+                                            used to fetch the key from the merged
+                                            JSON.
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    secretKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    serviceAccount:
+                                      description: ServiceAccount specifies the service
+                                        account whose token should be fetched
+                                      type: string
+                                  type: object
+                              type: object
+                            clientSecret:
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                                valueFrom:
+                                  properties:
+                                    configMapKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    helmRef:
+                                      properties:
+                                        key:
+                                          description: Key is a JSONPath expression
+                                            used to fetch the key from the merged
+                                            JSON.
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    secretKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    serviceAccount:
+                                      description: ServiceAccount specifies the service
+                                        account whose token should be fetched
+                                      type: string
+                                  type: object
+                              type: object
+                            params:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            scope:
+                              items:
+                                type: string
+                              type: array
+                            tokenURL:
+                              type: string
+                          type: object
+                        password:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                            valueFrom:
+                              properties:
+                                configMapKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                helmRef:
+                                  properties:
+                                    key:
+                                      description: Key is a JSONPath expression used
+                                        to fetch the key from the merged JSON.
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                secretKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                serviceAccount:
+                                  description: ServiceAccount specifies the service
+                                    account whose token should be fetched
+                                  type: string
+                              type: object
+                          type: object
+                        query:
+                          description: Query is the PromQL query string
+                          type: string
+                        tls:
+                          properties:
+                            ca:
+                              description: PEM encoded certificate of the CA to verify
+                                the server certificate
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                                valueFrom:
+                                  properties:
+                                    configMapKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    helmRef:
+                                      properties:
+                                        key:
+                                          description: Key is a JSONPath expression
+                                            used to fetch the key from the merged
+                                            JSON.
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    secretKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    serviceAccount:
+                                      description: ServiceAccount specifies the service
+                                        account whose token should be fetched
+                                      type: string
+                                  type: object
+                              type: object
+                            cert:
+                              description: PEM encoded client certificate
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                                valueFrom:
+                                  properties:
+                                    configMapKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    helmRef:
+                                      properties:
+                                        key:
+                                          description: Key is a JSONPath expression
+                                            used to fetch the key from the merged
+                                            JSON.
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    secretKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    serviceAccount:
+                                      description: ServiceAccount specifies the service
+                                        account whose token should be fetched
+                                      type: string
+                                  type: object
+                              type: object
+                            handshakeTimeout:
+                              description: HandshakeTimeout defaults to 10 seconds
+                              format: int64
+                              type: integer
+                            insecureSkipVerify:
+                              description: |-
+                                InsecureSkipVerify controls whether a client verifies the server's
+                                certificate chain and host name
+                              type: boolean
+                            key:
+                              description: PEM encoded client private key
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                                valueFrom:
+                                  properties:
+                                    configMapKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    helmRef:
+                                      properties:
+                                        key:
+                                          description: Key is a JSONPath expression
+                                            used to fetch the key from the merged
+                                            JSON.
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    secretKeyRef:
+                                      properties:
+                                        key:
+                                          type: string
+                                        name:
+                                          type: string
+                                      required:
+                                      - key
+                                      type: object
+                                    serviceAccount:
+                                      description: ServiceAccount specifies the service
+                                        account whose token should be fetched
+                                      type: string
+                                  type: object
+                              type: object
+                          type: object
+                        url:
+                          type: string
+                        username:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                            valueFrom:
+                              properties:
+                                configMapKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                helmRef:
+                                  properties:
+                                    key:
+                                      description: Key is a JSONPath expression used
+                                        to fetch the key from the merged JSON.
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                secretKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                  - key
+                                  type: object
+                                serviceAccount:
+                                  description: ServiceAccount specifies the service
+                                    account whose token should be fetched
+                                  type: string
+                              type: object
+                          type: object
+                      required:
+                      - query
+                      type: object
+                  type: object
+                description: Queries define the queries and mappings to populate the
+                  view
+                type: object
+            type: object
+            x-kubernetes-validations:
+            - message: query must be specified
+              rule: size(self.queries) > 0
+            - message: view spec must have either panels or columns defined
+              rule: size(self.panels) > 0 || size(self.columns) > 0
+            - message: if columns is specified, at least one column must have primaryKey
+                set to true
+              rule: '!(has(self.columns)) || size(self.columns) == 0 || self.columns.exists(c,
+                c.primaryKey == true)'
+          status:
+            description: ViewStatus defines the observed state of View
+            properties:
+              lastRan:
+                format: date-time
+                type: string
+            type: object
+        required:
+        - metadata
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
