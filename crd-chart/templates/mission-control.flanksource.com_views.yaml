@@ -62,12 +62,13 @@ spec:
               columns:
                 description: Columns define the structure of the view
                 items:
-                  description: ViewColumnDef defines a column in the view
+                  description: ColumnDef defines a column in the view
                   properties:
                     description:
                       description: Description of the column
                       type: string
                     filter:
+                      description: Enable filters in the UI
                       properties:
                         type:
                           type: string
@@ -76,6 +77,9 @@ spec:
                       type: object
                     for:
                       description: |-
+                        Deprecated: Use properties instead. Example: URL
+
+
                         For references the column this column is for.
                         Applicable only for type=url.
 
@@ -87,8 +91,10 @@ spec:
                       description: Configuration for gauge visualization
                       properties:
                         max:
-                          type: integer
+                          type: string
                         min:
+                          type: string
+                        precision:
                           type: integer
                         thresholds:
                           items:
@@ -96,12 +102,18 @@ spec:
                               for gauge charts
                             properties:
                               color:
+                                description: Color is the color of the threshold
                                 type: string
+                              percent:
+                                description: Percent is the percentage value of the
+                                  threshold
+                                type: integer
                               value:
+                                description: 'Deprecated: Use Percent instead'
                                 type: integer
                             required:
                             - color
-                            - value
+                            - percent
                             type: object
                           type: array
                       type: object
@@ -130,7 +142,30 @@ spec:
                       - decimal
                       - millicore
                       - url
+                      - badge
                       type: string
+                    unit:
+                      description: Unit of the column
+                      type: string
+                    url:
+                      description: Link to various mission control components.
+                      properties:
+                        config:
+                          description: ID of the config to link to.
+                          type: string
+                        view:
+                          description: Link to a view.
+                          properties:
+                            filter:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            name:
+                              type: string
+                            namespace:
+                              type: string
+                          type: object
+                      type: object
                   required:
                   - name
                   - type
@@ -255,8 +290,10 @@ spec:
                       description: Configuration for gauge visualization
                       properties:
                         max:
-                          type: integer
+                          type: string
                         min:
+                          type: string
+                        precision:
                           type: integer
                         thresholds:
                           items:
@@ -264,17 +301,20 @@ spec:
                               for gauge charts
                             properties:
                               color:
+                                description: Color is the color of the threshold
                                 type: string
+                              percent:
+                                description: Percent is the percentage value of the
+                                  threshold
+                                type: integer
                               value:
+                                description: 'Deprecated: Use Percent instead'
                                 type: integer
                             required:
                             - color
-                            - value
+                            - percent
                             type: object
                           type: array
-                      required:
-                      - max
-                      - min
                       type: object
                     name:
                       description: Name of the panel
@@ -320,9 +360,8 @@ spec:
                   - type
                   type: object
                   x-kubernetes-validations:
-                  - message: gauge config required when type is gauge, not allowed
-                      for other types
-                    rule: 'self.type==''gauge'' ? has(self.gauge) : !has(self.gauge)'
+                  - message: gauge config not allowed for this type
+                    rule: 'self.type!=''gauge'' ? !has(self.gauge) : true'
                   - message: piechart config not allowed for this type
                     rule: 'self.type!=''piechart'' ? !has(self.piechart) : true'
                   - message: number config not allowed for this type
