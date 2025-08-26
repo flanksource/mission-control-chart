@@ -107,6 +107,9 @@ spec:
            {{- if ne .Values.artifactConnection "" }}
             - --artifact-connection={{ .Values.artifactConnection }}
            {{- end }}
+           {{- if ne .Values.kmsConnection "" }}
+            - --secret-keeper-connection={{ .Values.kmsConnection }}
+           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           startupProbe:

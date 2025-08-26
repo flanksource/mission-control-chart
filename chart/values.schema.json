@@ -613,7 +613,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1244",
+          "default": "v0.0.1313",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -740,6 +740,12 @@
       "default": "true",
       "required": [],
       "title": "jsonLogs"
+    },
+    "kmsConnection": {
+      "default": "",
+      "description": "kms connection string",
+      "required": [],
+      "title": "kmsConnection"
     },
     "kratos": {
       "additionalProperties": true,
