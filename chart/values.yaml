@@ -172,6 +172,13 @@ otel:
 # @schema
 # -- artifact connection string
 artifactConnection: ""
+
+# @schema
+# required: false
+# @schema
+# -- kms connection string
+kmsConnection: ""
+
 # Properties to configure mission-control feature sets
 # @schema
 # required: false

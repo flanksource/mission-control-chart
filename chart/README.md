@@ -15,9 +15,9 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.66 |
-| https://flanksource.github.io/charts | config-db | 0.0.903 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.0.871 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.115 |
+| https://flanksource.github.io/charts | config-db | 0.0.989 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.4.36 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -45,6 +45,7 @@ A Helm chart for flanksource mission control
 | canary-checker.logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | canary-checker.otel.collector | string | `"{{ .Values.global.otel.collector }}"` |  |
 | canary-checker.otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
+| cleanupResourcesOnDelete | bool | `false` |  |
 | clerkJWKSURL | string | `""` |  |
 | clerkOrgID | string | `""` |  |
 | config-db.db.embedded.persist | bool | `false` |  |
@@ -140,7 +141,7 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1176"` |  |
+| image.tag | string | `"v0.0.1313"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -149,6 +150,7 @@ A Helm chart for flanksource mission control
 | ingress.tls[0].hosts[0] | string | `"{{.Values.global.api.host}}"` |  |
 | ingress.tls[0].secretName | string | `"{{.Values.global.api.tlsSecretName}}"` |  |
 | jsonLogs | bool | `true` |  |
+| kmsConnection | string | `""` | kms connection string |
 | kratos.automigration.customArgs[0] | string | `"migrate"` |  |
 | kratos.automigration.customArgs[1] | string | `"sql"` |  |
 | kratos.automigration.customArgs[2] | string | `"-e"` |  |

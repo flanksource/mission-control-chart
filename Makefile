@@ -8,6 +8,11 @@ chart-local:
 	helm dependency update ./chart
 	helm template -f ./chart/values.yaml mission-control ./chart
 
+.PHONY: test-templates
+test-templates:
+	helm dependency update ./chart
+	helm template --dry-run -f ./chart/values.yaml mission-control ./chart > /dev/null && echo "Templates are valid"
+
 .PHONY: chart
 chart:
 	helm dependency build ./chart
