@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1313"
+  tag: "v0.0.1314"
 # @schema
 # required: false
 # @schema
@@ -172,13 +172,11 @@ otel:
 # @schema
 # -- artifact connection string
 artifactConnection: ""
-
 # @schema
 # required: false
 # @schema
 # -- kms connection string
 kmsConnection: ""
-
 # Properties to configure mission-control feature sets
 # @schema
 # required: false
