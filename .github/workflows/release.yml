@@ -75,6 +75,8 @@ jobs:
           version: v3.8.0
       - name: Package Helm chart
         run: |
+          # New charts might not be immediately available
+          sleep 60
           make chart agent-chart crd-chart
       - name: Clone charts repo
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
