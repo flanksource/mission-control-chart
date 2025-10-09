@@ -252,8 +252,9 @@ db:
     effective_io_concurrency: 200
     work_mem: 10MB
     max_wal_size: 4GB
-    log_autovacuum_min_duration: 0
-    log_connections: on
+    log_autovacuum_min_duration: 10s  # Set to 0 for pgbadger
+    log_connections: off  # Set to on for pgbadger
+    log_disconnections: off  # Set to on for pgbadger
     log_destination: "stderr"
     log_directory: "/var/log/postgresql"
     log_file_mode: 0644
@@ -265,7 +266,7 @@ db:
     log_rotation_size: "100MB"
     log_truncate_on_rotation: on
     log_statement: "all"
-    log_temp_files: 0
+    log_temp_files: 100MB  # Set to 0 for pgbadger
     log_timezone: "UTC"
     logging_collector: on
     ssl: off
