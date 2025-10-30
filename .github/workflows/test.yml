@@ -24,6 +24,9 @@ jobs:
           python-version: "3.9"
           check-latest: true
 
+      - name: Install chart-testing dependencies
+        run: pip install yamale==4.0.4 yamllint==1.33.0
+
       - name: Lint chart
         run: make lint
 
