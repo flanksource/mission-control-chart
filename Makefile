@@ -47,3 +47,20 @@ README.md: .bin/helm-docs
 .bin/helm-docs:
 	test -s $(LOCALBIN)/helm-docs  || \
 	GOBIN=$(LOCALBIN) go install github.com/norwoodj/helm-docs/cmd/helm-docs@latest
+
+.bin/ct: $(LOCALBIN)
+	@if [ ! -f $(LOCALBIN)/ct ]; then \
+		echo "Downloading chart-testing (ct) to .bin/..."; \
+		OS=$$(uname -s | tr '[:upper:]' '[:lower:]'); \
+		ARCH=$$(uname -m); \
+		if [ "$$ARCH" = "x86_64" ]; then ARCH="amd64"; fi; \
+		if [ "$$ARCH" = "aarch64" ]; then ARCH="arm64"; fi; \
+		CT_VERSION="v3.11.0"; \
+		URL="https://github.com/helm/chart-testing/releases/download/$${CT_VERSION}/chart-testing_$${CT_VERSION#v}_$${OS}_$${ARCH}.tar.gz"; \
+		curl -sSL "$$URL" | tar -xz -C $(LOCALBIN) ct etc; \
+		chmod +x $(LOCALBIN)/ct; \
+	fi
+
+.PHONY: lint
+lint: .bin/ct
+	$(LOCALBIN)/ct lint --charts chart --chart-yaml-schema $(LOCALBIN)/etc/chart_schema.yaml --lint-conf $(LOCALBIN)/etc/lintconf.yaml
