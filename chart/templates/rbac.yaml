@@ -25,15 +25,16 @@ rules:
 - apiGroups:
   - mission-control.flanksource.com
   resources:
+  - applications
   - connections
   - incidentrules
-  - playbooks
   - notifications
   - notificationsilences
   - permissiongroups
   - permissions
+  - playbooks
+  - scopes
   - views
-  - applications
   verbs:
   - create
   - delete
