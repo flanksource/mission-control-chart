@@ -252,27 +252,27 @@ db:
     effective_io_concurrency: 200
     work_mem: 10MB
     max_wal_size: 4GB
-    log_autovacuum_min_duration: 10s # Set to 0 for pgbadger
-    log_connections: off # Set to on for pgbadger
-    log_disconnections: off # Set to on for pgbadger
+    log_autovacuum_min_duration: 10s  # Set to 0 for pgbadger
+    log_connections: false  # Set to true for pgbadger
+    log_disconnections: false  # Set to true for pgbadger
     log_destination: "stderr"
     log_directory: "/var/log/postgresql"
     log_file_mode: 0644
     log_filename: "postgresql-%d.log"
     log_line_prefix: "%m [%p] %q[user=%u,db=%d,app=%a] "
-    log_lock_waits: on
+    log_lock_waits: true
     log_min_duration_statement: "1s"
     log_rotation_age: "1d"
     log_rotation_size: "100MB"
-    log_truncate_on_rotation: on
+    log_truncate_on_rotation: true
     log_statement: "all"
-    log_temp_files: 100MB # Set to 0 for pgbadger
+    log_temp_files: 100MB  # Set to 0 for pgbadger
     log_timezone: "UTC"
-    logging_collector: on
-    ssl: off
+    logging_collector: true
+    ssl: false
     timezone: "UTC"
     password_encryption: scram-sha-256
-    db_user_namespace: off
+    db_user_namespace: false
     extra_float_digits: 0
   secretKeyRef:
     name: incident-commander-postgres
