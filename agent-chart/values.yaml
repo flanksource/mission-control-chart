@@ -93,7 +93,6 @@ db:
     ssl: off
     timezone: "UTC"
     password_encryption: scram-sha-256
-    db_user_namespace: off
     extra_float_digits: 0
   secretKeyRef:
     name: incident-commander-postgres

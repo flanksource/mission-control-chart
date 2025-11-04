@@ -38,7 +38,6 @@ A Helm chart for flanksource mission control agent
 | config-db.disablePostgrest | bool | `true` |  |
 | config-db.logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | db.conf.checkpoint_completion_target | float | `0.9` |  |
-| db.conf.db_user_namespace | string | `"off"` |  |
 | db.conf.effective_cache_size | string | `"3GB"` |  |
 | db.conf.effective_io_concurrency | int | `200` |  |
 | db.conf.extra_float_digits | int | `0` |  |
