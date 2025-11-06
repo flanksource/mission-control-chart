@@ -44,11 +44,11 @@ spec:
         - command:
           - sh
           - -c
-          - mkdir -p /postgres && chmod -R 0750 /postgres && chown 999:999 -R /postgres &&  chmod -R 777 /dev/shm
+          - mkdir -p /pv-root/postgres && chmod -R 0750 /pv-root/postgres && chown 999:999 -R /pv-root/postgres &&  chmod -R 777 /dev/shm
           image: busybox
           name: postgres-perms
           volumeMounts:
-          - mountPath: /postgres
+          - mountPath: /pv-root
             name: postgresql
           - name: dshm
             mountPath: /dev/shm
