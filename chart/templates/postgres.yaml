@@ -54,12 +54,11 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: {{ tpl .Values.global.imageRegistry . }}/supabase/postgres:14.1.0.89
+        image: ghcr.io/flanksource/postgres:17
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D
           - /var/lib/postgresql/data
-          - --config-file=/etc/postgresql/postgresql.conf
           {{- range $k, $v := .Values.db.conf }}
           - '--{{ $k }}={{ $v }}'
           {{- end }}
