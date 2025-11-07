@@ -23,6 +23,8 @@ spec:
     metadata:
       labels:
         app: postgresql
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       volumes:
         - name: dshm
