@@ -70,7 +70,9 @@ spec:
           - name: POSTGRES_DB
             value: mission_control
         startupProbe:
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 60  # 30s + (10s × 60) = 10 minutes max
           exec:
             command:
             - /post-startup.sh
