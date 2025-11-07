@@ -54,7 +54,7 @@ spec:
             mountPath: /dev/shm
       containers:
       - name: postgresql
-        image: ghcr.io/flanksource/postgres:17
+        image: ghcr.io/flanksource/postgres:17.6-497383c
         command:
           - /usr/local/bin/docker-entrypoint.sh
           - -D
