@@ -4,7 +4,7 @@ db:
     shared_buffers: 128MB
     effective_cache_size: 256MB
     log_destination: stderr
-    logging_collector: off
+    logging_collector: "off"
   storage: 5Gi
   shmVolume: 128Mi
   resources:
@@ -15,3 +15,6 @@ resources:
   requests:
     cpu: 100m
     memory: 256Mi
+
+flanksource-ui:
+  enabled: false

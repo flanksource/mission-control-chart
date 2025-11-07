@@ -76,7 +76,7 @@ jobs:
 
           # The ct (chart-testing) tool has a built-in convention.
           # It automatically discovers and uses any files matching *-values.yaml in the chart/ci/ directory.
-          ct install --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
+          ct install --debug --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
 
       - name: Test deploying topology
         run: test/test.sh
