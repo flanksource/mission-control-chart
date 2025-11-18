@@ -15,9 +15,10 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.115 |
-| https://flanksource.github.io/charts | config-db | 0.0.989 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.4.36 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.153 |
+| https://flanksource.github.io/charts | config-db | 0.0.1072 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.4.91 |
+| https://flanksource.github.io/charts | mission-control-kubernetes-view | >= 0.1.18 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -60,10 +61,12 @@ A Helm chart for flanksource mission control
 | db.conf.effective_cache_size | string | `"3GB"` |  |
 | db.conf.effective_io_concurrency | int | `200` |  |
 | db.conf.extra_float_digits | int | `0` |  |
-| db.conf.log_autovacuum_min_duration | int | `0` |  |
-| db.conf.log_connections | string | `"on"` |  |
+| db.conf.listen_addresses | string | `"*"` |  |
+| db.conf.log_autovacuum_min_duration | string | `"10s"` |  |
+| db.conf.log_connections | string | `"off"` |  |
 | db.conf.log_destination | string | `"stderr"` |  |
 | db.conf.log_directory | string | `"/var/log/postgresql"` |  |
+| db.conf.log_disconnections | string | `"off"` |  |
 | db.conf.log_file_mode | int | `420` |  |
 | db.conf.log_filename | string | `"postgresql-%d.log"` |  |
 | db.conf.log_line_prefix | string | `"%m [%p] %q[user=%u,db=%d,app=%a] "` |  |
@@ -72,7 +75,7 @@ A Helm chart for flanksource mission control
 | db.conf.log_rotation_age | string | `"1d"` |  |
 | db.conf.log_rotation_size | string | `"100MB"` |  |
 | db.conf.log_statement | string | `"all"` |  |
-| db.conf.log_temp_files | int | `0` |  |
+| db.conf.log_temp_files | string | `"100MB"` |  |
 | db.conf.log_timezone | string | `"UTC"` |  |
 | db.conf.log_truncate_on_rotation | string | `"on"` |  |
 | db.conf.logging_collector | string | `"on"` |  |
@@ -140,7 +143,7 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1313"` |  |
+| image.tag | string | `"v0.0.1424"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -180,6 +183,7 @@ A Helm chart for flanksource mission control
 | kratos.kratos.config.session.lifespan | string | `"336h"` |  |
 | kratos.secret.enabled | bool | `false` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
+| mission-control-kubernetes-view.enabled | bool | `false` |  |
 | nameOverride | string | `""` |  |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |

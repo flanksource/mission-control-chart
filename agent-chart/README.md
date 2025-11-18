@@ -14,8 +14,8 @@ A Helm chart for flanksource mission control agent
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.115 |
-| https://flanksource.github.io/charts | config-db | 0.0.989 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.153 |
+| https://flanksource.github.io/charts | config-db | 0.0.1072 |
 | https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.28 |
 
 ## Values
@@ -43,17 +43,18 @@ A Helm chart for flanksource mission control agent
 | db.conf.extra_float_digits | int | `0` |  |
 | db.conf.lc_messages | string | `"C"` |  |
 | db.conf.listen_addresses | string | `"*"` |  |
-| db.conf.log_autovacuum_min_duration | int | `0` |  |
+| db.conf.log_autovacuum_min_duration | string | `"10s"` |  |
 | db.conf.log_checkpoints | string | `"on"` |  |
-| db.conf.log_connections | string | `"on"` |  |
-| db.conf.log_destination | string | `"csvlog"` |  |
-| db.conf.log_disconnections | string | `"on"` |  |
+| db.conf.log_connections | string | `"off"` |  |
+| db.conf.log_destination | string | `"stderr"` |  |
+| db.conf.log_disconnections | string | `"off"` |  |
 | db.conf.log_filename | string | `"postgresql-%d.log"` |  |
+| db.conf.log_line_prefix | string | `"%m [%p] %q[user=%u,db=%d,app=%a] "` |  |
 | db.conf.log_lock_waits | string | `"on"` |  |
 | db.conf.log_min_duration_statement | string | `"10s"` |  |
 | db.conf.log_rotation_age | string | `"1d"` |  |
 | db.conf.log_rotation_size | string | `"100MB"` |  |
-| db.conf.log_temp_files | int | `0` |  |
+| db.conf.log_temp_files | string | `"100MB"` |  |
 | db.conf.log_timezone | string | `"UTC"` |  |
 | db.conf.log_truncate_on_rotation | string | `"on"` |  |
 | db.conf.logging_collector | string | `"on"` |  |
@@ -88,7 +89,7 @@ A Helm chart for flanksource mission control agent
 | global.logLevel | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1313"` |  |
+| image.tag | string | `"v0.0.1424"` |  |
 | jsonLogs | bool | `true` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | pushTelemetry.enabled | bool | `false` |  |

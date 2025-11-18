@@ -703,7 +703,7 @@
       "title": "logLevel"
     },
     "mission-control-kubernetes-view": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "enabled": {
           "default": false,

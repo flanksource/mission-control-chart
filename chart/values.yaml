@@ -504,6 +504,7 @@ grafana:
       grafana_dashboard: "1"
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 mission-control-kubernetes-view:
   # @schema
