@@ -502,3 +502,8 @@ grafana:
       # required: false
       # @schema
       grafana_dashboard: "1"
+# @schema
+# required: false
+# @schema
+mission-control-kubernetes-view:
+  enabled: false
