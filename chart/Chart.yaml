@@ -33,3 +33,4 @@ dependencies:
     version: ">= 0.1.18"
     repository: https://flanksource.github.io/charts
     condition: mission-control-kubernetes-view.enabled
+    alias: kubernetes-view

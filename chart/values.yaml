@@ -506,7 +506,7 @@ grafana:
 # required: false
 # additionalProperties: true
 # @schema
-mission-control-kubernetes-view:
+kubernetes-view:
   # @schema
   # type: boolean
   # default: false
