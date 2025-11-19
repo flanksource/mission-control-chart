@@ -504,11 +504,11 @@ grafana:
       grafana_dashboard: "1"
 # @schema
 # required: false
-# additionalProperties: true
+# additionalProperties: false
 # @schema
-kubernetes-view:
+views:
   # @schema
+  # required: false
   # type: boolean
-  # default: false
   # @schema
-  enabled: false
+  kubernetes: true

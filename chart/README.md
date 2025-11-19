@@ -18,7 +18,7 @@ A Helm chart for flanksource mission control
 | https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.153 |
 | https://flanksource.github.io/charts | config-db | 0.0.1072 |
 | https://flanksource.github.io/charts | flanksource-ui | 1.4.91 |
-| https://flanksource.github.io/charts | mission-control-kubernetes-view | >= 0.1.18 |
+| https://flanksource.github.io/charts | kubernetes-view(mission-control-kubernetes-view) | >= 0.1.18 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -183,7 +183,6 @@ A Helm chart for flanksource mission control
 | kratos.kratos.config.session.lifespan | string | `"336h"` |  |
 | kratos.secret.enabled | bool | `false` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
-| mission-control-kubernetes-view.enabled | bool | `false` |  |
 | nameOverride | string | `""` |  |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
@@ -215,4 +214,5 @@ A Helm chart for flanksource mission control
 | serviceMonitor.labels | object | `{}` |  |
 | smtp.secretRef.name | string | `"incident-commander-smtp"` |  |
 | upstream_push | object | `{}` |  |
+| views.kubernetes | bool | `false` |  |
 

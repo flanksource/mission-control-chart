@@ -696,23 +696,152 @@
       "required": [],
       "type": "object"
     },
+    "kubernetes-view": {
+      "description": "A Helm chart for Kubernetes views in Flanksource Mission Control",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "Field that can be used as a condition when kubernetes-view is a dependency.\nThis definition is only here as a placeholder such that it is included in\nthe json schema.\nSee https://helm.sh/docs/chart_best_practices/dependencies/#conditions-and-tags\nfor more info.\n+docs:hidden",
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "fullnameOverride": {
+          "default": "",
+          "required": [],
+          "title": "fullnameOverride"
+        },
+        "global": {
+          "additionalProperties": true,
+          "properties": {
+            "prometheus": {
+              "additionalProperties": false,
+              "properties": {
+                "connection": {
+                  "default": "",
+                  "required": [],
+                  "title": "connection"
+                }
+              },
+              "required": [],
+              "title": "prometheus"
+            }
+          },
+          "required": [],
+          "title": "global"
+        },
+        "labels": {
+          "additionalProperties": true,
+          "required": [],
+          "title": "labels"
+        },
+        "nameOverride": {
+          "default": "",
+          "required": [],
+          "title": "nameOverride"
+        },
+        "views": {
+          "additionalProperties": false,
+          "properties": {
+            "clusterOverview": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled"
+                },
+                "sidebar": {
+                  "default": true,
+                  "required": [],
+                  "title": "sidebar"
+                }
+              },
+              "required": [],
+              "title": "clusterOverview"
+            },
+            "deployments": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled"
+                },
+                "sidebar": {
+                  "default": true,
+                  "required": [],
+                  "title": "sidebar"
+                }
+              },
+              "required": [],
+              "title": "deployments"
+            },
+            "enabled": {
+              "default": true,
+              "description": "If this is set to false, no views will be created",
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "helmReleases": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled"
+                },
+                "sidebar": {
+                  "default": true,
+                  "required": [],
+                  "title": "sidebar"
+                }
+              },
+              "required": [],
+              "title": "helmReleases"
+            },
+            "pod": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled"
+                }
+              },
+              "required": [],
+              "title": "pod"
+            },
+            "pods": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "required": [],
+                  "title": "enabled"
+                },
+                "sidebar": {
+                  "default": true,
+                  "required": [],
+                  "title": "sidebar"
+                }
+              },
+              "required": [],
+              "title": "pods"
+            }
+          },
+          "required": [],
+          "title": "views"
+        }
+      },
+      "required": [],
+      "title": "mission-control-kubernetes-view",
+      "type": "object"
+    },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
       "description": "-v, -vv, -vvv",
       "required": [],
       "title": "logLevel"
-    },
-    "mission-control-kubernetes-view": {
-      "additionalProperties": true,
-      "properties": {
-        "enabled": {
-          "default": false,
-          "title": "enabled",
-          "type": "boolean"
-        }
-      },
-      "required": [],
-      "title": "mission-control-kubernetes-view"
     },
     "nameOverride": {
       "default": "",
@@ -1012,6 +1141,18 @@
       "description": "Configuration for pushing data to upstream\nupstream_push:\n  name: ''\n  host: ''\n  user: ''\n  password: ''\n  labels: 'key1=val1,key2=val2'",
       "required": [],
       "title": "upstream_push"
+    },
+    "views": {
+      "additionalProperties": false,
+      "properties": {
+        "kubernetes": {
+          "default": false,
+          "title": "kubernetes",
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "title": "views"
     }
   },
   "required": [],
