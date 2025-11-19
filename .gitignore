@@ -3,3 +3,4 @@ charts/
 .vscode
 .bin/
 *.tgz
+.envrc

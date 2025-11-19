@@ -4,6 +4,7 @@ description: A Helm chart for flanksource mission control
 type: application
 version: 0.1.0
 appVersion: "0.0.10"
+icon: https://github.com/flanksource.png
 maintainers:
   - name: Flanksource
 dependencies:
@@ -28,3 +29,8 @@ dependencies:
     import-values:
       - child: secret
         parent: kratossecret
+  - name: mission-control-kubernetes-view
+    version: ">= 0.1.18"
+    repository: https://flanksource.github.io/charts
+    condition: views.kubernetes
+    alias: kubernetes-view
