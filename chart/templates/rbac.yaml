@@ -55,6 +55,7 @@ rules:
   - permissions/finalizers
   - views/finalizers
   - applications/finalizers
+  - scopes/finalizers
   verbs:
   - update
 - apiGroups:
@@ -69,6 +70,7 @@ rules:
   - permissions/status
   - views/status
   - applications/status
+  - scopes/status
   verbs:
   - get
   - patch
