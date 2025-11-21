@@ -30,7 +30,7 @@ dependencies:
       - child: secret
         parent: kratossecret
   - name: mission-control-kubernetes-view
-    version: ">= 0.1.18"
+    version: ">= 0.1.26"
     repository: https://flanksource.github.io/charts
     condition: views.kubernetes
     alias: kubernetes-view
