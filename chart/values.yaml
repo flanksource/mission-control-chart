@@ -502,6 +502,7 @@ grafana:
       # required: false
       # @schema
       grafana_dashboard: "1"
+
 # @schema
 # required: false
 # additionalProperties: false
