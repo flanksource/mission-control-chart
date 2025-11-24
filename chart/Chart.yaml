@@ -33,4 +33,3 @@ dependencies:
     version: ">= 0.1.26"
     repository: https://flanksource.github.io/charts
     condition: views.kubernetes
-    alias: kubernetes-view
