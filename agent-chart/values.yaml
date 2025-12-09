@@ -44,12 +44,17 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
+
+# @schema
+# additionalProperties: true
+# @schema
 pushTelemetry:
   enabled: false
   isAgent: true
   playbooks: false
   pushLocation:
     url: https://telemetry.app.flanksource.com/push/topology
+
 db:
   create: true
   conf:
