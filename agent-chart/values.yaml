@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=values.schema.json
 # Use this only if you want to replace the default that is .Chart.Name as the name of all the objects.
 image:
   repository: docker.io/flanksource/incident-commander
