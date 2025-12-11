@@ -3,7 +3,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1467"
+  tag: "v0.0.1468"
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -44,7 +44,6 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
-
 pushTelemetry:
   enabled: false
   isAgent: true
