@@ -613,7 +613,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1465",
+          "default": "v0.0.1467",
           "required": [],
           "title": "tag",
           "type": "string"

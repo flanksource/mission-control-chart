@@ -37,7 +37,7 @@ values.schema.json: .bin/helm-schema
 	rm chart/temp-schema.json
 	cd agent-chart && ../.bin/helm-schema -r -f values.yaml -o temp-schema.json && cd -
 	jq  --argjson JSON_CONTENT '{"additionalProperties": true,"required": [],"type": "object"}' \
-		'reduce ["apm-hub", "canary-checker", "config-db","flanksource-ui", "kratos", "mission-control-kubernetes-view"][] as $$key (.; .properties[$$key] = $$JSON_CONTENT) | .additionalProperties = true' \
+		'reduce ["apm-hub", "canary-checker", "config-db","flanksource-ui", "kratos", "mission-control-kubernetes-view", "pushTelemetry"][] as $$key (.; .properties[$$key] = $$JSON_CONTENT) | .additionalProperties = true' \
 		agent-chart/temp-schema.json > agent-chart/values.schema.json
 	rm agent-chart/temp-schema.json
 
