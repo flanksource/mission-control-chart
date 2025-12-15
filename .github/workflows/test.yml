@@ -30,6 +30,7 @@ jobs:
       - name: Lint chart
         run: make lint
 
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -52,15 +53,16 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
         with:
-          version: v3.11.3
+          version: v4.0.4
+
+      - name: build dependency
+        run: |
+          cd chart && helm dependency build
 
       - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4.7.0
         with:
           python-version: "3.9"
           check-latest: true
-
-      - name: Set up chart-testing
-        uses: helm/chart-testing-action@b43128a8b25298e1e7b043b78ea6613844e079b1 # v2.6.0
 
       - name: Create kind cluster
         uses: helm/kind-action@9e8295d178de23cbfbd8fa16cf844eec1d773a07 # v1.4.0
@@ -68,15 +70,20 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8 # v3.2
 
-      - name: Install Helm chart
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: chart/test/go.mod
+          check-latest: true
+
+      - name: Build chart Go tests
+        working-directory: chart/test
         run: |
-          helm repo add flanksource https://flanksource.github.io/charts
-          helm repo add ory https://k8s.ory.sh/helm/charts
-          helm dependency build ./chart
+          export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
+          go test -c -o chart-tests.test
 
-          # The ct (chart-testing) tool has a built-in convention.
-          # It automatically discovers and uses any files matching *-values.yaml in the chart/ci/ directory.
-          ct install --debug --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
-
-      - name: Test deploying topology
-        run: test/test.sh
+      - name: Run chart Go tests
+        working-directory: chart/test
+        run: |
+          export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
+          ./chart-tests.test -test.v -test.timeout 20m -ginkgo.v -ginkgo.trace -ginkgo.progress
