@@ -27,6 +27,11 @@ spec:
           configMap:
             name: {{ .Values.identityRoleMapper.configMap.name}}
       {{- end}}
+      {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+        - name: htpasswd
+          secret:
+            secretName: {{ if .Values.htpasswd.create }}mission-control-htpasswd{{ else }}{{ .Values.htpasswd.secretName }}{{ end }}
+      {{- end}}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -71,6 +76,9 @@ spec:
            {{- if eq .Values.authProvider "clerk" }}
             - --clerk-jwks-url={{ .Values.clerkJWKSURL }}
             - --clerk-org-id={{ .Values.clerkOrgID }}
+           {{- end }}
+           {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+            - --htpasswd-file=/etc/htpasswd/{{ .Values.htpasswd.secretKey }}
            {{- end }}
            {{- if eq .Values.externalPostgrest.enable true }}
             - --postgrest-uri=http://postgrest:3000
@@ -133,6 +141,11 @@ spec:
             {{- if ne .Values.identityRoleMapper.configMap.name ""}}
             - name: identity-role-mapper
               mountPath: {{ .Values.identityRoleMapper.configMap.mountPath}}
+            {{- end}}
+            {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+            - name: htpasswd
+              mountPath: /etc/htpasswd
+              readOnly: true
             {{- end}}
       {{- with .Values.extra }}
       {{- toYaml . | nindent 6 }}

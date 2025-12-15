@@ -1,0 +1,27 @@
+authProvider: basic
+htpasswd:
+  create: true
+
+db:
+  create: true
+  conf:
+    shared_buffers: 128MB
+    effective_cache_size: 256MB
+    log_destination: stderr
+    logging_collector: "off"
+  storage: 5Gi
+  shmVolume: 128Mi
+  resources:
+    requests:
+      memory: 512Mi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+kratos:
+  enabled: false
+
+flanksource-ui:
+  enabled: false

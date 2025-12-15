@@ -34,7 +34,9 @@ A Helm chart for flanksource mission control
 | apm-hub.db.secretKeyRef.name | string | `"incident-commander-postgres"` |  |
 | apm-hub.enabled | bool | `false` |  |
 | artifactConnection | string | `""` | artifact connection string |
-| authProvider | string | `"kratos"` |  |
+| authProvider | string | `"kratos"` | Allowed values are [none, kratos, clerk, basic] |
+| htpasswd.secretName | string | `""` | Name of the secret containing htpasswd file (used when authProvider is 'basic') |
+| htpasswd.secretKey | string | `"htpasswd"` | Key in the secret containing the htpasswd data |
 | canary-checker.db.external.create | bool | `false` |  |
 | canary-checker.db.external.enabled | bool | `true` |  |
 | canary-checker.db.external.secretKeyRef.key | string | `"DB_URL"` |  |
