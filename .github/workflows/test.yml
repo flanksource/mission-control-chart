@@ -68,15 +68,27 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8 # v3.2
 
-      - name: Install Helm chart
+      # - name: Install Helm chart
+      #   run: |
+      #     helm repo add flanksource https://flanksource.github.io/charts
+      #     helm repo add ory https://k8s.ory.sh/helm/charts
+      #     helm dependency build ./chart
+
+      #     # The ct (chart-testing) tool has a built-in convention.
+      #     # It automatically discovers and uses any files matching *-values.yaml in the chart/ci/ directory.
+      #     ct install --debug --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: chart/test/go.mod
+          check-latest: true
+
+      - name: Run chart Go tests
+        working-directory: chart/test
         run: |
-          helm repo add flanksource https://flanksource.github.io/charts
-          helm repo add ory https://k8s.ory.sh/helm/charts
-          helm dependency build ./chart
+          export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
+          go test ./...
 
-          # The ct (chart-testing) tool has a built-in convention.
-          # It automatically discovers and uses any files matching *-values.yaml in the chart/ci/ directory.
-          ct install --debug --charts ./chart --namespace default --helm-extra-args="--timeout 15m"  --github-groups
-
-      - name: Test deploying topology
-        run: test/test.sh
+      # - name: Test deploying topology
+      #   run: test/test.sh
