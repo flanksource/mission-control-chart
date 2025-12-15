@@ -6,10 +6,9 @@ import (
 	"github.com/flanksource/clicky"
 	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = Describe("Mission Control", func() {
@@ -17,7 +16,7 @@ var _ = Describe("Mission Control", func() {
 	It("Basic Auth", func() {
 
 		By("Installing Mission Control")
-		mcChart = helm.NewHelmChart(ctx, "..")
+		mcChart = helm.NewHelmChart(ctx, "../")
 		// mcChart = helm.NewHelmChart(ctx, "flanksource/mission-control")
 		Expect(mcChart.
 			Release("mission-control").Namespace("mission-control").
