@@ -69,3 +69,7 @@ README.md: .bin/helm-docs
 .PHONY: lint
 lint: .bin/ct
 	$(LOCALBIN)/ct lint --charts chart --chart-yaml-schema $(LOCALBIN)/etc/chart_schema.yaml --lint-conf $(LOCALBIN)/etc/lintconf.yaml
+
+.PHONY: go-test
+go-test:
+	cd chart/test && ginkgo -r .

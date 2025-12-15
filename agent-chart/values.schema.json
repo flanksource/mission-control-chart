@@ -20,218 +20,183 @@
           "properties": {
             "checkpoint_completion_target": {
               "default": 0.9,
-              "required": [],
               "title": "checkpoint_completion_target",
               "type": "number"
             },
             "effective_cache_size": {
               "default": "3GB",
-              "required": [],
               "title": "effective_cache_size",
               "type": "string"
             },
             "effective_io_concurrency": {
               "default": 200,
-              "required": [],
               "title": "effective_io_concurrency",
               "type": "integer"
             },
             "extra_float_digits": {
               "default": 0,
-              "required": [],
               "title": "extra_float_digits",
               "type": "integer"
             },
             "lc_messages": {
               "default": "C",
-              "required": [],
               "title": "lc_messages",
               "type": "string"
             },
             "listen_addresses": {
               "default": "*",
               "description": "Network Related Configuration",
-              "required": [],
               "title": "listen_addresses",
               "type": "string"
             },
             "log_autovacuum_min_duration": {
               "default": "10s",
-              "required": [],
               "title": "log_autovacuum_min_duration",
               "type": "string"
             },
             "log_checkpoints": {
               "default": "on",
-              "required": [],
               "title": "log_checkpoints",
               "type": "string"
             },
             "log_connections": {
               "default": "off",
-              "required": [],
               "title": "log_connections",
               "type": "string"
             },
             "log_destination": {
               "default": "stderr",
-              "required": [],
               "title": "log_destination",
               "type": "string"
             },
             "log_disconnections": {
               "default": "off",
-              "required": [],
               "title": "log_disconnections",
               "type": "string"
             },
             "log_filename": {
               "default": "postgresql-%d.log",
-              "required": [],
               "title": "log_filename",
               "type": "string"
             },
             "log_line_prefix": {
               "default": "%m [%p] %q[user=%u,db=%d,app=%a] ",
-              "required": [],
               "title": "log_line_prefix",
               "type": "string"
             },
             "log_lock_waits": {
               "default": "on",
-              "required": [],
               "title": "log_lock_waits",
               "type": "string"
             },
             "log_min_duration_statement": {
               "default": "10s",
               "description": "Adjust the minimum time to collect the data",
-              "required": [],
               "title": "log_min_duration_statement",
               "type": "string"
             },
             "log_rotation_age": {
               "default": "1d",
-              "required": [],
               "title": "log_rotation_age",
               "type": "string"
             },
             "log_rotation_size": {
               "default": "100MB",
-              "required": [],
               "title": "log_rotation_size",
               "type": "string"
             },
             "log_temp_files": {
               "default": "100MB",
-              "required": [],
               "title": "log_temp_files",
               "type": "string"
             },
             "log_timezone": {
               "default": "UTC",
-              "required": [],
               "title": "log_timezone",
               "type": "string"
             },
             "log_truncate_on_rotation": {
               "default": "on",
-              "required": [],
               "title": "log_truncate_on_rotation",
               "type": "string"
             },
             "logging_collector": {
               "default": "on",
               "description": "Logging configuration",
-              "required": [],
               "title": "logging_collector",
               "type": "string"
             },
             "maintenance_work_mem": {
               "default": "205MB",
-              "required": [],
               "title": "maintenance_work_mem",
               "type": "string"
             },
             "max_connections": {
               "default": 100,
-              "required": [],
               "title": "max_connections",
               "type": "integer"
             },
             "max_parallel_workers": {
               "default": 2,
-              "required": [],
               "title": "max_parallel_workers",
               "type": "integer"
             },
             "max_parallel_workers_per_gather": {
               "default": 2,
-              "required": [],
               "title": "max_parallel_workers_per_gather",
               "type": "integer"
             },
             "max_wal_size": {
               "default": "3GB",
-              "required": [],
               "title": "max_wal_size",
               "type": "string"
             },
             "max_worker_processes": {
               "default": 8,
               "description": "Worker Processes Configuration",
-              "required": [],
               "title": "max_worker_processes",
               "type": "integer"
             },
             "min_wal_size": {
               "default": "2GB",
               "description": "Checkpoint Related Configuration",
-              "required": [],
               "title": "min_wal_size",
               "type": "string"
             },
             "password_encryption": {
               "default": "scram-sha-256",
-              "required": [],
               "title": "password_encryption",
               "type": "string"
             },
             "random_page_cost": {
               "default": 1.1,
               "description": "Storage Configuration",
-              "required": [],
               "title": "random_page_cost",
               "type": "number"
             },
             "shared_buffers": {
               "default": "1GB",
               "description": "Memory Configuration",
-              "required": [],
               "title": "shared_buffers",
               "type": "string"
             },
             "ssl": {
               "default": "off",
-              "required": [],
               "title": "ssl",
               "type": "string"
             },
             "timezone": {
               "default": "UTC",
-              "required": [],
               "title": "timezone",
               "type": "string"
             },
             "wal_buffers": {
               "default": -1,
-              "required": [],
               "title": "wal_buffers",
               "type": "integer"
             },
             "work_mem": {
               "default": "10MB",
-              "required": [],
               "title": "work_mem",
               "type": "string"
             }
@@ -278,7 +243,6 @@
         },
         "create": {
           "default": true,
-          "required": [],
           "title": "create",
           "type": "boolean"
         },
@@ -287,13 +251,11 @@
           "properties": {
             "key": {
               "default": "PGRST_JWT_SECRET",
-              "required": [],
               "title": "key",
               "type": "string"
             },
             "name": {
               "default": "incident-commander-postgrest-jwt",
-              "required": [],
               "title": "name",
               "type": "string"
             }
@@ -310,13 +272,11 @@
           "properties": {
             "enabled": {
               "default": false,
-              "required": [],
               "title": "enabled",
               "type": "boolean"
             },
             "secretName": {
               "default": "pganalyze",
-              "required": [],
               "title": "secretName",
               "type": "string"
             }
@@ -336,7 +296,6 @@
               "properties": {
                 "memory": {
                   "default": "2Gi",
-                  "required": [],
                   "title": "memory",
                   "type": "string"
                 }
@@ -359,13 +318,11 @@
           "properties": {
             "key": {
               "default": "DB_URL",
-              "required": [],
               "title": "key",
               "type": "string"
             },
             "name": {
               "default": "incident-commander-postgres",
-              "required": [],
               "title": "name",
               "type": "string"
             }
@@ -379,19 +336,16 @@
         },
         "shmVolume": {
           "default": "256Mi",
-          "required": [],
           "title": "shmVolume",
           "type": "string"
         },
         "storage": {
           "default": "20Gi",
-          "required": [],
           "title": "storage",
           "type": "string"
         },
         "storageClass": {
           "default": "",
-          "required": [],
           "title": "storageClass",
           "type": "string"
         }
@@ -415,13 +369,11 @@
       "properties": {
         "imagePrefix": {
           "default": "flanksource",
-          "required": [],
           "title": "imagePrefix",
           "type": "string"
         },
         "imageRegistry": {
           "default": "public.ecr.aws",
-          "required": [],
           "title": "imageRegistry",
           "type": "string"
         },
@@ -434,7 +386,6 @@
         "logLevel": {
           "default": "",
           "description": "-v, -vv, -vvv",
-          "required": [],
           "title": "logLevel",
           "type": "string"
         }
@@ -454,19 +405,16 @@
       "properties": {
         "pullPolicy": {
           "default": "IfNotPresent",
-          "required": [],
           "title": "pullPolicy",
           "type": "string"
         },
         "repository": {
           "default": "docker.io/flanksource/incident-commander",
-          "required": [],
           "title": "repository",
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1465",
-          "required": [],
+          "default": "v0.0.1471",
           "title": "tag",
           "type": "string"
         }
@@ -481,61 +429,18 @@
     },
     "jsonLogs": {
       "default": true,
-      "required": [],
       "title": "jsonLogs",
       "type": "boolean"
     },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
-      "required": [],
       "title": "logLevel",
       "type": "string"
     },
     "pushTelemetry": {
       "additionalProperties": true,
-      "properties": {
-        "enabled": {
-          "default": false,
-          "required": [],
-          "title": "enabled",
-          "type": "boolean"
-        },
-        "isAgent": {
-          "default": true,
-          "required": [],
-          "title": "isAgent",
-          "type": "boolean"
-        },
-        "playbooks": {
-          "default": false,
-          "required": [],
-          "title": "playbooks",
-          "type": "boolean"
-        },
-        "pushLocation": {
-          "additionalProperties": false,
-          "properties": {
-            "url": {
-              "default": "https://telemetry.app.flanksource.com/push/topology",
-              "required": [],
-              "title": "url",
-              "type": "string"
-            }
-          },
-          "required": [
-            "url"
-          ],
-          "title": "pushLocation",
-          "type": "object"
-        }
-      },
-      "required": [
-        "enabled",
-        "isAgent",
-        "playbooks",
-        "pushLocation"
-      ],
-      "title": "pushTelemetry"
+      "required": [],
+      "type": "object"
     },
     "resources": {
       "additionalProperties": false,
@@ -545,13 +450,11 @@
           "properties": {
             "cpu": {
               "default": "500m",
-              "required": [],
               "title": "cpu",
               "type": "string"
             },
             "memory": {
               "default": "1024Mi",
-              "required": [],
               "title": "memory",
               "type": "string"
             }
@@ -568,13 +471,11 @@
           "properties": {
             "cpu": {
               "default": "100m",
-              "required": [],
               "title": "cpu",
               "type": "string"
             },
             "memory": {
               "default": "768Mi",
-              "required": [],
               "title": "memory",
               "type": "string"
             }
@@ -606,7 +507,6 @@
         },
         "name": {
           "default": "mission-control-sa",
-          "required": [],
           "title": "name",
           "type": "string"
         },
@@ -616,47 +516,40 @@
             "clusterRole": {
               "default": true,
               "description": "Whether to create cluster-wide or namespaced roles",
-              "required": [],
               "title": "clusterRole",
               "type": "boolean"
             },
             "configmaps": {
               "default": true,
-              "required": [],
               "title": "configmaps",
               "type": "boolean"
             },
             "exec": {
               "default": true,
               "description": "exec",
-              "required": [],
               "title": "exec",
               "type": "boolean"
             },
             "podRun": {
               "default": true,
               "description": "Playbook pod actions",
-              "required": [],
               "title": "podRun",
               "type": "boolean"
             },
             "readAll": {
               "default": true,
               "description": "for use with kubernetes resource lookups",
-              "required": [],
               "title": "readAll",
               "type": "boolean"
             },
             "secrets": {
               "default": true,
-              "required": [],
               "title": "secrets",
               "type": "boolean"
             },
             "tokenRequest": {
               "default": true,
               "description": "for secret management with valueFrom",
-              "required": [],
               "title": "tokenRequest",
               "type": "boolean"
             }
@@ -688,37 +581,31 @@
       "properties": {
         "agentName": {
           "default": "",
-          "required": [],
           "title": "agentName",
           "type": "string"
         },
         "createSecret": {
           "default": true,
-          "required": [],
           "title": "createSecret",
           "type": "boolean"
         },
         "host": {
           "default": "",
-          "required": [],
           "title": "host",
           "type": "string"
         },
         "password": {
           "default": "",
-          "required": [],
           "title": "password",
           "type": "string"
         },
         "secretName": {
           "default": "upstream",
-          "required": [],
           "title": "secretName",
           "type": "string"
         },
         "username": {
           "default": "",
-          "required": [],
           "title": "username",
           "type": "string"
         }
@@ -763,6 +650,7 @@
     "serviceAccount",
     "upstream",
     "resources",
+    "pushTelemetry",
     "db",
     "canary-checker",
     "config-db"

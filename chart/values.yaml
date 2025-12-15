@@ -36,7 +36,7 @@ global:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
   api:
-    host: "mission-control-ui.local/api"
+    host: "mission-control-ui.local"
     tlsSecretName: ""
   otel:
     collector: ""
@@ -59,8 +59,19 @@ global:
 # required: false
 # @schema
 serviceAccount:
-  # Annotations to add to the service account
+  # @schema
+  # required: false
+  # @schema
   name: mission-control-sa
+  # @schema
+  # required: false
+  # default: true
+  # @schema
+  create: true
+  # @schema
+  # required: false
+  # @schema
+  # -- Annotations to add to the service account
   annotations: {}
   rbac:
     # Impersonate allows the service account to impersonate as
@@ -93,7 +104,14 @@ serviceAccount:
 # required: false
 # @schema
 impersonationRole:
-  namespaces: [default]
+  # @schema
+  # required: false
+  # type: array
+  # items:
+  #   type: string
+  # @schema
+  namespaces:
+    - default
   createNamespaces: true
 # @schema
 # required: false
@@ -105,7 +123,7 @@ extraArgs: {}
 externalPostgrest:
   enable: true
   tag: v10.2.0
-  # supabase/postgrest if registry is ecr and postgrest/postgrest if registry is docker.io
+  # supabase/postgrest if registry is ecr and postgrest/postgrest otherwise
   imageName: ""
   logLevel: info
   dbScema: public
@@ -146,7 +164,7 @@ serviceMonitor:
 # additionalProperties: true
 # @schema
 upstream_push: {}
-# Allowed values are [none, kratos,clerk]
+# Allowed values are [none, kratos, clerk, basic]
 # @schema
 # required: false
 # @schema
@@ -159,6 +177,13 @@ clerkJWKSURL: ""
 # required: false
 # @schema
 clerkOrgID: ""
+# @schema
+# required: false
+# @schema
+htpasswd:
+  create: false
+  secretName: ""
+  secretKey: htpasswd
 # @schema
 # required: false
 # @schema
@@ -209,14 +234,14 @@ permissions:
   # type: boolean
   # required: false
   # @schema
-  # -- when enabled, users & services must have explicit permissions to run playbooks
+  # -- when enabled, users must have explicit permissions to run playbooks
   # otherwise, editors automatically have permission to run playbooks.
   playbooks: false
   # @schema
   # type: boolean
   # required: false
   # @schema
-  # -- when enabled, users & services must have explicit permissions to run connections
+  # -- when enabled, users must have explicit permissions to run connections
   # otherwise, editors automatically have permission to run connections.
   connections: false
   # @schema
@@ -312,6 +337,7 @@ adminPassword:
     key: password
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 canary-checker:
   image:
@@ -334,6 +360,7 @@ canary-checker:
     enabled: false
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 config-db:
   disablePostgrest: true
@@ -367,6 +394,10 @@ apm-hub:
 # @schema
 ingress:
   enabled: false
+  # @schema
+  # type: object
+  # additionalProperties: true
+  # @schema
   annotations:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
@@ -382,6 +413,7 @@ ingress:
 cleanupResourcesOnDelete: false
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 flanksource-ui:
   enabled: true
@@ -409,6 +441,7 @@ flanksource-ui:
 # database URL in it.
 # @schema
 # required: false
+# additionalProperties: true
 # @schema
 kratos:
   enabled: true
@@ -512,3 +545,16 @@ views:
   # type: boolean
   # @schema
   kubernetes: true
+
+# @schema
+# required: false
+# additionalProperties: false
+# @schema
+mission-control-kubernetes-view: {}
+
+# @schema
+# required: false
+# additionalProperties: true
+# @schema
+disabled:
+  canary-checker: false
