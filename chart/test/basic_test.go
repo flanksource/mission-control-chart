@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/flanksource/clicky"
 	"github.com/flanksource/commons-test/helm"
@@ -19,7 +20,7 @@ var _ = Describe("Mission Control", func() {
 		Expect(mcChart.
 			Release("mission-control").
 			Namespace("mission-control").
-			Wait().
+			WaitFor(time.Minute * 15).
 			Values(map[string]interface{}{
 				"global": map[string]interface{}{
 					"ui": map[string]interface{}{
