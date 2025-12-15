@@ -12,14 +12,14 @@ import (
 )
 
 var _ = Describe("Mission Control", func() {
-
 	It("Basic Auth", func() {
-
 		By("Installing Mission Control")
 		mcChart = helm.NewHelmChart(ctx, "../")
 		// mcChart = helm.NewHelmChart(ctx, "flanksource/mission-control")
 		Expect(mcChart.
-			Release("mission-control").Namespace("mission-control").
+			Release("mission-control").
+			Namespace("mission-control").
+			Wait().
 			Values(map[string]interface{}{
 				"global": map[string]interface{}{
 					"ui": map[string]interface{}{
@@ -38,6 +38,7 @@ var _ = Describe("Mission Control", func() {
 					},
 				},
 				"config-db": map[string]interface{}{
+					"enabled":  false,
 					"logLevel": "-vvv",
 				},
 				"logLevel": "-vvv",
@@ -71,5 +72,4 @@ var _ = Describe("Mission Control", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(len(results)).To(BeNumerically(">", 1))
 	})
-
 })
