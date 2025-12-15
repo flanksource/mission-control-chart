@@ -550,11 +550,13 @@ views:
   # type: boolean
   # @schema
   kubernetes: true
+
 # @schema
 # required: false
 # additionalProperties: false
 # @schema
 mission-control-kubernetes-view: {}
+
 # @schema
 # required: false
 # additionalProperties: true
