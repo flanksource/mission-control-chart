@@ -6,6 +6,7 @@ import (
 	"net"
 	nethttp "net/http"
 	"net/url"
+	"time"
 
 	"github.com/flanksource/clicky"
 	"github.com/flanksource/commons-test/helm"
@@ -29,35 +30,32 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 		mcChart = helm.NewHelmChart(ctx, "../")
 		// mcChart = helm.NewHelmChart(ctx, "flanksource/mission-control")
 
-		/*
-			Expect(mcChart.
-				Release("mission-control").Namespace("mission-control").
+		Expect(mcChart.
+			Release("mission-control").Namespace("mission-control").
 			WaitFor(time.Minute * 15).
-				Values(map[string]interface{}{
-					"global": map[string]interface{}{
-						"ui": map[string]interface{}{
-							"host": "mission-control.cluster.local",
-						},
+			Values(map[string]interface{}{
+				"global": map[string]interface{}{
+					"ui": map[string]interface{}{
+						"host": "mission-control.cluster.local",
 					},
-					"authProvider": "basic",
-
-					"htpasswd": map[string]interface{}{
-						"create": true,
+				},
+				"authProvider": "basic",
+				"htpasswd": map[string]interface{}{
+					"create": true,
+				},
+				"ingress": map[string]interface{}{
+					"enabled": true,
+					"annotations": map[string]interface{}{
+						"cert-manager.io/cluster-issuer": "self-signed",
 					},
-					"ingress": map[string]interface{}{
-						"enabled": true,
-						"annotations": map[string]interface{}{
-							"cert-manager.io/cluster-issuer": "self-signed",
-						},
-					},
-					"config-db": map[string]interface{}{
-						"logLevel": "-vvv",
-					},
+				},
+				"config-db": map[string]interface{}{
 					"logLevel": "-vvv",
-				}).
-				InstallOrUpgrade()).NotTo(HaveOccurred())
+				},
+				"logLevel": "-vvv",
+			}).
+			InstallOrUpgrade()).NotTo(HaveOccurred())
 
-		*/
 		adminPasswordSecret, err := k8s.CoreV1().Secrets(namespace).Get(context.TODO(), "mission-control-admin-password", v1.GetOptions{})
 		Expect(err).NotTo(HaveOccurred(), "Failed to get Mission Control admin password secret")
 		adminPassword := string(adminPasswordSecret.Data["password"])
