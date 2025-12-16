@@ -119,3 +119,12 @@ func (mc *MissionControl) QueryCatalog(selector ResourceSelector) ([]SelectedRes
 func (mc *MissionControl) SearchCatalog(search string) ([]SelectedResource, error) {
 	return mc.QueryCatalog(ResourceSelector{Search: search})
 }
+
+func (mc *MissionControl) IsHealthy() (bool, error) {
+	r, err := mc.HTTP.R(context.TODO()).Get("/health")
+	if err != nil {
+		return false, err
+	}
+
+	return r.IsOK(), nil
+}
