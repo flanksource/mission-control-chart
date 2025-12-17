@@ -32,24 +32,27 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 
 		Expect(mcChart.
 			Release("mission-control").Namespace("mission-control").
-			WaitFor(time.Minute * 15).
-			Values(map[string]interface{}{
-				"global": map[string]interface{}{
-					"ui": map[string]interface{}{
+			WaitFor(time.Minute * 5).
+			Values(map[string]any{
+				"global": map[string]any{
+					"ui": map[string]any{
 						"host": "mission-control.cluster.local",
 					},
 				},
 				"authProvider": "basic",
-				"htpasswd": map[string]interface{}{
+				"htpasswd": map[string]any{
 					"create": true,
 				},
-				"ingress": map[string]interface{}{
+				"kratos": map[string]any{
+					"enabled": false,
+				},
+				"ingress": map[string]any{
 					"enabled": true,
-					"annotations": map[string]interface{}{
+					"annotations": map[string]any{
 						"cert-manager.io/cluster-issuer": "self-signed",
 					},
 				},
-				"config-db": map[string]interface{}{
+				"config-db": map[string]any{
 					"logLevel": "-vvv",
 				},
 				"logLevel": "-vvv",
