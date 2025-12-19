@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	//"time"
+	"time"
 
 	"github.com/flanksource/clicky"
-	//"github.com/flanksource/commons-test/helm"
+	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
 	"github.com/google/uuid"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -22,33 +22,31 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 	BeforeAll(func() {
 		By("Installing Mission Control")
 
-		/*
-			Expect(helm.NewHelmChart(ctx, "../").
-				Release("mission-control").Namespace("mission-control").
-				WaitFor(time.Minute * 5).
-				Values(map[string]any{
-					"global": map[string]any{
-						"ui": map[string]any{
-							"host": "mission-control.cluster.local",
-						},
+		Expect(helm.NewHelmChart(ctx, "../").
+			Release("mission-control").Namespace("mission-control").
+			WaitFor(time.Minute * 5).
+			Values(map[string]any{
+				"global": map[string]any{
+					"ui": map[string]any{
+						"host": "mission-control.cluster.local",
 					},
-					"authProvider": "basic",
-					"htpasswd": map[string]any{
-						"create": true,
-					},
-					"kratos": map[string]any{
-						"enabled": false,
-					},
-					"ingress": map[string]any{
-						"enabled": false,
-					},
-					"config-db": map[string]any{
-						"logLevel": "-vvv",
-					},
+				},
+				"authProvider": "basic",
+				"htpasswd": map[string]any{
+					"create": true,
+				},
+				"kratos": map[string]any{
+					"enabled": false,
+				},
+				"ingress": map[string]any{
+					"enabled": false,
+				},
+				"config-db": map[string]any{
 					"logLevel": "-vvv",
-				}).
-				InstallOrUpgrade()).NotTo(HaveOccurred())
-		*/
+				},
+				"logLevel": "-vvv",
+			}).
+			InstallOrUpgrade()).NotTo(HaveOccurred())
 
 		adminPasswordSecret, err := k8s.CoreV1().Secrets(namespace).Get(context.TODO(), "mission-control-admin-password", v1.GetOptions{})
 		Expect(err).NotTo(HaveOccurred(), "Failed to get Mission Control admin password secret")
