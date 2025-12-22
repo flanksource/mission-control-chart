@@ -43,7 +43,7 @@ values.schema.json: .bin/helm-schema
 
 .bin/helm-schema:
 	test -s $(LOCALBIN)/helm-schema  || \
-	GOBIN=$(LOCALBIN) go install github.com/dadav/helm-schema/cmd/helm-schema@latest
+	GOBIN=$(LOCALBIN) go install github.com/dadav/helm-schema/cmd/helm-schema@0.18.1
 
 .PHONY: README.md
 README.md: .bin/helm-docs
