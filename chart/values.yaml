@@ -15,7 +15,7 @@ nameOverride: ""
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1477"
+  tag: "v0.0.1478"
 # @schema
 # required: false
 # @schema
@@ -545,13 +545,11 @@ views:
   # type: boolean
   # @schema
   kubernetes: true
-
 # @schema
 # required: false
 # additionalProperties: false
 # @schema
 mission-control-kubernetes-view: {}
-
 # @schema
 # required: false
 # additionalProperties: true
