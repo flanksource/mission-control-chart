@@ -118,6 +118,9 @@ spec:
            {{- if ne .Values.kmsConnection "" }}
             - --secret-keeper-connection={{ .Values.kmsConnection }}
            {{- end }}
+           {{- if ne .Values.llmConnection "" }}
+            - --llm-connection={{ .Values.llmConnection }}
+           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           startupProbe:
