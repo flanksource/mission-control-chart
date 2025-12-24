@@ -483,9 +483,6 @@ kratos:
   ingress:
     public:
       enabled: false
-  # NOTE(ciju): we have our own template for kratos-config. Which means kratos
-  # templates doesn't have access to the config file, to generate hash from.
-  # This could be fixed by explicitly passing hash value?
   configmap:
     hashSumEnabled: false
   kratos:
@@ -498,14 +495,6 @@ kratos:
       type: initContainer
     # Config to be merged in kratos ConfigMap. See: templates/kratos-config.yaml
     config:
-      secrets:
-        default:
-          - yet another secret
-          - lorem ipsum dolores
-          - just a random a string secret
-      courier:
-        smtp:
-          connection_uri: smtp://wrong-url
       session:
         # Session lifespan. Default: 14 days
         lifespan: 336h
