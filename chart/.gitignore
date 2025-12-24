@@ -3,5 +3,3 @@ package-lock.json
 package.json
 node_modules
 .DS_Store
-__debug_bin*
-test/helm-test-values.yaml

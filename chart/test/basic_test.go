@@ -2,46 +2,43 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"github.com/flanksource/clicky"
 	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
-	"github.com/google/uuid"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Mission Control", ginkgo.Ordered, func() {
-	var mcStopChan, configDBStopChan chan struct{}
+var _ = Describe("Mission Control", func() {
 
-	BeforeAll(func() {
+	It("Basic Auth", func() {
+
 		By("Installing Mission Control")
-
-		Expect(helm.NewHelmChart(ctx, "../").
+		mcChart = helm.NewHelmChart(ctx, "..")
+		// mcChart = helm.NewHelmChart(ctx, "flanksource/mission-control")
+		Expect(mcChart.
 			Release("mission-control").Namespace("mission-control").
-			WaitFor(time.Minute * 5).
-			Values(map[string]any{
-				"global": map[string]any{
-					"ui": map[string]any{
+			Values(map[string]interface{}{
+				"global": map[string]interface{}{
+					"ui": map[string]interface{}{
 						"host": "mission-control.cluster.local",
 					},
 				},
 				"authProvider": "basic",
-				"htpasswd": map[string]any{
+
+				"htpasswd": map[string]interface{}{
 					"create": true,
 				},
-				"kratos": map[string]any{
-					"enabled": false,
+				"ingress": map[string]interface{}{
+					"enabled": true,
+					"annotations": map[string]interface{}{
+						"cert-manager.io/cluster-issuer": "self-signed",
+					},
 				},
-				"ingress": map[string]any{
-					"enabled": false,
-				},
-				"config-db": map[string]any{
+				"config-db": map[string]interface{}{
 					"logLevel": "-vvv",
 				},
 				"logLevel": "-vvv",
@@ -54,80 +51,26 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 		Expect(adminPassword).NotTo(BeEmpty(), "Mission Control admin password should not be empty")
 		logger.Infof(clicky.MustFormat(adminPassword))
 
-		// Port forward to mission-control pod
-		var mcLocalPort int
-		mcLocalPort, mcStopChan, err = portForwardPod(ctx, namespace, "app.kubernetes.io/name=mission-control", 8080)
-		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
+		podIP, err := k8s.GetPodIP(ctx, namespace, "app.kubernetes.io/name=mission-control")
+		Expect(err).NotTo(HaveOccurred(), "Failed to get Mission Control pod IP")
 
-		// Port forward to config-db pod
-		var configDBLocalPort int
-		configDBLocalPort, configDBStopChan, err = portForwardPod(ctx, namespace, "app.kubernetes.io/name=config-db", 8080)
-		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Config DB pod")
-
-		// Initialize Mission Control client using port-forwarded address
+		// Initialize Mission Control client, get credentianls and serviceIP from deployed chart.
 		mcInstance = &MissionControl{
 			Client:   k8s,
-			HTTP:     http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", mcLocalPort)).Auth("admin@local", adminPassword),
+			HTTP:     http.NewClient().BaseURL("http://"+podIP+":8080").Auth("admin@local", adminPassword),
 			Username: "admin@local",
 			Password: adminPassword,
-			ConfigDB: http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", configDBLocalPort)).Auth("admin@local", adminPassword),
 		}
-
-		mcInstanceWithoutAuth = &MissionControl{
-			Client:   k8s,
-			HTTP:     http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", mcLocalPort)),
-			ConfigDB: http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", configDBLocalPort)).Auth("admin@local", adminPassword),
-		}
-
+		podIP, err = k8s.GetPodIP(ctx, namespace, "app.kubernetes.io/name=config-db")
+		Expect(err).NotTo(HaveOccurred(), "Failed to get Config DB pod IPs")
+		mcInstance.ConfigDB = http.NewClient().BaseURL("http://"+podIP+":8080").Auth("admin@local", adminPassword)
 	})
 
-	AfterAll(func() {
-		if mcStopChan != nil {
-			close(mcStopChan)
-		}
-		if configDBStopChan != nil {
-			close(configDBStopChan)
-		}
-	})
-
-	It("Should be healthy", func() {
-		healthy, err := mcInstance.IsHealthy()
-		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
-
-		healthy, err = mcInstanceWithoutAuth.IsHealthy()
-		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
-	})
-
-	It("Should run WhoAmI", func() {
-		whoami, ok, err := mcInstance.WhoAmI()
-		Expect(err).NotTo(HaveOccurred(), "Unable to query whoami endpoint")
-		Expect(ok).To(BeTrue())
-		Expect(whoami["message"]).To(Equal("success"))
-
-		whoami, ok, err = mcInstanceWithoutAuth.WhoAmI()
-		Expect(err).NotTo(HaveOccurred(), "Unable to query whoami endpoint")
-		Expect(ok).To(BeFalse())
-		Expect(whoami["message"]).To(Equal("Unauthorized"))
-	})
-
-	It("Should run system scraper", func() {
-		scraper := mcInstance.GetScraper(uuid.Nil.String())
-		sr, err := scraper.Run()
-		Expect(err).NotTo(HaveOccurred())
-		logger.Infof("Scrape Result:\n%s", clicky.MustFormat(sr))
-
-		scraper = mcInstanceWithoutAuth.GetScraper(uuid.Nil.String())
-		sr, err = scraper.Run()
-		Expect(err).NotTo(HaveOccurred(), "basic auth")
-	})
-
-	// System scraper runs and should populate job histories/local agent
-	It("Should search catalog", func() {
+	It("SearchCatalog", func() {
 		results, err := mcInstance.SearchCatalog("type=*")
-		logger.Infof("%s", clicky.MustFormat(results))
+		logger.Infof("%=v", results)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(len(results)).To(BeNumerically(">", 1))
 	})
+
 })

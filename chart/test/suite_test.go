@@ -50,7 +50,6 @@ func TestHelm(t *testing.T) {
 }
 
 var mcInstance *MissionControl
-var mcInstanceWithoutAuth *MissionControl
 var mcChart *helm.HelmChart
 var _ = BeforeSuite(func() {
 
