@@ -414,7 +414,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1471",
+          "default": "v0.0.1486",
           "title": "tag",
           "type": "string"
         }

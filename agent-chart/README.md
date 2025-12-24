@@ -14,9 +14,9 @@ A Helm chart for flanksource mission control agent
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.153 |
-| https://flanksource.github.io/charts | config-db | 0.0.1072 |
-| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.28 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.34 |
+| https://flanksource.github.io/charts | config-db | 0.0.1116 |
+| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.33 |
 
 ## Values
 
@@ -89,13 +89,14 @@ A Helm chart for flanksource mission control agent
 | global.logLevel | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1424"` |  |
+| image.tag | string | `"v0.0.1486"` |  |
 | jsonLogs | bool | `true` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | pushTelemetry.enabled | bool | `false` |  |
 | pushTelemetry.isAgent | bool | `true` |  |
 | pushTelemetry.playbooks | bool | `false` |  |
 | pushTelemetry.pushLocation.url | string | `"https://telemetry.app.flanksource.com/push/topology"` |  |
+| pushTelemetry.views.enabled | bool | `false` |  |
 | resources.limits.cpu | string | `"500m"` |  |
 | resources.limits.memory | string | `"1024Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |

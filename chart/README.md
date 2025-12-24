@@ -15,10 +15,10 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.2-beta.153 |
-| https://flanksource.github.io/charts | config-db | 0.0.1072 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.4.91 |
-| https://flanksource.github.io/charts | kubernetes-view(mission-control-kubernetes-view) | >= 0.1.18 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.34 |
+| https://flanksource.github.io/charts | config-db | 0.0.1116 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.4.137 |
+| https://flanksource.github.io/charts | mission-control-kubernetes-view | >= 0.1.36 |
 | https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
 
 ## Values
@@ -34,9 +34,7 @@ A Helm chart for flanksource mission control
 | apm-hub.db.secretKeyRef.name | string | `"incident-commander-postgres"` |  |
 | apm-hub.enabled | bool | `false` |  |
 | artifactConnection | string | `""` | artifact connection string |
-| authProvider | string | `"kratos"` | Allowed values are [none, kratos, clerk, basic] |
-| htpasswd.secretName | string | `""` | Name of the secret containing htpasswd file (used when authProvider is 'basic') |
-| htpasswd.secretKey | string | `"htpasswd"` | Key in the secret containing the htpasswd data |
+| authProvider | string | `"kratos"` |  |
 | canary-checker.db.external.create | bool | `false` |  |
 | canary-checker.db.external.enabled | bool | `true` |  |
 | canary-checker.db.external.secretKeyRef.key | string | `"DB_URL"` |  |
@@ -102,6 +100,7 @@ A Helm chart for flanksource mission control
 | db.shmVolume | string | `"256Mi"` |  |
 | db.storage | string | `"20Gi"` |  |
 | db.storageClass | string | `""` |  |
+| disabled.canary-checker | bool | `false` |  |
 | externalPostgrest.dbAnonRole | string | `"postgrest_anon"` |  |
 | externalPostgrest.dbScema | string | `"public"` |  |
 | externalPostgrest.enable | bool | `true` |  |
@@ -119,7 +118,7 @@ A Helm chart for flanksource mission control
 | flanksource-ui.ingress.tls[0].secretName | string | `"{{.Values.global.ui.tlsSecretName}}"` |  |
 | flanksource-ui.nameOverride | string | `"incident-manager-ui"` |  |
 | flanksource-ui.oryKratosURL | string | `"http://{{.Values.global.ui.host}}/api/.ory"` |  |
-| global.api.host | string | `"mission-control-ui.local/api"` |  |
+| global.api.host | string | `"mission-control-ui.local"` |  |
 | global.api.tlsSecretName | string | `""` |  |
 | global.db.connectionPooler.enabled | bool | `false` |  |
 | global.db.connectionPooler.extraContainers | string | `""` |  |
@@ -139,13 +138,16 @@ A Helm chart for flanksource mission control
 | global.ui.tlsSecretName | string | `"mission-control-ui-tls"` |  |
 | grafana.scrapeMetricsDashboard.enabled | bool | `false` |  |
 | grafana.scrapeMetricsDashboard.labels.grafana_dashboard | string | `"1"` |  |
+| htpasswd.create | bool | `false` |  |
+| htpasswd.secretKey | string | `"htpasswd"` |  |
+| htpasswd.secretName | string | `""` |  |
 | identityRoleMapper.configMap.key | string | `""` |  |
 | identityRoleMapper.configMap.mountPath | string | `"/etc/identity-role-mapper"` |  |
 | identityRoleMapper.configMap.name | string | `""` |  |
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1424"` |  |
+| image.tag | string | `"v0.0.1486"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -184,15 +186,17 @@ A Helm chart for flanksource mission control
 | kratos.kratos.config.secrets.default[2] | string | `"just a random a string secret"` |  |
 | kratos.kratos.config.session.lifespan | string | `"336h"` |  |
 | kratos.secret.enabled | bool | `false` |  |
+| llmConnection | string | `""` | llm connection string |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
+| mission-control-kubernetes-view | object | `{}` |  |
 | nameOverride | string | `""` |  |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
 | permissions.components | bool | `false` | when enabled, services must have explicit permissions to read components otherwise, system automatically has permission to read all components. |
 | permissions.configs | bool | `false` | when enabled, services must have explicit permissions to read configs otherwise, system automatically has permission to read all configs. |
-| permissions.connections | bool | `false` | when enabled, users & services must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
-| permissions.playbooks | bool | `false` | when enabled, users & services must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
+| permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
+| permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
@@ -200,7 +204,8 @@ A Helm chart for flanksource mission control
 | resources.limits.memory | string | `"1024Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"768Mi"` |  |
-| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"mission-control-sa"` |  |
 | serviceAccount.rbac.clusterAdmin | bool | `false` |  |
 | serviceAccount.rbac.clusterRole | bool | `true` |  |
@@ -216,5 +221,5 @@ A Helm chart for flanksource mission control
 | serviceMonitor.labels | object | `{}` |  |
 | smtp.secretRef.name | string | `"incident-commander-smtp"` |  |
 | upstream_push | object | `{}` |  |
-| views.kubernetes | bool | `false` |  |
+| views.kubernetes | bool | `true` |  |
 

@@ -608,7 +608,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1471",
+          "default": "v0.0.1486",
           "title": "tag",
           "type": "string"
         }
@@ -728,6 +728,12 @@
       "additionalProperties": true,
       "required": [],
       "type": "object"
+    },
+    "llmConnection": {
+      "default": "",
+      "description": "llm connection string",
+      "required": [],
+      "title": "llmConnection"
     },
     "logLevel": {
       "default": "{{.Values.global.logLevel}}",
