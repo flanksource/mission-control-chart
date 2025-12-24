@@ -13,11 +13,19 @@ spec:
       {{- include "incident-commander.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+      {{- range $k, $v := merge .Values.podAnnotations .Values.global.podAnnotations }}
+        {{$k}}: "{{$v}}"
+      {{- end }}
       labels:
         {{- include "incident-commander.selectorLabels" . | nindent 8 }}
         {{- include "incident-commander.extraLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: properties-config
           configMap:
@@ -32,10 +40,18 @@ spec:
           secret:
             secretName: {{ if .Values.htpasswd.create }}mission-control-htpasswd{{ else }}{{ .Values.htpasswd.secretName }}{{ end }}
       {{- end}}
+      {{- with  (concat .Values.volumes .Values.global.volumes) }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             {{- if (tpl .Values.otel.labels .)}}
             - name: OTEL_LABELS
@@ -150,6 +166,26 @@ spec:
               mountPath: /etc/htpasswd
               readOnly: true
             {{- end}}
+
+            {{- with  (concat .Values.volumeMounts .Values.global.volumeMounts) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+
       {{- with .Values.extra }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+      {{- with  (merge .Values.nodeSelector .Values.global.nodeSelector ) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with  (merge .Values.affinity .Values.global.affinity) }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with  (concat .Values.tolerations .Values.global.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+
+

@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../values.schema.json
+global:
+  podAnnotations:
+    a: c
+    d: e
+db:
+  create: true
+  conf:
+    shared_buffers: 128MB
+    effective_cache_size: 256MB
+    log_destination: stderr
+    logging_collector: "off"
+  storage: 5Gi
+  shmVolume: 128Mi
+  resources:
+    requests:
+      memory: 512Mi
+
+podAnnotations:
+  a: b
+  c: e
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+flanksource-ui:
+  enabled: false
+
+podSecurityContext:
+  fsGroup: 1001
+
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+volumes:
+  - name: artifacts
+    emptyDir: {}
+
+nodeSelector:
+  dedicated: ci
+
+volumeMounts:
+  - name: artifacts
+    mountPath: /artifacts
