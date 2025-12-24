@@ -68,7 +68,7 @@ global:
   # @schema
   # required: false
   # @schema
-  #-- -v, -vv, -vvv
+  # -- -v, -vv, -vvv
   logLevel: ""
   # @schema
   # required: false
