@@ -5,16 +5,27 @@ import (
 
 	"github.com/flanksource/clicky"
 	"github.com/flanksource/commons-test/helm"
+	"github.com/flanksource/commons/files"
 	"github.com/flanksource/commons/http"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = Describe("Mission Control", func() {
 
 	It("Basic Auth", func() {
+		By("Installing Mission Control CRDS")
+		crds, err := files.DoubleStarGlob("../crds", []string{"*.yaml"})
+		Expect(err).NotTo(HaveOccurred(), "Failed to read CRD files")
+		Expect(len(crds)).To(BeNumerically(">", 0), "No CRD files found in ../crds")
+		for _, file := range crds {
+			Expect(k8s.ApplyFile(context.TODO(), "../crds/"+file)).To(Succeed(), "Failed to apply CRD %s", file)
+		}
+
+		By("Installing Mission Control")
+		k8s.ApplyFile(context.TODO())
+		mcChart = helm.NewHelmChart(ctx, "..")
 
 		By("Installing Mission Control")
 		mcChart = helm.NewHelmChart(ctx, "..")
