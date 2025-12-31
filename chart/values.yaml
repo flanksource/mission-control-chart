@@ -20,27 +20,120 @@ image:
 # required: false
 # @schema
 global:
-  # -v, -vv, -vvv
+  # @schema
+  # additionalProperties: true
+  # required: false
+  # @schema
+  podAnnotations: {}
+
+  # @schema
+  # required: false
+  # type: array
+  # items:
+  #   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Volume
+  # @schema
+  volumes: []
+
+  # @schema
+  # required: false
+  # type: array
+  # items:
+  #   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount
+  # @schema
+  volumeMounts: []
+
+  # @schema
+  # required: false
+  # additionalProperties: true
+  # type: object
+  # @schema
+  # -- node's labels for the pod to be scheduled on that node. See [Node Selector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
+  nodeSelector: {}
+
+  # @schema
+  # required: false
+  # type: array
+  # items:
+  #   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration
+  # @schema
+  tolerations: []
+
+  # @schema
+  # required: false
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Affinity
+  # @schema
+  affinity: {}
+
+  # @schema
+  # required: false
+  # @schema
+  #-- -v, -vv, -vvv
   logLevel: ""
+  # @schema
+  # required: false
+  # @schema
   imageRegistry: public.ecr.aws
+  # @schema
+  # required: false
+  # @schema
   imagePrefix: flanksource
   # @schema
   # type: object
+  # required: false
   # additionalProperties: true
   # @schema
   labels: {}
+  # @schema
+  # type: object
+  # required: false
+  # additionalProperties: true
+  # @schema
   serviceMonitor:
+    # @schema
+    # required: false
+    # @schema
     enabled: false
+    # @schema
+    # type: object
+    # required: false
+    # additionalProperties: true
+    # @schema
     labels: {}
+  # @schema
+  # type: object
+  # required: false
+  # additionalProperties: true
+  # @schema
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
+  # @schema
+  # type: object
+  # required: false
+  # additionalProperties: true
+  # @schema
   api:
     host: "mission-control-ui.local"
     tlsSecretName: ""
+  # @schema
+  # type: object
+  # required: false
+  # additionalProperties: true
+  # @schema
   otel:
+    # @schema
+    # required: false
+    # @schema
     collector: ""
+    # @schema
+    # required: false
+    # @schema
     labels: ""
+  # @schema
+  # type: object
+  # required: false
+  # additionalProperties: true
+  # @schema
   db:
     connectionPooler:
       enabled: false
@@ -304,18 +397,30 @@ db:
     timezone: "UTC"
     password_encryption: scram-sha-256
     extra_float_digits: 0
+  # @schema
+  # required: false
+  # @schema
   secretKeyRef:
     name: incident-commander-postgres
     key: DB_URL
+  # @schema
+  # required: false
+  # @schema
   jwtSecretKeyRef:
     name: incident-commander-postgrest-jwt
     key: PGRST_JWT_SECRET
+  # @schema
+  # required: false
+  # @schema
   storageClass: ""
   storage: 20Gi
   shmVolume: 256Mi
   resources:
     requests:
       memory: 4Gi
+  # @schema
+  # required: false
+  # @schema
   pganalyze:
     enabled: false
     systemID: mission-control
@@ -342,7 +447,7 @@ adminPassword:
     key: password
 # @schema
 # required: false
-# additionalProperties: true
+# $ref: https://raw.githubusercontent.com/flanksource/canary-checker/refs/heads/master/chart/values.schema.json
 # @schema
 canary-checker:
   image:
@@ -365,7 +470,7 @@ canary-checker:
     enabled: false
 # @schema
 # required: false
-# additionalProperties: true
+# $ref: https://raw.githubusercontent.com/flanksource/config-db/refs/heads/main/chart/values.schema.json
 # @schema
 config-db:
   disablePostgrest: true
@@ -421,15 +526,46 @@ cleanupResourcesOnDelete: false
 # additionalProperties: true
 # @schema
 flanksource-ui:
+  # @schema
+  # required: false
+  # type: boolean
+  # @schema
   enabled: true
+  # @schema
+  # required: false
+  # @schema
   nameOverride: "incident-manager-ui"
+  # @schema
+  # required: false
+  # @schema
   fullnameOverride: "incident-manager-ui"
-  # This should be $host/api/.ory
+  # @schema
+  # required: false
+  # @schema
   oryKratosURL: http://{{.Values.global.ui.host}}/api/.ory
+  # @schema
+  # required: false
+  # @schema
   backendURL: http://mission-control:8080
+  # @schema
+  # required: false
+  # @schema
   ingress:
+    # @schema
+    # required: false
+    # type: boolean
+    # @schema
     enabled: true
+    # @schema
+    # required: false
+    # @schema
     host: "{{.Values.global.ui.host}}"
+    # @schema
+    # required: false
+    # type: array
+    # items:
+    #   type: object
+    # @schema
     tls:
       - hosts:
           - "{{.Values.global.ui.host}}"
@@ -483,9 +619,6 @@ kratos:
   ingress:
     public:
       enabled: false
-  # NOTE(ciju): we have our own template for kratos-config. Which means kratos
-  # templates doesn't have access to the config file, to generate hash from.
-  # This could be fixed by explicitly passing hash value?
   configmap:
     hashSumEnabled: false
   kratos:
@@ -498,29 +631,12 @@ kratos:
       type: initContainer
     # Config to be merged in kratos ConfigMap. See: templates/kratos-config.yaml
     config:
-      secrets:
-        default:
-          - yet another secret
-          - lorem ipsum dolores
-          - just a random a string secret
-      courier:
-        smtp:
-          connection_uri: smtp://wrong-url
       session:
         # Session lifespan. Default: 14 days
         lifespan: 336h
       log:
         level: warning
-# @schema
-# required: false
-# @schema
-resources:
-  requests:
-    cpu: 100m
-    memory: 768Mi
-  limits:
-    memory: 1024Mi
-    cpu: 500m
+
 # @schema
 # required: false
 # @schema
@@ -550,14 +666,98 @@ views:
   # type: boolean
   # @schema
   kubernetes: true
+
 # @schema
 # required: false
-# additionalProperties: false
+# $ref: https://raw.githubusercontent.com/flanksource/mission-control-registry/refs/heads/main/charts/kubernetes-view/values.schema.json
 # @schema
 mission-control-kubernetes-view: {}
+
 # @schema
 # required: false
 # additionalProperties: true
 # @schema
 disabled:
   canary-checker: false
+
+# Extra values to be applied to the pod spec
+# @schema
+# additionalProperties: true
+# @schema
+extra: {}
+
+# @schema
+# $ref:  https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements
+# required: false
+# @schema
+resources:
+  requests:
+    cpu: 100m
+    memory: 768Mi
+  limits:
+    memory: 1024Mi
+    cpu: 500m
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.PodSecurityContext
+# skipProperties: true # Assuming this means it's a well-defined K8s object, but let's ensure it's clear for schema
+# additionalProperties: true # This seems contradictory if it's a standard K8s object unless used for extensions.
+# @schema
+podSecurityContext:
+  # @schema
+  # required: false
+  # type: integer
+  # @schema
+  fsGroup: 1000
+
+# @schema
+# required: false
+# type: array
+# items:
+# @schema
+# -- Image pull secrets for the main application image
+imagePullSecrets: []
+
+# @schema
+# additionalProperties: true
+# required: false
+# @schema
+podAnnotations: {}
+
+# @schema
+# required: false
+# type: array
+# items:
+#   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Volume
+# @schema
+volumes: []
+
+# @schema
+# required: false
+# type: array
+# items:
+#   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount
+# @schema
+volumeMounts: []
+
+# @schema
+# required: false
+# additionalProperties: true
+# type: object
+# @schema
+# -- node's labels for the pod to be scheduled on that node. See [Node Selector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
+nodeSelector: {}
+
+# @schema
+# required: false
+# type: array
+# items:
+#   $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration
+# @schema
+tolerations: []
+
+# @schema
+# required: false
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.35.0/_definitions.json#/definitions/io.k8s.api.core.v1.Affinity
+# @schema
+affinity: {}

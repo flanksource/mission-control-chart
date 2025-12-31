@@ -1,14 +1,6 @@
 # mission-control
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.0.10](https://img.shields.io/badge/AppVersion-0.0.10-informational?style=flat-square)
-
 A Helm chart for flanksource mission control
-
-## Maintainers
-
-| Name | Email | Url |
-| ---- | ------ | --- |
-| Flanksource |  |  |
 
 ## Requirements
 
@@ -28,6 +20,7 @@ A Helm chart for flanksource mission control
 | adminPassword.secretKeyRef.create | bool | `true` |  |
 | adminPassword.secretKeyRef.key | string | `"password"` |  |
 | adminPassword.secretKeyRef.name | string | `"mission-control-admin-password"` |  |
+| affinity | object | `{}` |  |
 | apm-hub.db.enabled | bool | `false` |  |
 | apm-hub.db.secretKeyRef.create | bool | `false` |  |
 | apm-hub.db.secretKeyRef.key | string | `"DB_URL"` |  |
@@ -108,6 +101,7 @@ A Helm chart for flanksource mission control
 | externalPostgrest.logLevel | string | `"info"` |  |
 | externalPostgrest.maxRows | int | `2000` |  |
 | externalPostgrest.tag | string | `"v10.2.0"` |  |
+| extra | object | `{}` |  |
 | extraArgs | object | `{}` |  |
 | flanksource-ui.backendURL | string | `"http://mission-control:8080"` |  |
 | flanksource-ui.enabled | bool | `true` |  |
@@ -118,6 +112,7 @@ A Helm chart for flanksource mission control
 | flanksource-ui.ingress.tls[0].secretName | string | `"{{.Values.global.ui.tlsSecretName}}"` |  |
 | flanksource-ui.nameOverride | string | `"incident-manager-ui"` |  |
 | flanksource-ui.oryKratosURL | string | `"http://{{.Values.global.ui.host}}/api/.ory"` |  |
+| global.affinity | object | `{}` |  |
 | global.api.host | string | `"mission-control-ui.local"` |  |
 | global.api.tlsSecretName | string | `""` |  |
 | global.db.connectionPooler.enabled | bool | `false` |  |
@@ -130,12 +125,17 @@ A Helm chart for flanksource mission control
 | global.imageRegistry | string | `"public.ecr.aws"` |  |
 | global.labels | object | `{}` |  |
 | global.logLevel | string | `""` |  |
+| global.nodeSelector | object | `{}` | node's labels for the pod to be scheduled on that node. See [Node Selector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) |
 | global.otel.collector | string | `""` |  |
 | global.otel.labels | string | `""` |  |
+| global.podAnnotations | object | `{}` |  |
 | global.serviceMonitor.enabled | bool | `false` |  |
 | global.serviceMonitor.labels | object | `{}` |  |
+| global.tolerations | list | `[]` |  |
 | global.ui.host | string | `"mission-control-ui.local"` |  |
 | global.ui.tlsSecretName | string | `"mission-control-ui-tls"` |  |
+| global.volumeMounts | list | `[]` |  |
+| global.volumes | list | `[]` |  |
 | grafana.scrapeMetricsDashboard.enabled | bool | `false` |  |
 | grafana.scrapeMetricsDashboard.labels.grafana_dashboard | string | `"1"` |  |
 | htpasswd.create | bool | `false` |  |
@@ -147,7 +147,8 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1486"` |  |
+| image.tag | string | `"v0.0.1485"` |  |
+| imagePullSecrets | list | `[]` | Image pull secrets for the main application image |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -179,17 +180,14 @@ A Helm chart for flanksource mission control
 | kratos.ingress.public.enabled | bool | `false` |  |
 | kratos.kratos.automigration.enabled | bool | `true` |  |
 | kratos.kratos.automigration.type | string | `"initContainer"` |  |
-| kratos.kratos.config.courier.smtp.connection_uri | string | `"smtp://wrong-url"` |  |
 | kratos.kratos.config.log.level | string | `"warning"` |  |
-| kratos.kratos.config.secrets.default[0] | string | `"yet another secret"` |  |
-| kratos.kratos.config.secrets.default[1] | string | `"lorem ipsum dolores"` |  |
-| kratos.kratos.config.secrets.default[2] | string | `"just a random a string secret"` |  |
 | kratos.kratos.config.session.lifespan | string | `"336h"` |  |
 | kratos.secret.enabled | bool | `false` |  |
 | llmConnection | string | `""` | llm connection string |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | mission-control-kubernetes-view | object | `{}` |  |
 | nameOverride | string | `""` |  |
+| nodeSelector | object | `{}` | node's labels for the pod to be scheduled on that node. See [Node Selector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
@@ -197,6 +195,8 @@ A Helm chart for flanksource mission control
 | permissions.configs | bool | `false` | when enabled, services must have explicit permissions to read configs otherwise, system automatically has permission to read all configs. |
 | permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
 | permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
+| podAnnotations | object | `{}` |  |
+| podSecurityContext.fsGroup | int | `1000` |  |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
@@ -220,6 +220,9 @@ A Helm chart for flanksource mission control
 | serviceMonitor.enabled | bool | `false` |  |
 | serviceMonitor.labels | object | `{}` |  |
 | smtp.secretRef.name | string | `"incident-commander-smtp"` |  |
+| tolerations | list | `[]` |  |
 | upstream_push | object | `{}` |  |
 | views.kubernetes | bool | `true` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
 

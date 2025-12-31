@@ -26,9 +26,6 @@ dependencies:
     version: "0.32.0"
     repository: https://k8s.ory.sh/helm/charts
     condition: kratos.enabled
-    import-values:
-      - child: secret
-        parent: kratossecret
   - name: mission-control-kubernetes-view
     version: ">= 0.1.36"
     repository: https://flanksource.github.io/charts
