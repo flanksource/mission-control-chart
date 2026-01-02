@@ -3,7 +3,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1500"
+  tag: "v0.0.1501"
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -15,13 +15,11 @@ jsonLogs: true
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
-
   # @schema
   # required: false
   # default: true
   # @schema
   create: true
-
   name: mission-control-sa
   rbac:
     # Whether to create cluster-wide or namespaced roles
