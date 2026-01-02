@@ -15,6 +15,13 @@ jsonLogs: true
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
+
+  # @schema
+  # required: false
+  # default: true
+  # @schema
+  create: true
+
   name: mission-control-sa
   rbac:
     # Whether to create cluster-wide or namespaced roles
