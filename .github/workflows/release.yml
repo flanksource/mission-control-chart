@@ -4,10 +4,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      check_duty:
+        description: "Check duty"
+        type: boolean
+        default: false
 
 jobs:
   duty-version-check:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && inputs.check_duty
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
