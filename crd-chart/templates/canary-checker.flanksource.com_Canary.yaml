@@ -80,6 +80,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -312,6 +317,11 @@ spec:
                       connection:
                         description: ConnectionName of the connection. It'll be used to populate the endpoint, accessKey and secretKey.
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -542,6 +552,11 @@ spec:
                       connection:
                         description: ConnectionName of the connection. It'll be used to populate the endpoint, accessKey and secretKey.
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -734,6 +749,11 @@ spec:
                         type: array
                       connection:
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -882,6 +902,11 @@ spec:
                 catalog:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -1083,6 +1108,11 @@ spec:
                       connection:
                         description: ConnectionName of the connection. It'll be used to populate the endpoint, accessKey and secretKey.
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -1346,6 +1376,10 @@ spec:
                                 type: object
                             type: object
                         type: object
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       expectedDigest:
@@ -1405,6 +1439,10 @@ spec:
                 containerdPush:
                   items:
                     properties:
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -1463,6 +1501,11 @@ spec:
                 databaseBackup:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -1616,6 +1659,11 @@ spec:
                 dns:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       exactreply:
@@ -1773,6 +1821,10 @@ spec:
                                 type: object
                             type: object
                         type: object
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       expectedDigest:
@@ -1917,6 +1969,10 @@ spec:
                                 type: object
                             type: object
                         type: object
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -2014,6 +2070,11 @@ spec:
                         type: object
                       connection:
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -2108,6 +2169,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -2411,10 +2477,14 @@ spec:
                             type: object
                           connection:
                             type: string
+                          depth:
+                            type: integer
                           destination:
                             description: |-
                               Destination is the full path to where the contents of the URL should be downloaded to.
                               If left empty, the sha256 hash of the URL will be used as the dir name.
+
+                              Deprecated: no similar functionality available. This depends on the use case
                             type: string
                           password:
                             properties:
@@ -3124,6 +3194,11 @@ spec:
                             description: ServiceAccount when enabled will allow access to KUBERNETES env vars
                             type: boolean
                         type: object
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -3410,6 +3485,11 @@ spec:
                             description: 'Use path style path: http://s3.amazonaws.com/BUCKET/KEY instead of http://BUCKET.s3.amazonaws.com/KEY'
                             type: boolean
                         type: object
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -3786,6 +3866,11 @@ spec:
                 gitProtocol:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -3964,6 +4049,11 @@ spec:
                     properties:
                       connection:
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -4185,6 +4275,10 @@ spec:
                         type: string
                       chartmuseum:
                         type: string
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -4281,6 +4375,11 @@ spec:
                             description: RandomDelay is the extra randomized duration to wait added to Delay before creating a new request, defaults to 100ms
                             type: string
                         type: object
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -4733,6 +4832,11 @@ spec:
                 icmp:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       endpoint:
@@ -4803,6 +4907,11 @@ spec:
                 jmeter:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       host:
@@ -4932,6 +5041,11 @@ spec:
                           required:
                             - path
                           type: object
+                        type: array
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
                         type: array
                       description:
                         type: string
@@ -5108,6 +5222,11 @@ spec:
                       connection:
                         description: Connection name to populate kubeconfig
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -5581,6 +5700,11 @@ spec:
                       connection:
                         description: Connection name to populate kubeconfig
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -5956,6 +6080,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -6103,6 +6232,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -6242,6 +6376,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -6424,6 +6563,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -6609,6 +6753,10 @@ spec:
                       deleteTimeout:
                         format: int64
                         type: integer
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       expectedContent:
@@ -6709,6 +6857,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -6898,6 +7051,10 @@ spec:
                       deleteTimeout:
                         format: int64
                         type: integer
+                      dependsOn:
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       expectedContent:
@@ -6990,6 +7147,11 @@ spec:
                       connection:
                         description: Connection name e.g. connection://http/google
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -7212,6 +7374,11 @@ spec:
                         type: object
                       connection:
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       digest:
@@ -7629,6 +7796,11 @@ spec:
                 pubsub:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -7982,6 +8154,11 @@ spec:
                         type: string
                       db:
                         type: integer
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -8179,6 +8356,11 @@ spec:
                       connection:
                         description: Name of the connection used to derive restic password.
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       icon:
@@ -8378,6 +8560,11 @@ spec:
                       connection:
                         description: ConnectionName of the connection. It'll be used to populate the endpoint, accessKey and secretKey.
                         type: string
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       endpoint:
@@ -8529,13 +8716,19 @@ spec:
                 schedule:
                   description: |-
                     Schedule to run checks on. Supports all cron expression, example: '30 3-6,20-23 * * *'. For more info about cron expression syntax see https://en.wikipedia.org/wiki/Cron
-                     Also supports golang duration, can be set as '@every 1m30s' which runs the check every 1 minute and 30 seconds.
+                    Also supports golang duration, can be set as '@every 1m30s' which runs the check every 1 minute and 30 seconds.
+                    If both schedule and interval are empty, the canary will not run
                   type: string
                 severity:
                   type: string
                 tcp:
                   items:
                     properties:
+                      dependsOn:
+                        description: DependsOn lists the checks that must complete before this one runs
+                        items:
+                          type: string
+                        type: array
                       description:
                         type: string
                       display:
@@ -8627,6 +8820,11 @@ spec:
                   type: array
                 webhook:
                   properties:
+                    dependsOn:
+                      description: DependsOn lists the checks that must complete before this one runs
+                      items:
+                        type: string
+                      type: array
                     description:
                       description: Description for the check
                       type: string
