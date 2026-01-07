@@ -78,6 +78,13 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
 {{- if .Values.serviceAccount.rbac.secrets}}
 - apiGroups:
     - v1
