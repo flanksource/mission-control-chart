@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
-{{- if and .Values.views.enabled .Values.views.pods.enabled }}
+{{- if and .Values.views.enabled .Values.views.pods.enabled .Values.global.prometheus.connection }}
 apiVersion: mission-control.flanksource.com/v1
 kind: View
 metadata:

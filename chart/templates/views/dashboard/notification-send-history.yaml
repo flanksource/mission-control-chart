@@ -58,15 +58,6 @@ spec:
       width: '2'
   queries:
     notification_send_history:
-      columns:
-        id: string
-        notification_id: string
-        status: string
-        error: string
-        age: datetime
-        duration_millis: integer
-        retries: integer
-        count: integer
       sql:
         connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
         query: |
@@ -84,7 +75,7 @@ spec:
             error,
             created_at as age
           FROM notification_send_history_summary
-          WHERE NOW() - created_at < INTERVAL '123333 hours'
+          WHERE NOW() - created_at < INTERVAL '12 hours'
             AND status NOT IN ('skipped', 'silenced', 'inhibited', 'repeat-interval')
           ORDER BY created_at DESC
 {{- end}}
