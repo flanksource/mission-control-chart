@@ -1,0 +1,161 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.recentChanges.enabled}}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: recent-changes
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Recent Changes
+    icon: warning
+    {{- if .Values.views.recentChanges.sidebar }}
+    sidebar: true
+    {{- end }}
+    table:
+      size: 10
+      sort: -last_seen
+  panels:
+    - name: Recent Changes
+      type: number
+      description: Last 12h
+      query: SELECT count as value FROM changes_count_last_12h
+    - name: Changes by Type
+      description: Changes in the last 12 hrs
+      type: timeseries
+      timeseries:
+        style: points
+        timeKey: time_bucket
+        valueKey: changes
+      query: SELECT time_bucket, changes, change_type FROM changes_by_type_timeseries
+    - name: Changes by Config Type
+      description: Changes in the last 12 hrs
+      type: timeseries
+      timeseries:
+        style: points
+        timeKey: time_bucket
+        valueKey: changes
+      query: SELECT time_bucket, changes, config_type FROM changes_by_config_type_timeseries
+    - name: By Severity
+      description: Recent Changes grouped by severity
+      type: piechart
+      piechart:
+        colors:
+          unhealthy: "#F04E6E"
+          warning: "#F4B23C"
+      query: SELECT COUNT(*) AS count, severity FROM recent_changes GROUP BY severity
+    - name: By Type
+      description: Recent Changes grouped by type
+      type: piechart
+      query: SELECT COUNT(*) AS count, change_type AS type FROM recent_changes GROUP BY change_type
+  columns:
+    - name: change_id
+      type: string
+      hidden: true
+      primaryKey: true
+    - name: last_seen
+      width: "2"
+      type: datetime
+    - name: config_type
+      type: string
+      hidden: true
+      filter:
+        type: multiselect
+    - name: catalog
+      width: "4"
+      type: config_item
+    - name: type
+      width: "2"
+      type: string
+      icon: row.type
+      filter:
+        type: multiselect
+    - name: summary
+      width: "4"
+      type: string
+    - name: severity
+      width: "2"
+      type: string
+      filter:
+        type: multiselect
+      hidden: true
+    - name: tags
+      width: "3"
+      type: labels
+      filter:
+        type: multiselect
+    - name: created_by
+      width: "2"
+      type: string
+  merge: >
+    SELECT
+      id as change_id,
+      config_id as id,
+      name as catalog,
+      type as config_type,
+      change_type as type,
+      severity,
+      summary,
+      tags,
+      created_at AS last_seen,
+      source as created_by
+    FROM recent_changes
+    WHERE type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
+  queries:
+    changes_by_config_type_timeseries:
+      columns:
+        time_bucket: timestamp
+        config_type: string
+        changes: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT
+              to_timestamp(
+                  floor(extract(epoch FROM created_at) / 15) * 15 -- like a 15s scrape interval
+              ) AT TIME ZONE 'UTC' AS time_bucket,
+              type as config_type,
+              count(*) AS changes
+          FROM catalog_changes
+          WHERE NOW() - created_at <= INTERVAL '12 hours'
+            AND type LIKE 'Kubernetes::%'
+            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
+          GROUP BY time_bucket, config_type
+          ORDER BY 1 DESC;
+    changes_by_type_timeseries:
+      columns:
+        time_bucket: timestamp
+        change_type: string
+        changes: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT
+              to_timestamp(
+                  floor(extract(epoch FROM created_at) / 15) * 15 -- like a 15s scrape interval
+              ) AT TIME ZONE 'UTC' AS time_bucket,
+              change_type,
+              count(*) AS changes
+          FROM catalog_changes
+          WHERE NOW() - created_at <= INTERVAL '12 hours'
+            AND change_type != 'diff'
+            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
+          GROUP BY time_bucket, change_type
+          ORDER BY time_bucket DESC;
+    changes_count_last_12h:
+      columns:
+        count: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT COUNT(*) AS count
+          FROM catalog_changes
+          WHERE NOW() - created_at <= INTERVAL '12 hours'
+            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig');
+    recent_changes:
+      changes:
+        name: "*"
+        search: "severity!=info change_type!=diff created_at > now-12h type!=MissionControl::Canary type!=MissionControl::ScrapeConfig"
+{{- end}}

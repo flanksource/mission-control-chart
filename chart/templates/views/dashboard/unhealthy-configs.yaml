@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.unhealthyConfigs.enabled }}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: unhealthy-configs
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Configs
+    icon: warning
+    {{- if .Values.views.unhealthyConfigs.sidebar }}
+    sidebar: true
+    {{- end }}
+    table:
+      sort: -updated
+  panels:
+    - name: By Type
+      description: Unhealthy configs grouped by type
+      type: piechart
+      query: SELECT COUNT(*) AS count, config_class AS type FROM configs GROUP BY config_class
+    - name: By Status
+      description: Unhealthy configs grouped by status
+      type: piechart
+      query: SELECT COUNT(*) AS count, status FROM configs GROUP BY status
+    - name: Total Unhealthy
+      description: Total count of unhealthy configs
+      type: number
+      query: SELECT COUNT(*) AS value FROM configs
+  columns:
+    - name: id
+      type: string
+      hidden: true
+      primaryKey: true
+    - name: name
+      type: config_item
+    - name: health
+      type: health
+      filter:
+        type: multiselect
+    - name: status
+      type: status
+      icon: row.health
+      filter:
+        type: multiselect
+    - name: tags
+      type: labels
+      filter:
+        type: multiselect
+    - name: created
+      type: datetime
+    - name: updated
+      type: datetime
+  queries:
+    configs:
+      configs:
+        agent: "all"
+        health: "unhealthy,warning"
+        limit: 200
+        search: "type!=MissionControl::Canary type!=MissionControl::ScrapeConfig"
+  mapping:
+    updated: row.updated_at
+    created: row.created_at
+    
+{{- end}}

@@ -41,6 +41,16 @@ global:
   otel:
     collector: ""
     labels: ""
+  # @schema
+  # type: object
+  # additionalProperties: false
+  # @schema
+  prometheus:
+    # @schema
+    # type: string
+    # required: false
+    # @schema
+    connection: ""
   db:
     connectionPooler:
       enabled: false
@@ -542,14 +552,173 @@ grafana:
       grafana_dashboard: "1"
 # @schema
 # required: false
+# type: string
+# @schema
+connectionName: mission-control-db
+
+# @schema
+# required: false
+# type: boolean
+# @schema
+createConnection: true
+
+# @schema
+# required: false
 # additionalProperties: false
 # @schema
 views:
+  # If this is set to false, no views will be created
+  enabled: true
+
   # @schema
   # required: false
   # type: boolean
   # @schema
   kubernetes: true
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  unhealthyConfigs:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  dashboard:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: true
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  system:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: true
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  job_histories:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  recentChanges:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  failingHealthChecks:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
+
+  # @schema
+  # type: object
+  # required: false
+  # @schema
+  notificationSendHistory:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
+
+  # @schema
+  # required: false
+  # type: object
+  # @schema
+  pods:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    sidebar: false
 # @schema
 # required: false
 # additionalProperties: false

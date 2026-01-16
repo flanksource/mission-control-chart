@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.dashboard.enabled }}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: mission-control-dashboard
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Dashboard
+    icon: dashboard-line
+    ordinal: 1
+    {{- if .Values.views.dashboard.sidebar }}
+    sidebar: true
+    {{- end }}
+  panels:
+    - name: Check Runs
+      description: Check runs in the 1hr
+      type: timeseries
+      timeseries:
+        timeKey: time_bucket
+        valueKey: total
+      query: >
+        SELECT
+          time_bucket,
+          CASE WHEN status = TRUE THEN 'pass' ELSE 'fail' END AS status,
+          total
+        FROM check_runs;
+  queries:
+    check_runs:
+      columns:
+        time_bucket: timestamp
+        status: boolean
+        total: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT 
+            to_timestamp(
+                  floor(extract(epoch FROM created_at) / 60) * 60
+              ) AT TIME ZONE 'UTC' AS time_bucket,
+            status,
+            COUNT(*) AS total
+          FROM check_statuses
+          WHERE NOW() - created_at <= INTERVAL '1 HOUR'
+          GROUP BY time_bucket, status
+          ORDER BY time_bucket DESC
+          LIMIT 10000; -- max limit
+  sections:
+    {{- if .Values.views.unhealthyConfigs.enabled }}
+    - title: Unhealthy Configs
+      icon: warning
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: unhealthy-configs
+    {{- end }}
+    {{- if .Values.views.recentChanges.enabled }}
+    - title: Recent Changes
+      icon: changes
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: recent-changes
+    {{- end }}
+    {{- if .Values.views.failingHealthChecks.enabled }}
+    - title: Failing Health Checks
+      icon: health
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: failing-health-checks
+    {{- end }}
+    {{- if .Values.views.notificationSendHistory.enabled }}
+    - title: Notification Send History
+      icon: bell
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: notification-send-history
+    {{- end }}
+{{- end }}

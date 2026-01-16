@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.system.enabled }}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: mission-control-system
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  cache:
+    minAge: 2s
+  display:
+    title: System
+    ordinal: 2
+    icon: server
+    {{- if .Values.views.system.sidebar }}
+    sidebar: true
+    {{- end }}
+  panels:
+    - name: Scraper Errors
+      description: Last 24 hours
+      type: number
+      query: SELECT COUNT(*) as value FROM scraper_summary
+    - name: Scraper Errors
+      description: List of scrapers that have errors
+      type: table
+      query: SELECT name as label, job_error_count as value FROM scraper_errors ORDER BY 2 DESC
+    - name: Notifications
+      description: Notifications sent in the last 24 hours
+      type: bargauge
+      query: SELECT UPPER(status) as label, count as value FROM recent_notifications
+    - name: Agents
+      description: Resources per agent
+      type: piechart
+      query: SELECT name as label, count FROM agent_resources
+  queries:
+    recent_notifications:
+      columns:
+        status: string
+        count: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT status, COUNT(*) as count
+          FROM notification_send_history
+          WHERE created_at > NOW() - INTERVAL '72 hours'
+          GROUP BY status;
+    agent_resources:
+      columns:
+        name: string
+        count: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT name,
+                COALESCE(config_count, 0)
+              + COALESCE(config_scrapper_count, 0)
+              + COALESCE(checks_count, 0)
+              + COALESCE(playbook_runs_count, 0) AS count
+          FROM agents_summary;
+    scraper_errors:
+      columns:
+        name: string
+        job_last_failed: timestamp
+        job_error_count: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT name, job_last_failed, job_error_count
+          FROM config_scrapers_with_status
+          WHERE job_error_count > 0
+    scraper_summary:
+      columns:
+        id: string
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT id
+          FROM config_scrapers_with_status
+          WHERE NOW() - job_last_failed < INTERVAL '1 day'
+  sections:
+    {{- if .Values.views.pods.enabled }}
+    - title: Mission Control Pods
+      icon: pod
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: mission-control-pods
+    {{- end }}
+    {{- if .Values.views.job_histories.enabled }}
+    - title: Failed Jobs
+      icon: job
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: jobhistory
+    {{- end }}
+{{- end }}
