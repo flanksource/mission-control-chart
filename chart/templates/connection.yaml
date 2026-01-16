@@ -1,0 +1,34 @@
+{{- if .Values.createConnection }}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/connection.schema.json
+apiVersion: mission-control.flanksource.com/v1
+kind: Connection
+metadata:
+  name: {{ .Values.connectionName }}
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  postgres:
+    database:
+      valueFrom:
+        secretKeyRef:
+          name: incident-commander-postgres
+          key: DATABASE
+    insecureTLS: true
+    host:
+      valueFrom:
+        secretKeyRef:
+          name: incident-commander-postgres
+          key: POSTGRES_HOST
+    username:
+      valueFrom:
+        secretKeyRef:
+          name: incident-commander-postgres
+          key: POSTGRES_USER
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: incident-commander-postgres
+          key: POSTGRES_PASSWORD
+{{- end }}
