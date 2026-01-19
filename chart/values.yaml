@@ -24,7 +24,7 @@ image:
   # @schema
   # required: false
   # @schema
-  tag: "v0.0.1526"
+  tag: "v0.0.1527"
 # @schema
 # required: false
 # @schema
@@ -587,13 +587,11 @@ grafana:
 # type: string
 # @schema
 connectionName: mission-control-db
-
 # @schema
 # required: false
 # type: boolean
 # @schema
 createConnection: true
-
 # @schema
 # required: false
 # additionalProperties: false
@@ -601,13 +599,11 @@ createConnection: true
 views:
   # If this is set to false, no views will be created
   enabled: true
-
   # @schema
   # required: false
   # type: boolean
   # @schema
   kubernetes: true
-
   # @schema
   # type: object
   # required: false
@@ -645,7 +641,6 @@ views:
       - MissionControl::Scope
       - MissionControl::Team
       - MissionControl::View
-
   # @schema
   # type: object
   # required: false
@@ -663,7 +658,6 @@ views:
     # default: false
     # @schema
     sidebar: true
-
   # @schema
   # type: object
   # required: false
@@ -681,7 +675,6 @@ views:
     # default: false
     # @schema
     sidebar: true
-
   # @schema
   # type: object
   # required: false
@@ -699,7 +692,6 @@ views:
     # default: false
     # @schema
     sidebar: false
-
   # @schema
   # type: object
   # required: false
@@ -717,7 +709,6 @@ views:
     # default: false
     # @schema
     sidebar: false
-
   # @schema
   # type: object
   # required: false
@@ -735,7 +726,6 @@ views:
     # default: false
     # @schema
     sidebar: false
-
   # @schema
   # type: object
   # required: false
@@ -753,7 +743,6 @@ views:
     # default: false
     # @schema
     sidebar: false
-
   # @schema
   # required: false
   # type: object
