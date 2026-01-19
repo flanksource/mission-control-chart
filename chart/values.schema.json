@@ -85,6 +85,18 @@
       "required": [],
       "type": "object"
     },
+    "connectionName": {
+      "default": "mission-control-db",
+      "required": [],
+      "title": "connectionName",
+      "type": "string"
+    },
+    "createConnection": {
+      "default": true,
+      "required": [],
+      "title": "createConnection",
+      "type": "boolean"
+    },
     "db": {
       "additionalProperties": false,
       "properties": {
@@ -467,6 +479,20 @@
             "labels"
           ],
           "title": "otel",
+          "type": "object"
+        },
+        "prometheus": {
+          "additionalProperties": false,
+          "properties": {
+            "connection": {
+              "default": "",
+              "required": [],
+              "title": "connection",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "prometheus",
           "type": "object"
         },
         "serviceMonitor": {
@@ -1133,14 +1159,183 @@
     "views": {
       "additionalProperties": false,
       "properties": {
+        "dashboard": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "dashboard",
+          "type": "object"
+        },
+        "enabled": {
+          "default": true,
+          "description": "If this is set to false, no views will be created",
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "failingHealthChecks": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "failingHealthChecks",
+          "type": "object"
+        },
+        "job_histories": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "job_histories",
+          "type": "object"
+        },
         "kubernetes": {
           "default": true,
           "required": [],
           "title": "kubernetes",
           "type": "boolean"
+        },
+        "notificationSendHistory": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "notificationSendHistory",
+          "type": "object"
+        },
+        "pods": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "pods",
+          "type": "object"
+        },
+        "recentChanges": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "recentChanges",
+          "type": "object"
+        },
+        "system": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "system",
+          "type": "object"
+        },
+        "unhealthyConfigs": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "sidebar": {
+              "default": false,
+              "required": [],
+              "title": "sidebar",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "unhealthyConfigs",
+          "type": "object"
         }
       },
-      "required": [],
+      "required": [
+        "enabled"
+      ],
       "title": "views"
     }
   },

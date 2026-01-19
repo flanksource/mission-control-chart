@@ -1,0 +1,187 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.pods.enabled .Values.global.prometheus.connection }}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: mission-control-pods
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Mission Control Pods
+    icon: pod
+    {{- if .Values.views.pods.sidebar }}
+    sidebar: true
+    {{- end }}
+  columns:
+    - name: id
+      type: string
+      hidden: true
+      primaryKey: true
+    - name: namespace
+      type: string
+      card:
+        position: subtitle
+      icon: "'namespace'"
+      filter:
+        type: multiselect
+      url:
+        view:
+          filter:
+            viewvar__namespace: row.namespace
+            viewvar__cluster: row.cluster
+          name: >
+            'namespace'
+    - name: name
+      type: config_item
+      card:
+        position: title
+      url:
+        config: row.id
+    - name: status
+      type: status
+      icon: row.health
+      card:
+        position: subtitle
+      filter:
+        type: multiselect
+    - name: health
+      type: health
+      hidden: true
+      card:
+        useForAccent: true
+      filter:
+        type: multiselect
+    - name: memory
+      type: gauge
+      unit: bytes
+      card:
+        position: headerRight
+      description: Memory usage
+      gauge:
+        max: row.memory_limit
+        thresholds:
+          - percent: 0
+            color: green
+          - percent: 75
+            color: orange
+          - percent: 90
+            color: red
+    - name: cpu
+      type: gauge
+      unit: millicore
+      card:
+        position: headerRight
+      gauge:
+        max: row.cpu_limit
+        thresholds:
+          - percent: 0
+            color: '#8BC34A'
+          - percent: 70
+            color: '#F4B23C'
+          - percent: 85
+            color: '#F25C54'
+    - name: created
+      type: datetime
+      card:
+        position: body
+    - name: updated
+      type: datetime
+      card:
+        position: body
+    - name: image
+      type: string
+      hidden: true
+      card:
+        position: body
+    - name: node
+      type: string
+      hidden: true
+      filter:
+        type: multiselect
+      card:
+        position: body
+  merge: |
+    SELECT
+      pod.id,
+      pod.name,
+      json_extract(pod.tags, '$.namespace') AS namespace,
+      json_extract(pod.tags, '$.cluster') AS cluster,
+      pod.status,
+      pod.health,
+      pod.config,
+      pod.created_at,
+      pod.updated_at,
+      memory.value as memory,
+      to_bytes(COALESCE(
+        json_extract(pod.config, '$.spec.containers[0].resources.limits.memory'), 
+        ''
+      )) AS memory_limit,
+      cpu.value as cpu,
+      to_millicores(COALESCE(
+        json_extract(pod.config, '$.spec.containers[0].resources.limits.cpu'), 
+        ''
+      )) AS cpu_limit
+    FROM pod
+    LEFT JOIN memory
+      ON pod.name = memory.pod 
+      AND json_extract(pod.tags, '$.namespace') = memory.namespace
+    LEFT JOIN cpu
+      ON pod.name = cpu.pod 
+      AND json_extract(pod.tags, '$.namespace') = cpu.namespace
+    ORDER BY namespace, name
+  queries:
+    memory:
+      columns:
+        namespace: string
+        pod: string
+        value: decimal
+      prometheus:
+        connection: '{{ .Values.global.prometheus.connection }}'
+        query: |
+          sum by (namespace, pod) (
+            container_memory_working_set_bytes{
+              container!="POD", # Skip The pause/infra container
+              container!="" # Skip dead containers
+            }
+          )
+    cpu:
+      columns:
+        namespace: string
+        pod: string
+        value: decimal
+      prometheus:
+        connection: '{{ .Values.global.prometheus.connection }}'
+        query: |
+          sum by (namespace, pod) (
+            irate(container_cpu_usage_seconds_total{
+              container!="POD", # Skip The pause/infra container
+              container!="" # Skip dead containers
+            }[5m])
+          ) * 1000
+    pod:
+      configs:
+        agent: "all"
+        tagSelector: "namespace=mission-control" # Just for testing. Need a way to distinguish mission control pods
+        types:
+          - Kubernetes::Pod
+    total_memory:
+      prometheus:
+        connection: '{{ .Values.global.prometheus.connection }}'
+        query: |
+          sum(machine_memory_bytes{})
+    total_cpu:
+      prometheus:
+        connection: '{{ .Values.global.prometheus.connection }}'
+        query: |
+          sum(machine_cpu_cores{}) * 1000
+  mapping:
+    created: row.created_at
+    updated: row.updated_at
+    image: >
+      has(row.config) ? row.config.JSON().spec.containers[0].image : "N/A"
+    node: >
+      has(row.config) ? (has(row.config.JSON().spec.nodeName) ? row.config.JSON().spec.nodeName : "N/A"): "N/A"
+
+{{- end -}}

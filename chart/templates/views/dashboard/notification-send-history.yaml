@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.notificationSendHistory.enabled}}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: notification-send-history
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Notification Send History
+    icon: bell
+    {{- if .Values.views.notificationSendHistory.sidebar }}
+    sidebar: true
+    {{- end }}
+    table:
+      size: 10
+      sort: -age
+  cache:
+    maxAge: 10m
+    minAge: 5s
+  columns:
+    - name: id
+      type: string
+      primaryKey: true
+      hidden: true
+    - name: age
+      type: datetime
+      width: '2'
+    # - name: notification_id
+    #   type: string
+    #   url:
+    #     template: "/notifications/$(.row.notification_id)"
+    - name: resource_name
+      type: config_item
+      width: '3'
+      icon: row.resource_type
+      url:
+        config: row.resource_id
+    - name: resource_current_health
+      hidden: true
+      type: health
+    - name: resource_status
+      type: status
+      icon: row.resource_current_health
+      width: '3'
+    - name: title
+      type: string
+      width: '4'
+    - name: resource_tags
+      type: labels
+      width: '3'
+      filter:
+        type: multiselect
+    - name: notification
+      type: status
+      width: '2'
+  queries:
+    notification_send_history:
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: |
+          SELECT
+            id,
+            notification_id,
+            status as notification,
+            resource_id,
+            resource->>'type' as resource_type,
+            resource->>'name' as resource_name,
+            resource->>'health' as resource_current_health,
+            resource->>'status' as resource_status,
+            resource_tags,
+            resource_health_description as title,
+            error,
+            created_at as age
+          FROM notification_send_history_summary
+          WHERE NOW() - created_at < INTERVAL '12 hours'
+            AND status NOT IN ('skipped', 'silenced', 'inhibited', 'repeat-interval')
+          ORDER BY created_at DESC
+{{- end}}
