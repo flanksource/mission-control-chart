@@ -4,3 +4,4 @@ charts/
 .bin/
 *.tgz
 .envrc
+values.test.yaml

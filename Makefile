@@ -73,3 +73,15 @@ lint: .bin/ct
 .PHONY: go-test
 go-test:
 	cd chart/test && ginkgo -r .
+
+# A helper stub to only template out views (dashboard / system) for debugging purpose.
+# make template-views | kubectl apply -n mc -f -
+.PHONY: template-views
+template-views:
+	@helm template mc-views ./chart \
+    -f ./chart/values.test.yaml \
+    --namespace mc \
+    --dependency-update \
+    --show-only 'templates/views/dashboard/*' \
+    --show-only 'templates/views/system/*' \
+    2>/dev/null
