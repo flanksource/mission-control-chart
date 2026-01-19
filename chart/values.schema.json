@@ -351,8 +351,7 @@
             "host",
             "tlsSecretName"
           ],
-          "title": "api",
-          "type": "object"
+          "title": "api"
         },
         "db": {
           "additionalProperties": false,
@@ -430,20 +429,17 @@
           "required": [
             "connectionPooler"
           ],
-          "title": "db",
-          "type": "object"
+          "title": "db"
         },
         "imagePrefix": {
           "default": "flanksource",
           "required": [],
-          "title": "imagePrefix",
-          "type": "string"
+          "title": "imagePrefix"
         },
         "imageRegistry": {
           "default": "public.ecr.aws",
           "required": [],
-          "title": "imageRegistry",
-          "type": "string"
+          "title": "imageRegistry"
         },
         "labels": {
           "additionalProperties": true,
@@ -453,10 +449,8 @@
         },
         "logLevel": {
           "default": "",
-          "description": "-v, -vv, -vvv",
           "required": [],
-          "title": "logLevel",
-          "type": "string"
+          "title": "logLevel"
         },
         "otel": {
           "additionalProperties": false,
@@ -478,8 +472,7 @@
             "collector",
             "labels"
           ],
-          "title": "otel",
-          "type": "object"
+          "title": "otel"
         },
         "prometheus": {
           "additionalProperties": false,
@@ -515,8 +508,7 @@
             "enabled",
             "labels"
           ],
-          "title": "serviceMonitor",
-          "type": "object"
+          "title": "serviceMonitor"
         },
         "ui": {
           "additionalProperties": false,
@@ -538,20 +530,10 @@
             "host",
             "tlsSecretName"
           ],
-          "title": "ui",
-          "type": "object"
+          "title": "ui"
         }
       },
-      "required": [
-        "logLevel",
-        "imageRegistry",
-        "imagePrefix",
-        "serviceMonitor",
-        "ui",
-        "api",
-        "otel",
-        "db"
-      ],
+      "required": [],
       "title": "global"
     },
     "grafana": {
@@ -673,27 +655,20 @@
         "pullPolicy": {
           "default": "IfNotPresent",
           "required": [],
-          "title": "pullPolicy",
-          "type": "string"
+          "title": "pullPolicy"
         },
         "repository": {
           "default": "docker.io/flanksource/incident-commander",
           "required": [],
-          "title": "repository",
-          "type": "string"
+          "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1500",
+          "default": "v0.0.1526",
           "required": [],
-          "title": "tag",
-          "type": "string"
+          "title": "tag"
         }
       },
-      "required": [
-        "repository",
-        "pullPolicy",
-        "tag"
-      ],
+      "required": [],
       "title": "image"
     },
     "impersonationRole": {
@@ -1320,6 +1295,15 @@
               "required": [],
               "title": "enabled",
               "type": "boolean"
+            },
+            "excludedTypes": {
+              "items": {
+                "required": [],
+                "type": "string"
+              },
+              "required": [],
+              "title": "excludedTypes",
+              "type": "array"
             },
             "sidebar": {
               "default": false,

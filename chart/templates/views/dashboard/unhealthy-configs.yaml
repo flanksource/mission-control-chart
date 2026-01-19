@@ -45,6 +45,8 @@ spec:
       icon: row.health
       filter:
         type: multiselect
+    - name: description
+      type: string
     - name: tags
       type: labels
       filter:
@@ -59,9 +61,13 @@ spec:
         agent: "all"
         health: "unhealthy,warning"
         limit: 200
-        search: "type!=MissionControl::Canary type!=MissionControl::ScrapeConfig"
+        {{- $excludedTypes := .Values.views.unhealthyConfigs.excludedTypes | default (list) -}}
+        {{- $excludedSearchParts := list -}}
+        {{- range $t := $excludedTypes -}}
+        {{- $excludedSearchParts = append $excludedSearchParts (printf "type!=%s" $t) -}}
+        {{- end }}
+        search: '{{ join " " $excludedSearchParts }}'
   mapping:
     updated: row.updated_at
     created: row.created_at
-    
 {{- end}}

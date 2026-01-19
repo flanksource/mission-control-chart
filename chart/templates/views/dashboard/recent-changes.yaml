@@ -89,6 +89,8 @@ spec:
     - name: created_by
       width: "2"
       type: string
+      filter:
+        type: multiselect
   merge: >
     SELECT
       id as change_id,
@@ -121,6 +123,7 @@ spec:
           FROM catalog_changes
           WHERE NOW() - created_at <= INTERVAL '12 hours'
             AND type LIKE 'Kubernetes::%'
+            AND change_type NOT IN ('healthy', 'unhealthy')
             AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
           GROUP BY time_bucket, config_type
           ORDER BY 1 DESC;
@@ -140,7 +143,7 @@ spec:
               count(*) AS changes
           FROM catalog_changes
           WHERE NOW() - created_at <= INTERVAL '12 hours'
-            AND change_type != 'diff'
+            AND change_type NOT IN ('diff', 'healthy', 'unhealthy')
             AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
           GROUP BY time_bucket, change_type
           ORDER BY time_bucket DESC;
@@ -153,9 +156,10 @@ spec:
           SELECT COUNT(*) AS count
           FROM catalog_changes
           WHERE NOW() - created_at <= INTERVAL '12 hours'
+            AND change_type NOT IN ('healthy', 'unhealthy')
             AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig');
     recent_changes:
       changes:
         name: "*"
-        search: "severity!=info change_type!=diff created_at > now-12h type!=MissionControl::Canary type!=MissionControl::ScrapeConfig"
+        search: "severity!=info change_type!=diff change_type!=healthy change_type!=unhealthy created_at > now-12h type!=MissionControl::Canary type!=MissionControl::ScrapeConfig"
 {{- end}}

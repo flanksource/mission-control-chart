@@ -13,31 +13,60 @@ nameOverride: ""
 # required: false
 # @schema
 image:
+  # @schema
+  # required: false
+  # @schema
   repository: docker.io/flanksource/incident-commander
+  # @schema
+  # required: false
+  # @schema
   pullPolicy: IfNotPresent
+  # @schema
+  # required: false
+  # @schema
   tag: "v0.0.1526"
 # @schema
 # required: false
 # @schema
 global:
-  # -v, -vv, -vvv
+  # @schema
+  # required: false
+  # @schema
   logLevel: ""
+  # @schema
+  # required: false
+  # @schema
   imageRegistry: public.ecr.aws
+  # @schema
+  # required: false
+  # @schema
   imagePrefix: flanksource
   # @schema
   # type: object
   # additionalProperties: true
   # @schema
   labels: {}
+  # @schema
+  # required: false
+  # @schema
   serviceMonitor:
     enabled: false
     labels: {}
+  # @schema
+  # required: false
+  # @schema
   ui:
     host: "mission-control-ui.local"
     tlsSecretName: "mission-control-ui-tls"
+  # @schema
+  # required: false
+  # @schema
   api:
     host: "mission-control-ui.local"
     tlsSecretName: ""
+  # @schema
+  # required: false
+  # @schema
   otel:
     collector: ""
     labels: ""
@@ -51,6 +80,9 @@ global:
     # required: false
     # @schema
     connection: ""
+  # @schema
+  # required: false
+  # @schema
   db:
     connectionPooler:
       enabled: false
@@ -593,6 +625,26 @@ views:
     # default: false
     # @schema
     sidebar: false
+    # @schema
+    # required: false
+    # type: array
+    # items:
+    #   type: string
+    # @schema
+    excludedTypes:
+      - MissionControl::Application
+      - MissionControl::Canary
+      - MissionControl::Connection
+      - MissionControl::IncidentRule
+      - MissionControl::Notification
+      - MissionControl::NotificationSilence
+      - MissionControl::Permission
+      - MissionControl::PermissionGroup
+      - MissionControl::Playbook
+      - MissionControl::ScrapeConfig
+      - MissionControl::Scope
+      - MissionControl::Team
+      - MissionControl::View
 
   # @schema
   # type: object
