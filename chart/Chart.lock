@@ -16,6 +16,6 @@ dependencies:
   version: 0.32.0
 - name: mission-control-kubernetes-view
   repository: https://flanksource.github.io/charts
-  version: 0.1.36
-digest: sha256:3e4a9e502c1834dc21381e680e2a1a3d161182d10ce7c4f5f46ac8a1c9e4daa3
-generated: "2026-01-22T16:21:59.443627+05:45"
+  version: 0.1.37
+digest: sha256:b93a3ac2be749de266e8cef0c00cc4cccd67393533ecb1a4bd5c38366e0c9486
+generated: "2026-01-22T17:20:44.431601+05:45"
