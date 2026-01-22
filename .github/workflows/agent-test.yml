@@ -21,7 +21,7 @@ jobs:
       - name: Template agent chart
         run: |
           cd agent-chart
-          helm dependency build .
+          helm dependency update .
           helm template . \
             --set upstream.host=host \
             --set upstream.password=password \

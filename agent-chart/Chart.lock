@@ -1,0 +1,12 @@
+dependencies:
+- name: config-db
+  repository: https://flanksource.github.io/charts
+  version: 0.0.1161
+- name: canary-checker
+  repository: https://flanksource.github.io/charts
+  version: 1.1.3-beta.63
+- name: mission-control-watchtower
+  repository: https://flanksource.github.io/charts
+  version: 0.1.34
+digest: sha256:bd49d4d4b8c3e7ade2d8412ba1b92ac19aff7e6059bd8f220a07653b49cc9fb3
+generated: "2026-01-22T16:26:01.248359+05:45"
