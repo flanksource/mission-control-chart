@@ -9,11 +9,10 @@ import (
 	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
 	"github.com/google/uuid"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	"github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = Describe("Mission Control", ginkgo.Ordered, func() {
@@ -131,26 +130,45 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 		Expect(len(results)).To(BeNumerically(">", 1))
 	})
 
-	It("Should install default views", func() {
-		expectedViews := []string{
+	Context("Views", func() {
+		// Installed by this chart
+		defaultViews := []string{
 			"mission-control-dashboard",
 			"mission-control-system",
 			"jobhistory",
+			"recent-changes",
+			"notification-send-history",
+			"unhealthy-configs",
 		}
 
-		Eventually(func(g Gomega) {
-			views, err := k8s.List(context.TODO(), "View", namespace, "")
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(views).NotTo(BeEmpty())
+		// Comes from subchart
+		kubernetesViews := []string{
+			"namespace",
+			"pod",
+			"pods",
+			"helm-release",
+			"deployments",
+		}
 
-			viewNames := make(map[string]struct{}, len(views))
-			for _, view := range views {
-				viewNames[view.GetName()] = struct{}{}
-			}
+		DescribeTable("Should install views",
+			func(expected []string) {
+				Eventually(func(g Gomega) {
+					views, err := k8s.List(context.TODO(), "View", namespace, "")
+					g.Expect(err).NotTo(HaveOccurred())
+					g.Expect(views).NotTo(BeEmpty())
 
-			for _, name := range expectedViews {
-				g.Expect(viewNames).To(HaveKey(name))
-			}
-		}).WithTimeout(2 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+					viewNames := make(map[string]struct{}, len(views))
+					for _, view := range views {
+						viewNames[view.GetName()] = struct{}{}
+					}
+
+					for _, name := range expected {
+						g.Expect(viewNames).To(HaveKey(name))
+					}
+				}).WithTimeout(2 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+			},
+			Entry("default views", defaultViews),
+			Entry("kubernetes views", kubernetesViews),
+		)
 	})
 })
