@@ -130,4 +130,27 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(len(results)).To(BeNumerically(">", 1))
 	})
+
+	It("Should install default views", func() {
+		expectedViews := []string{
+			"mission-control-dashboard",
+			"mission-control-system",
+			"jobhistory",
+		}
+
+		Eventually(func(g Gomega) {
+			views, err := k8s.List(context.TODO(), "View", namespace, "")
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(views).NotTo(BeEmpty())
+
+			viewNames := make(map[string]struct{}, len(views))
+			for _, view := range views {
+				viewNames[view.GetName()] = struct{}{}
+			}
+
+			for _, name := range expectedViews {
+				g.Expect(viewNames).To(HaveKey(name))
+			}
+		}).WithTimeout(2 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+	})
 })
