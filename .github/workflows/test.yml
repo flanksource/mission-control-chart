@@ -14,9 +14,7 @@ jobs:
         uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
 
       - name: Set up Helm
-        uses: azure/setup-helm@18bc76811624f360dbd7f18c2d4ecb32c7b87bab # v1.1
-        with:
-          version: v3.11.3
+        uses: azure/setup-helm@b9e51907a09c216f16ebe8536097933489208112 # v4.3.0
 
       - name: Set up Python
         uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4.7.0
@@ -26,6 +24,17 @@ jobs:
 
       - name: Install chart-testing dependencies
         run: pip install yamale==4.0.4 yamllint==1.33.0
+
+      - name: Add helm repositories
+        run: |
+          helm repo add flanksource https://flanksource.github.io/charts
+          helm repo add ory https://k8s.ory.sh/helm/charts
+          helm repo update
+
+      - name: Update chart dependencies
+        run: |
+          cd chart && helm dependency update .
+          cd ../agent-chart && helm dependency update .
 
       - name: Lint chart
         run: make lint
@@ -51,13 +60,17 @@ jobs:
           echo "Disk space difference (in KB): $difference"
 
       - name: Set up Helm
-        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
-        with:
-          version: v4.0.4
+        uses: azure/setup-helm@b9e51907a09c216f16ebe8536097933489208112 # v4.3.0
+
+      - name: Add helm repositories
+        run: |
+          helm repo add flanksource https://flanksource.github.io/charts
+          helm repo add ory https://k8s.ory.sh/helm/charts
+          helm repo update
 
       - name: build dependency
         run: |
-          cd chart && helm dependency build
+          cd chart && helm dependency update
 
       - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4.7.0
         with:
