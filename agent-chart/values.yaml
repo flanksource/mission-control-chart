@@ -34,6 +34,7 @@ serviceAccount:
     podRun: true
     # exec
     exec: true
+
 # If true, creates secret
 upstream:
   createSecret: true
@@ -42,6 +43,7 @@ upstream:
   password: ""
   agentName: ""
   secretName: upstream
+
 resources:
   requests:
     cpu: 100m
@@ -49,6 +51,15 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
+
+# @schema
+# required: false
+# additionalProperties: true
+# type: object
+# @schema
+properties:
+  upstream.pull_playbook_actions: true
+
 pushTelemetry:
   enabled: false
   isAgent: true
@@ -121,6 +132,14 @@ canary-checker:
   logLevel: "{{.Values.global.logLevel}}"
   image:
     type: full
+
+  # @schema
+  # required: false
+  # additionalProperties: true
+  # type: object
+  # @schema
+  properties:
+    upstream.pull_canaries: true
   db:
     runMigrations: false
     external:

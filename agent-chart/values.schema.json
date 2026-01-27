@@ -465,7 +465,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1526",
+          "default": "v0.0.1532",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -490,6 +490,22 @@
       "required": [],
       "title": "logLevel",
       "type": "string"
+    },
+    "properties": {
+      "additionalProperties": true,
+      "properties": {
+        "upstream.pull_playbook_actions": {
+          "default": true,
+          "required": [],
+          "title": "upstream.pull_playbook_actions",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "upstream.pull_playbook_actions"
+      ],
+      "title": "properties",
+      "type": "object"
     },
     "pushTelemetry": {
       "additionalProperties": true,
