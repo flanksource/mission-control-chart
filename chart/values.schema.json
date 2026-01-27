@@ -663,7 +663,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1526",
+          "default": "v0.0.1532",
           "required": [],
           "title": "tag"
         }
