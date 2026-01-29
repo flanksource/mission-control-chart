@@ -495,15 +495,12 @@
       "additionalProperties": true,
       "properties": {
         "upstream.pull_playbook_actions": {
-          "default": true,
+          "default": "true",
           "required": [],
-          "title": "upstream.pull_playbook_actions",
-          "type": "boolean"
+          "title": "upstream.pull_playbook_actions"
         }
       },
-      "required": [
-        "upstream.pull_playbook_actions"
-      ],
+      "required": [],
       "title": "properties",
       "type": "object"
     },

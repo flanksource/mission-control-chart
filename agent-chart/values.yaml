@@ -58,6 +58,9 @@ resources:
 # type: object
 # @schema
 properties:
+  # @schema
+  # required: false
+  # @schema
   upstream.pull_playbook_actions: true
 
 pushTelemetry:
@@ -139,7 +142,11 @@ canary-checker:
   # type: object
   # @schema
   properties:
+    # @schema
+    # required: false
+    # @schema
     upstream.pull_canaries: true
+
   db:
     runMigrations: false
     external:
