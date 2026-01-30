@@ -273,6 +273,11 @@ logLevel: "{{.Values.global.logLevel}}"
 # required: false
 # @schema
 jsonLogs: true
+# Dedicated unauthenticated metrics port (0 disables). /metrics on main server unchanged.
+# @schema
+# required: false
+# @schema
+metricsPort: 0
 # @schema
 # required: false
 # @schema

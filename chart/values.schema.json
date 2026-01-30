@@ -779,6 +779,13 @@
       "required": [],
       "title": "jsonLogs"
     },
+    "metricsPort": {
+      "default": 0,
+      "description": "Dedicated unauthenticated metrics port (0 disables). /metrics on main server unchanged.",
+      "required": [],
+      "title": "metricsPort",
+      "type": "integer"
+    },
     "kmsConnection": {
       "default": "",
       "description": "kms connection string",

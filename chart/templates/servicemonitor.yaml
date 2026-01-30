@@ -11,7 +11,7 @@ metadata:
 spec:
   jobLabel: {{ include "incident-commander.name" . }}
   endpoints:
-    - port: http
+    - port: {{ if gt (int .Values.metricsPort) 0 }}metrics{{ else }}http{{ end }}
       interval: 30s
   selector:
     matchLabels:

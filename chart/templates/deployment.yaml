@@ -70,6 +70,9 @@ spec:
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
             - --auth={{ .Values.authProvider }}
+           {{- if gt (int .Values.metricsPort) 0 }}
+            - --metricsPort={{ .Values.metricsPort }}
+           {{- end }}
            {{- if eq .Values.authProvider "kratos" }}
             - --kratos-api=http://kratos-public:80
            {{- end }}
