@@ -10,5 +10,11 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
+    {{- if gt (int .Values.metricsPort) 0 }}
+    - port: {{ .Values.metricsPort }}
+      targetPort: {{ .Values.metricsPort }}
+      protocol: TCP
+      name: metrics
+    {{- end }}
   selector:
     {{- include "incident-commander.selectorLabels" . | nindent 4 }}
