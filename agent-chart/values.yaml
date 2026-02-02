@@ -3,7 +3,7 @@
 image:
   repository: docker.io/flanksource/incident-commander
   pullPolicy: IfNotPresent
-  tag: "v0.0.1540"
+  tag: "v0.0.1541"
 global:
   # -v, -vv, -vvv
   logLevel: ""
@@ -34,7 +34,6 @@ serviceAccount:
     podRun: true
     # exec
     exec: true
-
 # If true, creates secret
 upstream:
   createSecret: true
@@ -43,7 +42,6 @@ upstream:
   password: ""
   agentName: ""
   secretName: upstream
-
 resources:
   requests:
     cpu: 100m
@@ -51,7 +49,6 @@ resources:
   limits:
     memory: 1024Mi
     cpu: 500m
-
 # @schema
 # required: false
 # additionalProperties: true
@@ -62,7 +59,6 @@ properties:
   # required: false
   # @schema
   upstream.pull_playbook_actions: true
-
 pushTelemetry:
   enabled: false
   isAgent: true
@@ -135,7 +131,6 @@ canary-checker:
   logLevel: "{{.Values.global.logLevel}}"
   image:
     type: full
-
   # @schema
   # required: false
   # additionalProperties: true
@@ -146,7 +141,6 @@ canary-checker:
     # required: false
     # @schema
     upstream.pull_canaries: true
-
   db:
     runMigrations: false
     external:
