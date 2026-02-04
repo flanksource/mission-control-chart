@@ -10,25 +10,9 @@ metadata:
     {{- include "incident-commander.extraLabels" . | nindent 4 }}
 spec:
   postgres:
-    database:
+    url:
       valueFrom:
         secretKeyRef:
           name: incident-commander-postgres
-          key: DATABASE
-    insecureTLS: true
-    host:
-      valueFrom:
-        secretKeyRef:
-          name: incident-commander-postgres
-          key: POSTGRES_HOST
-    username:
-      valueFrom:
-        secretKeyRef:
-          name: incident-commander-postgres
-          key: POSTGRES_USER
-    password:
-      valueFrom:
-        secretKeyRef:
-          name: incident-commander-postgres
-          key: POSTGRES_PASSWORD
+          key: DB_URL
 {{- end }}
