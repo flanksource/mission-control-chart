@@ -10,6 +10,8 @@ global:
   imageRegistry: public.ecr.aws
   imagePrefix: flanksource
   labels: {}
+  upstream:
+    secretName: upstream
 logLevel: "{{.Values.global.logLevel}}"
 jsonLogs: true
 serviceAccount:
@@ -131,6 +133,10 @@ canary-checker:
   logLevel: "{{.Values.global.logLevel}}"
   image:
     type: full
+  upstream:
+    enabled: true
+    secretKeyRef:
+      name: "{{.Values.global.upstream.secretName}}"
   # @schema
   # required: false
   # additionalProperties: true
@@ -155,6 +161,10 @@ canary-checker:
 config-db:
   disablePostgrest: true
   logLevel: "{{.Values.global.logLevel}}"
+  upstream:
+    enabled: true
+    secretKeyRef:
+      name: "{{.Values.global.upstream.secretName}}"
   db:
     runMigrations: false
     embedded:

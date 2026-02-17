@@ -437,13 +437,30 @@
           "required": [],
           "title": "logLevel",
           "type": "string"
+        },
+        "upstream": {
+          "additionalProperties": false,
+          "properties": {
+            "secretName": {
+              "default": "upstream",
+              "required": [],
+              "title": "secretName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "secretName"
+          ],
+          "title": "upstream",
+          "type": "object"
         }
       },
       "required": [
         "logLevel",
         "imageRegistry",
         "imagePrefix",
-        "labels"
+        "labels",
+        "upstream"
       ],
       "title": "global",
       "type": "object"
