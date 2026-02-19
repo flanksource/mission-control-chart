@@ -663,7 +663,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1532",
+          "default": "v0.0.1563",
           "required": [],
           "title": "tag"
         }
@@ -779,13 +779,6 @@
       "required": [],
       "title": "jsonLogs"
     },
-    "metricsPort": {
-      "default": 0,
-      "description": "Dedicated unauthenticated metrics port (0 disables). /metrics on main server unchanged.",
-      "required": [],
-      "title": "metricsPort",
-      "type": "integer"
-    },
     "kmsConnection": {
       "default": "",
       "description": "kms connection string",
@@ -809,7 +802,18 @@
       "required": [],
       "title": "logLevel"
     },
+    "metricsPort": {
+      "default": "0",
+      "description": "Dedicated unauthenticated metrics port (0 disables). /metrics on main server unchanged.",
+      "required": [],
+      "title": "metricsPort"
+    },
     "mission-control-kubernetes-view": {
+      "additionalProperties": true,
+      "required": [],
+      "type": "object"
+    },
+    "mission-control-misc-playbooks": {
       "additionalProperties": true,
       "required": [],
       "type": "object"
