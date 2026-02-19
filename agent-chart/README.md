@@ -14,9 +14,9 @@ A Helm chart for flanksource mission control agent
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.34 |
-| https://flanksource.github.io/charts | config-db | 0.0.1116 |
-| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.33 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.81 |
+| https://flanksource.github.io/charts | config-db | 0.0.1182 |
+| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.34 |
 
 ## Values
 
@@ -30,6 +30,7 @@ A Helm chart for flanksource mission control agent
 | canary-checker.flanksource-ui.enabled | bool | `false` |  |
 | canary-checker.image.type | string | `"full"` |  |
 | canary-checker.logLevel | string | `"{{.Values.global.logLevel}}"` |  |
+| canary-checker.properties."upstream.pull_canaries" | bool | `true` |  |
 | config-db.db.embedded.persist | bool | `false` |  |
 | config-db.db.external.enabled | bool | `true` |  |
 | config-db.db.external.secretKeyRef.key | string | `"DB_URL"` |  |
@@ -89,9 +90,10 @@ A Helm chart for flanksource mission control agent
 | global.logLevel | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1486"` |  |
+| image.tag | string | `"v0.0.1563"` |  |
 | jsonLogs | bool | `true` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
+| properties."upstream.pull_playbook_actions" | bool | `true` |  |
 | pushTelemetry.enabled | bool | `false` |  |
 | pushTelemetry.isAgent | bool | `true` |  |
 | pushTelemetry.playbooks | bool | `false` |  |
@@ -102,6 +104,7 @@ A Helm chart for flanksource mission control agent
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"768Mi"` |  |
 | serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"mission-control-sa"` |  |
 | serviceAccount.rbac.clusterRole | bool | `true` |  |
 | serviceAccount.rbac.configmaps | bool | `true` |  |

@@ -774,5 +774,11 @@ mission-control-kubernetes-view: {}
 # required: false
 # additionalProperties: true
 # @schema
+mission-control-misc-playbooks:
+  enabled: true
+# @schema
+# required: false
+# additionalProperties: true
+# @schema
 disabled:
   canary-checker: false

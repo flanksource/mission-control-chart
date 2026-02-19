@@ -33,3 +33,7 @@ dependencies:
     version: ">= 0.1.37"
     repository: https://flanksource.github.io/charts
     condition: views.kubernetes
+  - name: mission-control-misc-playbooks
+    version: "0.1.1"
+    repository: https://flanksource.github.io/charts
+    condition: mission-control-misc-playbooks.enabled
