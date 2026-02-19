@@ -18,26 +18,6 @@ spec:
       size: 10
       sort: -last_seen
   panels:
-    - name: Recent Changes
-      type: number
-      description: Last 12h
-      query: SELECT count as value FROM changes_count_last_12h
-    - name: Changes by Type
-      description: Changes in the last 12 hrs
-      type: timeseries
-      timeseries:
-        style: points
-        timeKey: time_bucket
-        valueKey: changes
-      query: SELECT time_bucket, changes, change_type FROM changes_by_type_timeseries
-    - name: Changes by Config Type
-      description: Changes in the last 12 hrs
-      type: timeseries
-      timeseries:
-        style: points
-        timeKey: time_bucket
-        valueKey: changes
-      query: SELECT time_bucket, changes, config_type FROM changes_by_config_type_timeseries
     - name: By Severity
       description: Recent Changes grouped by severity
       type: piechart
@@ -106,58 +86,6 @@ spec:
     FROM recent_changes
     WHERE type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
   queries:
-    changes_by_config_type_timeseries:
-      columns:
-        time_bucket: timestamp
-        config_type: string
-        changes: integer
-      sql:
-        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
-        query: >
-          SELECT
-              to_timestamp(
-                  floor(extract(epoch FROM created_at) / 15) * 15 -- like a 15s scrape interval
-              ) AT TIME ZONE 'UTC' AS time_bucket,
-              type as config_type,
-              count(*) AS changes
-          FROM catalog_changes
-          WHERE NOW() - created_at <= INTERVAL '12 hours'
-            AND type LIKE 'Kubernetes::%'
-            AND change_type NOT IN ('healthy', 'unhealthy')
-            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
-          GROUP BY time_bucket, config_type
-          ORDER BY 1 DESC;
-    changes_by_type_timeseries:
-      columns:
-        time_bucket: timestamp
-        change_type: string
-        changes: integer
-      sql:
-        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
-        query: >
-          SELECT
-              to_timestamp(
-                  floor(extract(epoch FROM created_at) / 15) * 15 -- like a 15s scrape interval
-              ) AT TIME ZONE 'UTC' AS time_bucket,
-              change_type,
-              count(*) AS changes
-          FROM catalog_changes
-          WHERE NOW() - created_at <= INTERVAL '12 hours'
-            AND change_type NOT IN ('diff', 'healthy', 'unhealthy')
-            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig')
-          GROUP BY time_bucket, change_type
-          ORDER BY time_bucket DESC;
-    changes_count_last_12h:
-      columns:
-        count: integer
-      sql:
-        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
-        query: >
-          SELECT COUNT(*) AS count
-          FROM catalog_changes
-          WHERE NOW() - created_at <= INTERVAL '12 hours'
-            AND change_type NOT IN ('healthy', 'unhealthy')
-            AND type NOT IN ('MissionControl::Canary', 'MissionControl::ScrapeConfig');
     recent_changes:
       changes:
         name: "*"
