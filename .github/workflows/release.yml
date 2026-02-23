@@ -130,13 +130,18 @@ jobs:
   helm:
     runs-on: ubuntu-latest
     needs: semantic-release
-    if: always() 
+    if: always()
+    outputs:
+      release-version: ${{ steps.version.outputs.release-version }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set version
+        id: version
         run: |
           git fetch --prune --unshallow
-          echo "RELEASE_VERSION=$(git describe --abbrev=0 --tags | sed -e 's/^v//')" >> $GITHUB_ENV
+          VERSION=$(git describe --abbrev=0 --tags | sed -e 's/^v//')
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "release-version=$VERSION" >> $GITHUB_OUTPUT
       - name: Update chart version
         uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
         with:
@@ -181,20 +186,18 @@ jobs:
           # New charts might not be immediately available
           sleep 60
           make chart agent-chart crd-chart
-      - name: Clone charts repo
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Upload helm chart artifact
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         with:
-          repository: "${{ github.repository_owner }}/charts"
-          path: charts
-          token: "${{ secrets.FLANKBOT }}"
-      - name: Update chart repo
-        run: |
-          cd charts
-          cp ../mission-control-*.tgz ./
-          helm repo index --merge index.yaml .
-      - name: Push changes to chart repo
-        uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4.16.0
-        with:
-          commit_message: "Release ${{ env.RELEASE_VERSION }} of ${{ github.repository }}"
-          branch: gh-pages
-          repository: ./charts
+          name: helm-chart
+          path: mission-control-*.tgz
+
+  push-helm-chart:
+    needs: helm
+    uses: flanksource/action-workflows/.github/workflows/push-helm-chart.yml@edab5b9d3a5f8d1eeb59be89edb810246a06ae6d # main
+    with:
+      filename_regex: "mission-control-*.tgz"
+      version: ${{ needs.helm.outputs.release-version }}
+      pr_title: "Release ${{ needs.helm.outputs.release-version }} of ${{ github.repository }}"
+    secrets:
+      token: ${{ secrets.FLANKBOT }}
