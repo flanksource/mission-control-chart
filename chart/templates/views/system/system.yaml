@@ -94,4 +94,9 @@ spec:
         namespace: "{{ .Release.Namespace }}"
         name: jobhistory
     {{- end }}
+    - title: Database
+      icon: database
+      viewRef:
+        namespace: "{{ .Release.Namespace }}"
+        name: mission-control-database
 {{- end }}
