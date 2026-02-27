@@ -1,0 +1,71 @@
+name: Bump Flanksource Chart Dependencies
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [bump-chart-deps]
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          token: ${{ secrets.FLANKBOT }}
+
+      - uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
+
+      - name: Bump Flanksource chart dependencies
+        id: bump
+        run: |
+          npm install -g semver --silent
+
+          FLANKSOURCE_REPO="https://flanksource.github.io/charts"
+          INDEX=$(curl -sSL "$FLANKSOURCE_REPO/index.yaml")
+          CHANGED=false
+
+          for CHART_FILE in chart/Chart.yaml agent-chart/Chart.yaml; do
+            DEP_COUNT=$(yq '.dependencies | length' "$CHART_FILE")
+            for i in $(seq 0 $((DEP_COUNT - 1))); do
+              REPO=$(yq ".dependencies[$i].repository" "$CHART_FILE")
+              VERSION=$(yq ".dependencies[$i].version" "$CHART_FILE")
+              NAME=$(yq ".dependencies[$i].name" "$CHART_FILE")
+
+              # Skip non-Flanksource deps
+              [[ "$REPO" != "$FLANKSOURCE_REPO" ]] && continue
+
+              # Skip range selectors
+              [[ "$VERSION" == ">="* || "$VERSION" == *"*"* ]] && continue
+
+              # Get latest version via semver sort (includes pre-releases)
+              LATEST=$(echo "$INDEX" | yq ".entries.${NAME}[].version" | xargs semver --loose 2>/dev/null | tail -1)
+
+              if [[ -n "$LATEST" && "$LATEST" != "$VERSION" ]]; then
+                echo "Bumping $NAME in $CHART_FILE: $VERSION -> $LATEST"
+                yq -i ".dependencies[$i].version = \"$LATEST\"" "$CHART_FILE"
+                CHANGED=true
+              fi
+            done
+          done
+
+          echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
+
+      - name: Open PR with auto-merge
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.FLANKBOT }}
+        run: |
+          BRANCH="chore/bump-chart-deps-$(date +%Y%m%d)"
+          git config user.name "flankbot"
+          git config user.email "flankbot@flanksource.com"
+          git checkout -b "$BRANCH"
+          git add chart/Chart.yaml agent-chart/Chart.yaml
+          git commit -m "chore: bump flanksource chart dependencies to latest"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: bump flanksource chart dependencies" \
+            --body "Auto-bumped Flanksource Helm chart dependencies to latest versions via semver." \
+            --base main
+          gh pr merge --auto --squash
