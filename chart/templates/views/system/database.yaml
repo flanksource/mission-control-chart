@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
-{{- if and .Values.views.enabled .Values.views.system.enabled }}
+{{- if and .Values.views.enabled .Values.views.system.enabled .Values.views.database.enabled }}
 apiVersion: mission-control.flanksource.com/v1
 kind: View
 metadata:
@@ -24,6 +24,7 @@ spec:
       description: Active database connections
       type: number
       query: SELECT value FROM db_connection_count
+      unit: bytes
   queries:
     db_size_stats:
       columns:

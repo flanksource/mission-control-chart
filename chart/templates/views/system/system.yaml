@@ -94,9 +94,11 @@ spec:
         namespace: "{{ .Release.Namespace }}"
         name: jobhistory
     {{- end }}
+    {{- if .Values.views.database.enabled }}
     - title: Database
       icon: database
       viewRef:
         namespace: "{{ .Release.Namespace }}"
         name: mission-control-database
+    {{- end }}
 {{- end }}

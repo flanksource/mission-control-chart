@@ -701,6 +701,17 @@ views:
   # type: object
   # required: false
   # @schema
+  database:
+    # @schema
+    # required: false
+    # default: true
+    # type: boolean
+    # @schema
+    enabled: true
+  # @schema
+  # type: object
+  # required: false
+  # @schema
   recentChanges:
     # @schema
     # required: false
