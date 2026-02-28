@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/view.schema.json
+{{- if and .Values.views.enabled .Values.views.system.enabled .Values.views.database.enabled }}
+apiVersion: mission-control.flanksource.com/v1
+kind: View
+metadata:
+  name: mission-control-database
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  display:
+    title: Database
+    icon: database
+  panels:
+    - name: DB Size
+      description: Current database size
+      type: number
+      query: SELECT value FROM db_size_stats
+    - name: Active Users
+      description: Total users where deleted_at is NULL
+      type: number
+      query: SELECT value FROM user_count
+    - name: DB Connections
+      description: Active database connections
+      type: number
+      query: SELECT value FROM db_connection_count
+      unit: bytes
+  queries:
+    db_size_stats:
+      columns:
+        value: decimal
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT pg_database_size(current_database()) as value
+    user_count:
+      columns:
+        value: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT count(*) as value FROM people WHERE deleted_at IS NULL
+    db_connection_count:
+      columns:
+        value: integer
+      sql:
+        connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"
+        query: >
+          SELECT count(*) as value FROM pg_stat_activity WHERE datname = current_database()
+{{- end }}

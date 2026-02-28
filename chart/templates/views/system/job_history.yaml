@@ -53,7 +53,7 @@ spec:
             error_count AS error,
             created_at AS timestamp
           FROM job_histories
-          WHERE status NOT IN ('SUCCESS', 'SKIPPED', 'STALE')
+          WHERE status NOT IN ('SUCCESS', 'SKIPPED', 'STALE', 'RUNNING')
           ORDER BY created_at DESC
           LIMIT 500
         connection: "connection://{{.Release.Namespace}}/{{ .Values.connectionName }}"

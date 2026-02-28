@@ -465,7 +465,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1563",
+          "default": "v0.0.1565",
           "required": [],
           "title": "tag",
           "type": "string"
