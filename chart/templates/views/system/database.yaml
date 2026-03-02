@@ -16,6 +16,8 @@ spec:
       description: Current database size
       type: number
       query: SELECT value FROM db_size_stats
+      number:
+        unit: bytes
     - name: Active Users
       description: Total users where deleted_at is NULL
       type: number
@@ -24,7 +26,6 @@ spec:
       description: Active database connections
       type: number
       query: SELECT value FROM db_connection_count
-      unit: bytes
   queries:
     db_size_stats:
       columns:
