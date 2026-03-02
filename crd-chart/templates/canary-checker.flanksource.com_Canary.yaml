@@ -70,6 +70,15 @@ spec:
             spec:
               description: CanarySpec defines the desired state of Canary
               properties:
+                agentSelector:
+                  description: |-
+                    AgentSelector specifies agents that should run this canary.
+                    When populated, the canary will not run locally but copies
+                    will be created for each matched agent.
+                    This also supports prefix/suffix (eu-west-*) and negations (!team-b)
+                  items:
+                    type: string
+                  type: array
                 alertmanager:
                   items:
                     properties:
@@ -4046,6 +4055,9 @@ spec:
                   type: array
                 github:
                   items:
+                    description: |-
+                      GitHubCheck executes SQL queries against GitHub repositories using mergestat.
+                      Deprecated: This check type is deprecated and will be removed in a future release.
                     properties:
                       connection:
                         type: string
@@ -5144,6 +5156,11 @@ spec:
                 kubernetes:
                   items:
                     properties:
+                      apiVersion:
+                        description: |-
+                          APIVersion is the Kubernetes API version for the resource (e.g., "v1", "apps/v1", "serving.knative.dev/v1").
+                          Used to distinguish between resources with the same Kind but different API groups.
+                        type: string
                       cnrm:
                         properties:
                           clusterResource:
@@ -5447,16 +5464,21 @@ spec:
                           - zone
                         type: object
                       healthy:
-                        description: Fail the check if any resources are unhealthy
+                        description: Healthy when true, fails the check if any resources are unhealthy.
                         type: boolean
                       icon:
                         type: string
                       ignore:
-                        description: Ignore the specified resources from the fetched resources. Can be a glob pattern.
+                        description: |-
+                          Ignore specifies resources to exclude from the fetched results.
+                          Values can be glob patterns (e.g., "kube-*", "*-system").
                         items:
                           type: string
                         type: array
                       kind:
+                        description: |-
+                          Kind is the Kubernetes resource Kind to check (e.g., "Pod", "Deployment", "Service").
+                          This is a required field.
                         type: string
                       kubeconfig:
                         properties:
@@ -5538,6 +5560,9 @@ spec:
                         description: Namespace to insert the check into, if different to the namespace the canary is defined, e.g.
                         type: string
                       namespaceSelector:
+                        description: |-
+                          Namespace specifies which namespace(s) to search for resources.
+                          Use empty ResourceSelector to search in canary's namespace.
                         properties:
                           fieldSelector:
                             type: string
@@ -5549,12 +5574,13 @@ spec:
                             type: string
                         type: object
                       ready:
-                        description: Fail the check if any resources are not ready
+                        description: Ready when true, fails the check if any resources are not ready.
                         type: boolean
                       relationships:
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
                       resource:
+                        description: Resource specifies which resources to select by name, labels, or field selectors.
                         properties:
                           fieldSelector:
                             type: string
@@ -7394,6 +7420,49 @@ spec:
                           template:
                             type: string
                         type: object
+                      headers:
+                        items:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                            valueFrom:
+                              properties:
+                                configMapKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                    - key
+                                  type: object
+                                helmRef:
+                                  properties:
+                                    key:
+                                      description: Key is a JSONPath expression used to fetch the key from the merged JSON.
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                    - key
+                                  type: object
+                                secretKeyRef:
+                                  properties:
+                                    key:
+                                      type: string
+                                    name:
+                                      type: string
+                                  required:
+                                    - key
+                                  type: object
+                                serviceAccount:
+                                  description: ServiceAccount specifies the service account whose token should be fetched
+                                  type: string
+                              type: object
+                          type: object
+                        type: array
                       host:
                         description: 'Deprecated: use `url` instead'
                         type: string

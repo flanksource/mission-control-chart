@@ -78,15 +78,34 @@ spec:
                     items:
                       properties:
                         action:
-                          description: "Action allows performing actions on the corresponding
-                            config item\nbased on this change. Example: You can map
-                            EC2 instance's \"TerminateInstances\"\nchange event to
-                            delete the corresponding EC2 instance config.\n\tAllowed
-                            actions: \"delete\", \"ignore\""
+                          description: |-
+                            Action allows performing actions on the corresponding config item
+                            based on this change.
+                            Allowed actions: "delete", "ignore", "move-up", "copy-up", "copy", "move"
+                          type: string
+                        ancestor_type:
+                          description: |-
+                            AncestorType specifies the config type of the ancestor to target
+                            when using "move-up" or "copy-up" actions. The engine walks the parent_id
+                            chain and selects the first ancestor matching this type.
+                            If omitted, the immediate parent is used.
+                          type: string
+                        config_id:
+                          description: |-
+                            ConfigID is a CEL expression that returns the target config's external ID
+                            for redirecting changes to a different config item.
+                          type: string
+                        config_type:
+                          description: ConfigType is the target config type for redirecting
+                            changes.
                           type: string
                         filter:
                           description: Filter selects what change to apply the mapping
                             to
+                          type: string
+                        scraper_id:
+                          description: ScraperID is the scraper ID for the target
+                            config. Use "all" for cross-scraper lookups.
                           type: string
                         severity:
                           description: Severity is the severity to be set on the change
@@ -94,6 +113,102 @@ spec:
                         summary:
                           description: Summary replaces the existing change summary.
                           type: string
+                        target:
+                          description: |-
+                            Target specifies a config item selector for "copy" and "move" actions.
+                            The selector is evaluated to find target config items to redirect or
+                            duplicate changes to. Mutually exclusive with move-up/copy-up/ancestor_type.
+                          properties:
+                            agent:
+                              description: |-
+                                Agent can be one of
+                                 - agent id
+                                 - agent name
+                                 - 'self' (no agent)
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            external_id:
+                              description: Lookup offers different ways to specify
+                                a lookup value
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            id:
+                              description: Lookup offers different ways to specify
+                                a lookup value
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            labels:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            name:
+                              description: Lookup offers different ways to specify
+                                a lookup value
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            namespace:
+                              description: Lookup offers different ways to specify
+                                a lookup value
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            scope:
+                              description: |-
+                                Scope is the id of the parent of the resource to select.
+                                Example: For config items, the scope is the scraper id
+                                - for checks, it's canaries and
+                                - for components, it's topology.
+                                If left empty, the scope is the requester's scope.
+                                Use `all` to disregard scope.
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                            type:
+                              description: Lookup offers different ways to specify
+                                a lookup value
+                              properties:
+                                expr:
+                                  type: string
+                                label:
+                                  type: string
+                                value:
+                                  type: string
+                              type: object
+                          type: object
                         type:
                           description: Type is the type to be set on the change
                           type: string
