@@ -663,7 +663,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1563",
+          "default": "v0.0.1565",
           "required": [],
           "title": "tag"
         }
@@ -1163,6 +1163,20 @@
           },
           "required": [],
           "title": "dashboard",
+          "type": "object"
+        },
+        "database": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": true,
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "title": "database",
           "type": "object"
         },
         "enabled": {
