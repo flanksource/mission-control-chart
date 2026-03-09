@@ -24,5 +24,4 @@
 .bin/
 node_modules/
 mission-control-[0-9]*.tgz
-test/
-__debug_bin*
+*.test

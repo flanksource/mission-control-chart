@@ -176,22 +176,13 @@ jobs:
           helm repo add ory https://k8s.ory.sh/helm/charts
           helm repo update
 
-      - name: Update chart dependencies
+      - name: Wait for chart dependencies and update
         run: |
-          helm dependency update ./chart
-          helm dependency update ./agent-chart
-
-      - name: Wait for chart dependencies to be available
-        run: |
-          # Install yq if not present
           if ! command -v yq &> /dev/null; then
             sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
             sudo chmod +x /usr/local/bin/yq
           fi
-
-          # Wait for all chart dependencies to be available in their respective repositories
-          # This ensures that newly published charts are available before packaging
-          bash scripts/wait-for-charts.sh chart/Chart.yaml agent-chart/Chart.yaml
+          bash scripts/wait-for-charts.sh ./chart ./agent-chart
 
       - name: Package Helm chart
         run: |
