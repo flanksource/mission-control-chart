@@ -1,158 +1,167 @@
 #!/bin/bash
 set -e
 
-# Script to wait for Helm chart dependencies to become available in repositories
-# This ensures that newly published charts are available before attempting to package dependent charts
+# Wait for Helm chart dependencies to become available, then run helm dependency update.
+# Optimized: fetches each repo index once per poll cycle (not per chart).
 
-CHART_FILES=("$@")
-if [ ${#CHART_FILES[@]} -eq 0 ]; then
-  echo "Usage: $0 <Chart.yaml> [<Chart.yaml> ...]"
+CHART_DIRS=("$@")
+if [ ${#CHART_DIRS[@]} -eq 0 ]; then
+  echo "Usage: $0 <chart-dir> [<chart-dir> ...]"
+  echo "Example: $0 ./chart ./agent-chart"
   exit 1
 fi
 
-TIMEOUT=300  # 5 minutes timeout
-POLL_INTERVAL=10  # Check every 10 seconds
+TIMEOUT=${TIMEOUT:-300}
+POLL_INTERVAL=${POLL_INTERVAL:-10}
+INDEX_CACHE_DIR=$(mktemp -d)
+trap 'rm -rf "$INDEX_CACHE_DIR"' EXIT
+
+for dir in "${CHART_DIRS[@]}"; do
+  if [ ! -f "$dir/Chart.yaml" ]; then
+    echo "Error: $dir/Chart.yaml not found"
+    exit 1
+  fi
+done
 
 echo "=========================================="
 echo "Checking chart dependency availability"
 echo "=========================================="
 
-# Function to check if a chart version exists in a repository
-check_chart_exists() {
-  local chart_name=$1
-  local chart_version=$2
-  local repo_url=$3
-
-  # For flanksource charts, check the index
-  if [[ "$repo_url" == *"flanksource.github.io/charts"* ]]; then
-    # Fetch the chart index
-    local index_url="${repo_url}/index.yaml"
-    local chart_info
-    # Use || true to prevent curl failures from exiting the script
-    chart_info=$(curl -sSf "$index_url" 2>/dev/null | yq eval ".entries.\"${chart_name}\"[] | select(.version == \"${chart_version}\")" - 2>/dev/null || true)
-
-    if [ -n "$chart_info" ]; then
-      return 0
-    else
-      return 1
-    fi
-  else
-    # For other repositories, try helm search
-    helm repo update > /dev/null 2>&1 || true
-    if helm search repo --version "$chart_version" --regexp ".*/${chart_name}$" 2>/dev/null | grep -q "$chart_version"; then
-      return 0
-    else
-      return 1
-    fi
-  fi
-}
-
-# Extract dependencies from Chart.yaml files
+# Extract all pinned dependencies across all Chart.yaml files, deduplicated
 missing_charts=()
+declare -A seen
 
-for chart_file in "${CHART_FILES[@]}"; do
-  if [ ! -f "$chart_file" ]; then
-    echo "Error: Chart file not found: $chart_file"
-    exit 1
-  fi
-
+for dir in "${CHART_DIRS[@]}"; do
+  chart_file="$dir/Chart.yaml"
   echo ""
   echo "Processing: $chart_file"
 
-  # Extract dependencies using yq
-  deps_count=$(yq eval '.dependencies | length' "$chart_file")
+  deps=$(yq eval -o=json '.dependencies // []' "$chart_file")
+  count=$(echo "$deps" | yq eval 'length' -)
 
-  if [ "$deps_count" -eq 0 ] || [ "$deps_count" == "null" ]; then
-    echo "  No dependencies found"
-    continue
-  fi
+  for ((i=0; i<count; i++)); do
+    name=$(echo "$deps" | yq eval ".[$i].name" -)
+    version=$(echo "$deps" | yq eval ".[$i].version" -)
+    repository=$(echo "$deps" | yq eval ".[$i].repository" -)
 
-  for ((i=0; i<deps_count; i++)); do
-    name=$(yq eval ".dependencies[$i].name" "$chart_file")
-    version=$(yq eval ".dependencies[$i].version" "$chart_file")
-    repository=$(yq eval ".dependencies[$i].repository" "$chart_file")
+    [ "$name" == "null" ] || [ "$version" == "null" ] && continue
 
-    if [ "$name" == "null" ] || [ "$version" == "null" ]; then
+    # Skip non-flanksource repos
+    if [[ "$repository" != *"flanksource.github.io/charts"* ]]; then
+      echo "  Skipping non-flanksource: $name@$version ($repository)"
       continue
     fi
 
-    # Skip version ranges (e.g., ">= 0.0.20")
+    # Skip version ranges
     if [[ "$version" =~ ^[\>\<\=\~\^] ]] || [[ "$version" == "*" ]]; then
-      echo "  Skipping version range: $name@$version from $repository"
+      echo "  Skipping range: $name@$version"
       continue
     fi
 
-    echo "  Checking: $name@$version from $repository"
-
-    # Add to list for verification
-    missing_charts+=("$name|$version|$repository")
+    key="$name|$version|$repository"
+    if [ -z "${seen[$key]}" ]; then
+      seen[$key]=1
+      missing_charts+=("$key")
+      echo "  Checking: $name@$version"
+    fi
   done
 done
-
-# Remove duplicates
-missing_charts=($(printf '%s\n' "${missing_charts[@]}" | sort -u))
 
 if [ ${#missing_charts[@]} -eq 0 ]; then
   echo ""
   echo "No chart dependencies to verify"
+  for dir in "${CHART_DIRS[@]}"; do
+    echo "Running: helm dependency update $dir"
+    helm dependency update "$dir"
+  done
   exit 0
 fi
 
+# Fetch a repo index once, cache it for this poll cycle
+fetch_index() {
+  local repo_url=$1
+  local cache_key
+  cache_key=$(echo "$repo_url" | md5sum | cut -d' ' -f1 2>/dev/null || echo "$repo_url" | md5 -q 2>/dev/null || echo "$repo_url" | tr -dc 'a-zA-Z0-9')
+  local cache_file="$INDEX_CACHE_DIR/$cache_key"
+
+  if [ ! -f "$cache_file" ]; then
+    curl -sSf "${repo_url}/index.yaml" > "$cache_file" 2>/dev/null || { rm -f "$cache_file"; return 1; }
+  fi
+  echo "$cache_file"
+}
+
+clear_index_cache() {
+  rm -f "$INDEX_CACHE_DIR"/*
+}
+
+check_chart_exists() {
+  local name=$1 version=$2 repo_url=$3
+  local cache_file
+  cache_file=$(fetch_index "$repo_url") || return 1
+  yq eval -e ".entries.\"${name}\"[] | select(.version == \"${version}\")" "$cache_file" > /dev/null 2>&1
+}
+
+get_latest_version_info() {
+  local name=$1 repo_url=$2
+  local cache_file
+  cache_file=$(fetch_index "$repo_url" 2>/dev/null) || { echo "unknown"; return; }
+  yq eval ".entries.\"${name}\"[0] | .version + \" (\" + .created + \")\"" "$cache_file" 2>/dev/null || echo "unknown"
+}
+
 echo ""
 echo "=========================================="
-echo "Waiting for ${#missing_charts[@]} chart dependencies to be available..."
+echo "Waiting for ${#missing_charts[@]} chart dependencies..."
 echo "Timeout: ${TIMEOUT}s, Poll interval: ${POLL_INTERVAL}s"
 echo "=========================================="
 
 start_time=$(date +%s)
-all_available=false
 
 while true; do
-  current_time=$(date +%s)
-  elapsed=$((current_time - start_time))
+  elapsed=$(( $(date +%s) - start_time ))
 
   if [ $elapsed -ge $TIMEOUT ]; then
     echo ""
-    echo "❌ Timeout reached after ${TIMEOUT}s"
-    echo "The following charts are still not available:"
-    for chart_info in "${missing_charts[@]}"; do
-      IFS='|' read -r name version repository <<< "$chart_info"
-      echo "  - $name@$version"
+    echo "Timeout reached after ${TIMEOUT}s. Still missing:"
+    for entry in "${missing_charts[@]}"; do
+      IFS='|' read -r name version repository <<< "$entry"
+      latest=$(get_latest_version_info "$name" "$repository")
+      echo "  - $name@$version (latest: $latest)"
     done
     exit 1
   fi
 
-  remaining_charts=()
-  available_count=0
+  clear_index_cache
+  remaining=()
 
-  for chart_info in "${missing_charts[@]}"; do
-    IFS='|' read -r name version repository <<< "$chart_info"
-
+  for entry in "${missing_charts[@]}"; do
+    IFS='|' read -r name version repository <<< "$entry"
     if check_chart_exists "$name" "$version" "$repository"; then
-      echo "✓ Available: $name@$version"
-      ((available_count++))
+      echo "  Available: $name@$version"
     else
-      remaining_charts+=("$chart_info")
+      remaining+=("$entry")
     fi
   done
 
-  if [ ${#remaining_charts[@]} -eq 0 ]; then
-    all_available=true
+  if [ ${#remaining[@]} -eq 0 ]; then
     break
   fi
 
-  missing_charts=("${remaining_charts[@]}")
-
+  missing_charts=("${remaining[@]}")
   echo ""
-  echo "Progress: $available_count available, ${#missing_charts[@]} remaining"
-  echo "Waiting ${POLL_INTERVAL}s before next check... (elapsed: ${elapsed}s)"
+  echo "  ${#missing_charts[@]} remaining (${elapsed}s elapsed):"
+  for entry in "${missing_charts[@]}"; do
+    IFS='|' read -r name version repository <<< "$entry"
+    latest=$(get_latest_version_info "$name" "$repository")
+    echo "    - waiting for $name@$version (latest: $latest)"
+  done
   sleep $POLL_INTERVAL
 done
 
-if [ "$all_available" = true ]; then
-  echo ""
-  echo "=========================================="
-  echo "✅ All chart dependencies are available!"
-  echo "=========================================="
-  exit 0
-fi
+echo ""
+echo "All chart dependencies are available!"
+echo "=========================================="
+
+for dir in "${CHART_DIRS[@]}"; do
+  echo "Running: helm dependency update $dir"
+  helm dependency update "$dir"
+done
