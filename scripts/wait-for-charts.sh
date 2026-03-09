@@ -27,7 +27,9 @@ check_chart_exists() {
   if [[ "$repo_url" == *"flanksource.github.io/charts"* ]]; then
     # Fetch the chart index
     local index_url="${repo_url}/index.yaml"
-    local chart_info=$(curl -sSf "$index_url" | yq eval ".entries.\"${chart_name}\"[] | select(.version == \"${chart_version}\")" -)
+    local chart_info
+    # Use || true to prevent curl failures from exiting the script
+    chart_info=$(curl -sSf "$index_url" 2>/dev/null | yq eval ".entries.\"${chart_name}\"[] | select(.version == \"${chart_version}\")" - 2>/dev/null || true)
 
     if [ -n "$chart_info" ]; then
       return 0
@@ -36,7 +38,7 @@ check_chart_exists() {
     fi
   else
     # For other repositories, try helm search
-    helm repo update > /dev/null 2>&1
+    helm repo update > /dev/null 2>&1 || true
     if helm search repo --version "$chart_version" --regexp ".*/${chart_name}$" 2>/dev/null | grep -q "$chart_version"; then
       return 0
     else
