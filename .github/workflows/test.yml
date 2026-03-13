@@ -32,9 +32,14 @@ jobs:
           helm repo update
 
       - name: Update chart dependencies
-        run: |
-          cd chart && helm dependency update .
-          cd ../agent-chart && helm dependency update .
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 60
+          command: |
+            cd chart && helm dependency update .
+            cd ../agent-chart && helm dependency update .
 
       - name: Lint chart
         run: make lint
@@ -68,9 +73,14 @@ jobs:
           helm repo add ory https://k8s.ory.sh/helm/charts
           helm repo update
 
-      - name: build dependency
-        run: |
-          cd chart && helm dependency update
+      - name: Build dependencies
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 60
+          command: |
+            cd chart && helm dependency update
 
       - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1 # v4.7.0
         with:
