@@ -23,10 +23,15 @@ jobs:
           helm repo update
 
       - name: Template agent chart
-        run: |
-          cd agent-chart
-          helm dependency update .
-          helm template . \
-            --set upstream.host=host \
-            --set upstream.password=password \
-            --set upstream.agentName=agent
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 60
+          command: |
+            cd agent-chart
+            helm dependency update .
+            helm template . \
+              --set upstream.host=host \
+              --set upstream.password=password \
+              --set upstream.agentName=agent
