@@ -108,7 +108,7 @@ var _ = Describe("Mission Control", ginkgo.Ordered, func() {
 		whoami, ok, err = mcInstanceWithoutAuth.WhoAmI()
 		Expect(err).NotTo(HaveOccurred(), "Unable to query whoami endpoint")
 		Expect(ok).To(BeFalse())
-		Expect(whoami["message"]).To(Equal("Unauthorized"))
+		Expect(whoami["error"]).To(Equal("unauthorized"))
 	})
 
 	It("Should run system scraper", func() {
