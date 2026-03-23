@@ -48,14 +48,14 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			Release(kratosReleaseName).Namespace(kratosNamespace).
 			WaitFor(time.Minute * 7).
 			Values(map[string]any{
-				"cleanupResourcesOnDelete": true,
+			"cleanupResourcesOnDelete": true,
 				"authProvider":             "kratos",
 				"global": map[string]any{
 					"ui": map[string]any{
 						"host": host,
 					},
 				},
-				// Keep this close to defaults; disable ingress only for CI isolation.
+			// Keep this close to defaults; disable ingress only for CI isolation.
 				"ingress":        map[string]any{"enabled": false},
 				"flanksource-ui": map[string]any{"enabled": true},
 			}).
@@ -82,6 +82,24 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		if uiStopChan != nil {
 			close(uiStopChan)
 		}
+	})
+
+	It("Should render mission-control kratos config from default template", func() {
+		cm, err := k8s.CoreV1().ConfigMaps(kratosNamespace).Get(context.TODO(), "mission-control-kratos-config", v1.GetOptions{})
+		Expect(err).NotTo(HaveOccurred())
+
+		kratosYAML, ok := cm.Data["kratos.yaml"]
+		Expect(ok).To(BeTrue())
+		Expect(kratosYAML).NotTo(BeEmpty())
+
+		// These values come from chart/files/kratos-config.yaml and should stay in sync.
+		Expect(kratosYAML).To(ContainSubstring("base_url: https://mission-control-kratos.cluster.local/api/.ory"))
+		Expect(kratosYAML).To(ContainSubstring("default_browser_return_url: https://mission-control-kratos.cluster.local/"))
+		Expect(kratosYAML).To(ContainSubstring("allowed_return_urls:"))
+		Expect(kratosYAML).To(ContainSubstring("- https://mission-control-kratos.cluster.local"))
+		Expect(kratosYAML).To(ContainSubstring("identity:"))
+		Expect(kratosYAML).To(ContainSubstring("url: base64://"))
+		Expect(strings.Count(kratosYAML, "mission-control-kratos.cluster.local")).To(BeNumerically(">", 3))
 	})
 
 	It("Should render mission-control kratos config from default template", func() {
