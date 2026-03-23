@@ -14,8 +14,9 @@
 #      This exercises schema changes, index rebuilds, and Go-based backfill
 #      migrations (e.g. populating identity_id on credential_identifiers and
 #      session_devices).
-#   4. Verify that backfilled columns contain no NULLs — the subsequent NOT NULL
-#      constraint + FK migration would fail if they did.
+#   4. Verify data integrity: identities, sessions and credentials survived the
+#      migration. If the target version includes backfill migrations, also checks
+#      that no NULLs remain in the backfilled columns.
 #
 set -euo pipefail
 
@@ -119,24 +120,54 @@ docker compose stop kratos_old_server
 docker compose run --rm kratos_new_migration
 echo "✓ Kratos ${NEW_VERSION} migration succeeded"
 
-# Step 4: Verify backfilled data
+# Step 4: Verify data integrity
 echo ""
-echo "==> Step 4: Verifying backfilled data..."
+echo "==> Step 4: Verifying data integrity..."
 
-NULL_CREDENTIAL_IDS=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
-    "SELECT COUNT(*) FROM identity_credential_identifiers WHERE identity_id IS NULL")
-if [ "$NULL_CREDENTIAL_IDS" != "0" ]; then
-    echo "✗ Found ${NULL_CREDENTIAL_IDS} credential identifiers with NULL identity_id"
+# Check identities survived migration
+IDENTITY_COUNT=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+    "SELECT COUNT(*) FROM identities")
+if [ "$IDENTITY_COUNT" != "3" ]; then
+    echo "✗ Expected 3 identities, found ${IDENTITY_COUNT}"
     exit 1
 fi
 
-NULL_DEVICE_IDS=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
-    "SELECT COUNT(*) FROM session_devices WHERE identity_id IS NULL")
-if [ "$NULL_DEVICE_IDS" != "0" ]; then
-    echo "✗ Found ${NULL_DEVICE_IDS} session devices with NULL identity_id"
+# Check sessions survived migration
+SESSION_COUNT=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+    "SELECT COUNT(*) FROM sessions")
+if [ "$SESSION_COUNT" != "4" ]; then
+    echo "✗ Expected 4 sessions, found ${SESSION_COUNT}"
     exit 1
 fi
 
-echo "✓ All backfill columns populated correctly"
+# Check credential identifiers survived migration
+CRED_COUNT=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+    "SELECT COUNT(*) FROM identity_credential_identifiers")
+if [ "$CRED_COUNT" != "3" ]; then
+    echo "✗ Expected 3 credential identifiers, found ${CRED_COUNT}"
+    exit 1
+fi
+
+# If the new version has backfill columns, verify they're populated
+HAS_IDENTITY_ID=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+    "SELECT COUNT(*) FROM information_schema.columns WHERE table_name='identity_credential_identifiers' AND column_name='identity_id'")
+if [ "$HAS_IDENTITY_ID" = "1" ]; then
+    NULL_CREDENTIAL_IDS=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+        "SELECT COUNT(*) FROM identity_credential_identifiers WHERE identity_id IS NULL")
+    if [ "$NULL_CREDENTIAL_IDS" != "0" ]; then
+        echo "✗ Found ${NULL_CREDENTIAL_IDS} credential identifiers with NULL identity_id"
+        exit 1
+    fi
+
+    NULL_DEVICE_IDS=$(docker compose exec -T postgres psql -U postgres -d kratos_migration_test -tAc \
+        "SELECT COUNT(*) FROM session_devices WHERE identity_id IS NULL")
+    if [ "$NULL_DEVICE_IDS" != "0" ]; then
+        echo "✗ Found ${NULL_DEVICE_IDS} session devices with NULL identity_id"
+        exit 1
+    fi
+    echo "✓ Backfill columns populated correctly"
+fi
+
+echo "✓ All data intact after migration"
 echo ""
 echo "==> ✓ Migration test passed: ${OLD_VERSION} → ${NEW_VERSION}"
