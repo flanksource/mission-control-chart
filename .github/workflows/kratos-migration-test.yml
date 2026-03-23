@@ -1,0 +1,20 @@
+name: Kratos Migration Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  kratos-migration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
+
+      - name: Test Kratos migration (v0.13.0 → v26.2.0)
+        working-directory: test/kratos-migration
+        run: bash test.sh

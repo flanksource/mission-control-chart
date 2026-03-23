@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16.6
+    environment:
+      POSTGRES_DB: kratos_migration_test
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  kratos_old_migration:
+    image: oryd/kratos:v0.13.0
+    command: migrate sql --yes postgres://postgres:test@postgres:5432/kratos_migration_test?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  kratos_old_server:
+    image: oryd/kratos:v0.13.0
+    command: serve -c /etc/kratos/kratos.yaml --dev --watch-courier
+    ports:
+      - "4433:4433"
+      - "4434:4434"
+    volumes:
+      - ./kratos-config.yaml:/etc/kratos/kratos.yaml:ro
+      - ./identity-schema.json:/etc/kratos/identity-schema.json:ro
+    depends_on:
+      kratos_old_migration:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+
+  kratos_new_migration:
+    image: oryd/kratos:v26.2.0
+    command: migrate sql --yes postgres://postgres:test@postgres:5432/kratos_migration_test?sslmode=disable
+    profiles: ["migrate"]
+    depends_on:
+      postgres:
+        condition: service_healthy

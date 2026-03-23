@@ -85,3 +85,7 @@ template-views:
     --show-only 'templates/views/dashboard/*' \
     --show-only 'templates/views/system/*' \
     2>/dev/null
+
+.PHONY: test-kratos-migration
+test-kratos-migration:
+	bash test/kratos-migration/test.sh
