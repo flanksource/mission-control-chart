@@ -525,6 +525,8 @@ kratos:
   secret:
     # Disable kratos secret generation. We explicitly generate kratos secret to have access to database URL for dns key in secret. See: /chart/templates/secrets.yaml
     enabled: false
+    # Keep using the existing "kratos" Secret so the upstream kratos chart injects DSN env vars.
+    nameOverride: kratos
   # don't include Release.name in kratos name
   fullnameOverride: kratos
   ingress:
