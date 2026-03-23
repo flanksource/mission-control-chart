@@ -38,7 +38,7 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 					},
 				},
 				// Keep this close to defaults; disable ingress/UI only for CI isolation.
-				"ingress": map[string]any{"enabled": false},
+				"ingress":        map[string]any{"enabled": false},
 				"flanksource-ui": map[string]any{"enabled": false},
 			}).
 			InstallOrUpgrade()).NotTo(HaveOccurred())
@@ -86,7 +86,7 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			g.Expect(pods.Items).NotTo(BeEmpty())
 
 			pod := pods.Items[0]
-			g.Expect(pod.Status.Phase).To(Equal("Running"))
+			g.Expect(string(pod.Status.Phase)).To(Equal("Running"))
 
 			initialized := false
 			for _, c := range pod.Status.Conditions {
@@ -118,10 +118,10 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
 	})
 
-	It("Should hit whoami endpoint without session and return unauthorized", func() {
+	It("Should hit whoami endpoint without session and get authorization error", func() {
 		whoami, ok, err := kratosMC.WhoAmI()
 		Expect(err).NotTo(HaveOccurred())
 		Expect(ok).To(BeFalse())
-		Expect(whoami).To(HaveKey("error"))
+		Expect(whoami["error"]).To(Equal("Authorization Error"))
 	})
 })

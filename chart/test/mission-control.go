@@ -135,6 +135,16 @@ func (mc *MissionControl) WhoAmI() (map[string]any, bool, error) {
 		return nil, false, err
 	}
 
+	if !r.IsJSON() {
+		// Kratos returns plain text error messages, so we need to handle that case separately.
+		raw, err := r.AsString()
+		if err != nil {
+			return nil, r.IsOK(), err
+		}
+		return map[string]any{"error": raw}, r.IsOK(), nil
+	}
+
+	// Basic auth returns JSON
 	body, err := r.AsJSON()
 	return body, r.IsOK(), err
 }
