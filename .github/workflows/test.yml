@@ -46,7 +46,16 @@ jobs:
 
 
   test:
+    name: test (${{ matrix.suite }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: basic
+            label_filter: basic
+          - suite: kratos
+            label_filter: kratos
     steps:
       - name: Checkout
         uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
@@ -105,8 +114,8 @@ jobs:
           export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
           go test -c -o chart-tests.test
 
-      - name: Run chart Go tests
+      - name: Run chart Go tests (${{ matrix.suite }})
         working-directory: chart/test
         run: |
           export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/config}"
-          ./chart-tests.test -test.v -test.timeout 20m -ginkgo.v -ginkgo.trace -ginkgo.progress
+          ./chart-tests.test -test.v -test.timeout 20m -ginkgo.v -ginkgo.trace -ginkgo.progress -ginkgo.label-filter='${{ matrix.label_filter }}'

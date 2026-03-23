@@ -8,7 +8,6 @@ import (
 
 	flanksourceCtx "github.com/flanksource/commons-db/context"
 	"github.com/flanksource/commons-db/kubernetes"
-	"github.com/flanksource/commons-test/helm"
 	commonsLogger "github.com/flanksource/commons/logger"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -51,7 +50,6 @@ func TestHelm(t *testing.T) {
 
 var mcInstance *MissionControl
 var mcInstanceWithoutAuth *MissionControl
-var mcChart *helm.HelmChart
 var _ = BeforeSuite(func() {
 
 	// Get environment variables or use defaults
