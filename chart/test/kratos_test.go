@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/flanksource/commons-test/helm"
+	"github.com/flanksource/commons/http"
 	"github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -17,6 +19,9 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		kratosNamespace   = "mission-control-kratos-test"
 		kratosReleaseName = "mission-control-kratos"
 	)
+
+	var kratosMCStopChan chan struct{}
+	var kratosMC *MissionControl
 
 	BeforeAll(func() {
 		By("Installing Mission Control with Kratos auth")
@@ -37,6 +42,21 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 				"flanksource-ui": map[string]any{"enabled": false},
 			}).
 			InstallOrUpgrade()).NotTo(HaveOccurred())
+
+		mcLocalPort, stopChan, err := portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 8080)
+		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
+		kratosMCStopChan = stopChan
+
+		kratosMC = &MissionControl{
+			Client: k8s,
+			HTTP:   http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", mcLocalPort)),
+		}
+	})
+
+	AfterAll(func() {
+		if kratosMCStopChan != nil {
+			close(kratosMCStopChan)
+		}
 	})
 
 	It("Should render mission-control kratos config from default template", func() {
@@ -96,5 +116,12 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			}
 			g.Expect(ready).To(BeTrue())
 		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+	})
+
+	It("Should hit whoami endpoint without session and return unauthorized", func() {
+		whoami, ok, err := kratosMC.WhoAmI()
+		Expect(err).NotTo(HaveOccurred())
+		Expect(ok).To(BeFalse())
+		Expect(whoami).To(HaveKey("error"))
 	})
 })
