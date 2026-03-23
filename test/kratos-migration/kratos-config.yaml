@@ -1,0 +1,43 @@
+version: v0.13.0
+dsn: postgres://postgres:test@postgres:5432/kratos_migration_test?sslmode=disable
+serve:
+  public:
+    base_url: http://localhost:4433/
+  admin:
+    base_url: http://localhost:4434/
+selfservice:
+  default_browser_return_url: http://localhost:4455/
+  methods:
+    password:
+      enabled: true
+    link:
+      enabled: true
+  flows:
+    login:
+      ui_url: http://localhost:4455/login
+    registration:
+      ui_url: http://localhost:4455/registration
+      enabled: true
+    recovery:
+      enabled: true
+      ui_url: http://localhost:4455/recovery
+      use: link
+    verification:
+      enabled: true
+      ui_url: http://localhost:4455/verification
+      use: link
+    settings:
+      ui_url: http://localhost:4455/settings
+    error:
+      ui_url: http://localhost:4455/error
+identity:
+  default_schema_id: default
+  schemas:
+    - id: default
+      url: file:///etc/kratos/identity-schema.json
+courier:
+  smtp:
+    connection_uri: smtp://localhost:1025
+secrets:
+  default:
+    - a-very-long-test-secret-not-for-production-use
