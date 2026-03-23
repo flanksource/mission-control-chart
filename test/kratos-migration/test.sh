@@ -3,7 +3,7 @@
 # Kratos Migration E2E Test
 #
 # Tests the upgrade path from Kratos v0.13.0 (current production via chart 0.32.0)
-# to v26.2.0 with realistic data present in the database.
+# to v25.4.0 (chart 0.60.1) with realistic data present in the database.
 #
 # Steps:
 #   1. Run v0.13.0 migrations on a fresh Postgres DB, then start the v0.13.0 server.
@@ -23,7 +23,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 OLD_VERSION="v0.13.0"
-NEW_VERSION="v26.2.0"
+NEW_VERSION="v25.4.0"
 
 cleanup() {
     echo "==> Cleaning up..."

@@ -34,7 +34,7 @@ services:
         condition: service_healthy
 
   kratos_new_migration:
-    image: oryd/kratos:v26.2.0
+    image: oryd/kratos:v25.4.0
     command: migrate sql --yes postgres://postgres:test@postgres:5432/kratos_migration_test?sslmode=disable
     profiles: ["migrate"]
     depends_on:
