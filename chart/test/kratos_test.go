@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
 	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
@@ -17,8 +18,22 @@ import (
 )
 
 func findChromeBinary() string {
-	candidates := []string{"google-chrome", "chromium", "chromium-browser", "chrome"}
+	candidates := []string{
+		"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+		"google-chrome",
+		"chromium",
+		"chromium-browser",
+		"chrome",
+	}
+
 	for _, candidate := range candidates {
+		if strings.HasPrefix(candidate, "/") {
+			if _, err := exec.LookPath(candidate); err == nil {
+				return candidate
+			}
+			continue
+		}
+
 		if path, err := exec.LookPath(candidate); err == nil {
 			return path
 		}
@@ -35,9 +50,9 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 	var kratosMCStopChan, uiStopChan chan struct{}
 	var kratosMC *MissionControl
 	var uiLocalPort int
+	var kratosTestPassword string
 	const (
 		kratosTestIdentifier = "admin@local"
-		kratosTestPassword   = "admin"
 	)
 
 	BeforeAll(func() {
@@ -50,6 +65,9 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			Values(map[string]any{
 				"cleanupResourcesOnDelete": true,
 				"authProvider":             "kratos",
+				"mission-control-misc-playbooks": map[string]any{
+					"enabled": false,
+				},
 				"global": map[string]any{
 					"ui": map[string]any{
 						"host": host,
@@ -61,6 +79,11 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			}).
 			InstallOrUpgrade()).NotTo(HaveOccurred())
 
+		adminSecret, err := k8s.CoreV1().Secrets(kratosNamespace).Get(context.TODO(), "mission-control-admin-password", v1.GetOptions{})
+		Expect(err).NotTo(HaveOccurred(), "Failed to get admin password secret")
+		kratosTestPassword = string(adminSecret.Data["password"])
+		Expect(kratosTestPassword).NotTo(BeEmpty(), "Admin password should not be empty")
+
 		mcLocalPort, stopChan, err := portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 8080)
 		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
 		kratosMCStopChan = stopChan
@@ -70,7 +93,7 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			HTTP:   http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", mcLocalPort)),
 		}
 
-		uiLocalPort, stopChan, err = portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=incident-manager-ui", 8080)
+		uiLocalPort, stopChan, err = portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=incident-manager-ui", 3000)
 		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to incident-manager-ui pod")
 		uiStopChan = stopChan
 	})
@@ -145,9 +168,7 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 
 	It("Should hit whoami endpoint with UI login and succeed", func() {
 		chromePath := findChromeBinary()
-		if chromePath == "" {
-			Skip("chrome/chromium binary not found; skipping UI login flow test")
-		}
+		Expect(chromePath).NotTo(BeEmpty(), "chrome/chromium binary not found; UI login flow test requires a browser")
 
 		allocatorOpts := append(chromedp.DefaultExecAllocatorOptions[:],
 			chromedp.ExecPath(chromePath),
@@ -183,28 +204,45 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		)
 		Expect(err).NotTo(HaveOccurred(), "Failed to login via UI")
 
-		Eventually(func() bool {
-			var whoamiOK bool
+		Eventually(func(g Gomega) {
+			var whoamiResp map[string]any
 			err := chromedp.Run(runCtx,
 				chromedp.Evaluate(`(async () => {
-					const paths = ["/auth/whoami", "/api/auth/whoami"]
-					for (const path of paths) {
+					try {
+						const res = await fetch("/api/auth/whoami", { credentials: "include" })
+						let body = null
 						try {
-							const res = await fetch(path, { credentials: "include" })
-							if (res.ok) {
-								return true
-							}
+							body = await res.json()
 						} catch (e) {
 						}
+						return { ok: res.ok, status: res.status, body }
+					} catch (e) {
+						return { ok: false, error: String(e) }
 					}
-					return false
-				})()`, &whoamiOK),
+				})()`, &whoamiResp,
+					chromedp.EvalAsValue,
+					func(p *runtime.EvaluateParams) *runtime.EvaluateParams {
+						return p.WithAwaitPromise(true)
+					},
+				),
 			)
-			if err != nil {
-				return false
-			}
-			return whoamiOK
-		}).WithTimeout(45 * time.Second).WithPolling(2 * time.Second).Should(BeTrue())
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(whoamiResp).NotTo(BeNil())
+			g.Expect(whoamiResp["ok"]).To(Equal(true), "whoami response should be ok")
+
+			GinkgoWriter.Printf("whoami response: %+v\n", whoamiResp)
+
+			body, ok := whoamiResp["body"].(map[string]any)
+			g.Expect(ok).To(BeTrue(), "whoami response body should be JSON")
+			g.Expect(body["message"]).To(Equal("success"))
+
+			payload, ok := body["payload"].(map[string]any)
+			g.Expect(ok).To(BeTrue(), "whoami payload should be present")
+
+			user, ok := payload["user"].(map[string]any)
+			g.Expect(ok).To(BeTrue(), "whoami payload.user should be present")
+			g.Expect(user["email"]).To(Equal(kratosTestIdentifier))
+		}).WithTimeout(15 * time.Second).WithPolling(2 * time.Second).Should(Succeed())
 	})
 
 	It("Should hit whoami endpoint without session and get authorization error", func() {
