@@ -15,7 +15,7 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var _ = Describe("Mission Control", ginkgo.Ordered, func() {
+var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 	var mcStopChan, configDBStopChan chan struct{}
 
 	BeforeAll(func() {
