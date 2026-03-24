@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"os/exec"
 	"strings"
 	"time"
 
+	"github.com/chromedp/chromedp"
 	"github.com/flanksource/commons-test/helm"
 	"github.com/flanksource/commons/http"
 	"github.com/onsi/ginkgo/v2"
@@ -14,14 +16,29 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+func findChromeBinary() string {
+	candidates := []string{"google-chrome", "chromium", "chromium-browser", "chrome"}
+	for _, candidate := range candidates {
+		if path, err := exec.LookPath(candidate); err == nil {
+			return path
+		}
+	}
+	return ""
+}
+
 var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), func() {
 	const (
 		kratosNamespace   = "mission-control-kratos-test"
-		kratosReleaseName = "mission-control-kratos"
+		kratosReleaseName = "mission-control"
 	)
 
-	var kratosMCStopChan chan struct{}
+	var kratosMCStopChan, uiStopChan chan struct{}
 	var kratosMC *MissionControl
+	var uiLocalPort int
+	const (
+		kratosTestIdentifier = "admin@local"
+		kratosTestPassword   = "admin"
+	)
 
 	BeforeAll(func() {
 		By("Installing Mission Control with Kratos auth")
@@ -31,15 +48,16 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			Release(kratosReleaseName).Namespace(kratosNamespace).
 			WaitFor(time.Minute * 7).
 			Values(map[string]any{
-				"authProvider": "kratos",
+				"cleanupResourcesOnDelete": true,
+				"authProvider":             "kratos",
 				"global": map[string]any{
 					"ui": map[string]any{
 						"host": host,
 					},
 				},
-				// Keep this close to defaults; disable ingress/UI only for CI isolation.
+				// Keep this close to defaults; disable ingress only for CI isolation.
 				"ingress":        map[string]any{"enabled": false},
-				"flanksource-ui": map[string]any{"enabled": false},
+				"flanksource-ui": map[string]any{"enabled": true},
 			}).
 			InstallOrUpgrade()).NotTo(HaveOccurred())
 
@@ -51,11 +69,18 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			Client: k8s,
 			HTTP:   http.NewClient().BaseURL(fmt.Sprintf("http://localhost:%d", mcLocalPort)),
 		}
+
+		uiLocalPort, stopChan, err = portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=incident-manager-ui", 8080)
+		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to incident-manager-ui pod")
+		uiStopChan = stopChan
 	})
 
 	AfterAll(func() {
 		if kratosMCStopChan != nil {
 			close(kratosMCStopChan)
+		}
+		if uiStopChan != nil {
+			close(uiStopChan)
 		}
 	})
 
@@ -116,6 +141,70 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 			}
 			g.Expect(ready).To(BeTrue())
 		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+	})
+
+	It("Should hit whoami endpoint with UI login and succeed", func() {
+		chromePath := findChromeBinary()
+		if chromePath == "" {
+			Skip("chrome/chromium binary not found; skipping UI login flow test")
+		}
+
+		allocatorOpts := append(chromedp.DefaultExecAllocatorOptions[:],
+			chromedp.ExecPath(chromePath),
+			chromedp.Headless,
+			chromedp.NoFirstRun,
+			chromedp.NoDefaultBrowserCheck,
+			chromedp.Flag("no-sandbox", true),
+			chromedp.Flag("disable-dev-shm-usage", true),
+		)
+
+		allocCtx, cancelAlloc := chromedp.NewExecAllocator(context.Background(), allocatorOpts...)
+		defer cancelAlloc()
+
+		browserCtx, cancelBrowser := chromedp.NewContext(allocCtx)
+		defer cancelBrowser()
+
+		runCtx, cancelRun := context.WithTimeout(browserCtx, 2*time.Minute)
+		defer cancelRun()
+
+		loginURL := fmt.Sprintf("http://localhost:%d/login", uiLocalPort)
+		identifierSelector := `input[name="identifier"], input[name="email"], input[name="traits.email"], input[type="email"], input[name="username"]`
+		passwordSelector := `input[name="password"], input[name="traits.password"], input[type="password"]`
+		submitSelector := `button[type="submit"], input[type="submit"]`
+
+		err := chromedp.Run(runCtx,
+			chromedp.Navigate(loginURL),
+			chromedp.WaitVisible("body", chromedp.ByQuery),
+			chromedp.WaitVisible(identifierSelector, chromedp.ByQuery),
+			chromedp.WaitVisible(passwordSelector, chromedp.ByQuery),
+			chromedp.SendKeys(identifierSelector, kratosTestIdentifier, chromedp.ByQuery),
+			chromedp.SendKeys(passwordSelector, kratosTestPassword, chromedp.ByQuery),
+			chromedp.Click(submitSelector, chromedp.ByQuery),
+		)
+		Expect(err).NotTo(HaveOccurred(), "Failed to login via UI")
+
+		Eventually(func() bool {
+			var whoamiOK bool
+			err := chromedp.Run(runCtx,
+				chromedp.Evaluate(`(async () => {
+					const paths = ["/auth/whoami", "/api/auth/whoami"]
+					for (const path of paths) {
+						try {
+							const res = await fetch(path, { credentials: "include" })
+							if (res.ok) {
+								return true
+							}
+						} catch (e) {
+						}
+					}
+					return false
+				})()`, &whoamiOK),
+			)
+			if err != nil {
+				return false
+			}
+			return whoamiOK
+		}).WithTimeout(45 * time.Second).WithPolling(2 * time.Second).Should(BeTrue())
 	})
 
 	It("Should hit whoami endpoint without session and get authorization error", func() {
