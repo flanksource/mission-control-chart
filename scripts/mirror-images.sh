@@ -35,6 +35,7 @@ POSTGREST_TAG=$(yq '.externalPostgrest.tag' "${CHART_DIR}/values.yaml")
 mirror_image "docker.io/postgrest/postgrest:${POSTGREST_TAG}" "postgrest:${POSTGREST_TAG}"
 
 # kubectl — used by the optional resource cleanup job
-mirror_image "docker.io/bitnami/kubectl:latest" "kubectl:latest"
+KUBECTL_TAG=$(grep -oP 'registry\.k8s\.io/kubectl:\K[^\s"]+' "${CHART_DIR}/templates/cleanup-job.yaml" | head -1)
+mirror_image "registry.k8s.io/kubectl:${KUBECTL_TAG}" "kubectl:${KUBECTL_TAG}"
 
 echo "All images mirrored successfully."

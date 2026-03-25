@@ -96,7 +96,7 @@ global:
         # @schema
         annotations: {}
       extraContainers: ""
-      image: bitnami/pgbouncer:1.22.0
+      image: pgbouncer/pgbouncer:1.22.0
 # @schema
 # required: false
 # @schema
