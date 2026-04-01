@@ -211,6 +211,12 @@ upstream_push: {}
 # required: false
 # @schema
 authProvider: kratos
+# Enable OIDC mode in mission-control by passing the --oidc flag
+# @schema
+# required: false
+# type: boolean
+# @schema
+oidc: false
 # @schema
 # required: false
 # @schema

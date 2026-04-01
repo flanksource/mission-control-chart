@@ -824,6 +824,13 @@
       "required": [],
       "title": "nameOverride"
     },
+    "oidc": {
+      "default": false,
+      "description": "Enable OIDC mode in mission-control by passing the --oidc flag",
+      "required": [],
+      "title": "oidc",
+      "type": "boolean"
+    },
     "otel": {
       "additionalProperties": false,
       "properties": {
