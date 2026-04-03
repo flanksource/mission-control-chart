@@ -3,18 +3,20 @@ LOCALBIN ?= $(shell pwd)/.bin
 $(LOCALBIN):
 	mkdir -p .bin
 
-.PHONY: chart-local
-chart-local:
+.PHONY: helm-deps-update
+helm-deps-update:
 	helm dependency update ./chart
+
+.PHONY: chart-local
+chart-local: helm-deps-update
 	helm template -f ./chart/values.yaml mission-control ./chart
 
 .PHONY: test-templates
-test-templates:
-	helm dependency update ./chart
+test-templates: helm-deps-update
 	helm template --dry-run -f ./chart/values.yaml mission-control ./chart > /dev/null && echo "Templates are valid"
 
 .PHONY: chart
-chart:
+chart: helm-deps-update
 	helm dependency build ./chart
 	helm package ./chart
 

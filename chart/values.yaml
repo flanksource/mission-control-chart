@@ -306,6 +306,13 @@ permissions:
   # type: boolean
   # required: false
   # @schema
+  # -- when enabled, users must have explicit permissions to use MCP
+  # otherwise, all users automatically have permission to use MCP.
+  mcp: false
+  # @schema
+  # type: boolean
+  # required: false
+  # @schema
   # -- when enabled, services must have explicit permissions to read configs
   # otherwise, system automatically has permission to read all configs.
   configs: false

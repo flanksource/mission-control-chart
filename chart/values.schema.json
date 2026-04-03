@@ -885,6 +885,13 @@
           "title": "connections",
           "type": "boolean"
         },
+        "mcp": {
+          "default": false,
+          "description": "when enabled, users must have explicit permissions to use MCP\notherwise, all users automatically have permission to use MCP.",
+          "required": [],
+          "title": "mcp",
+          "type": "boolean"
+        },
         "playbooks": {
           "default": false,
           "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",

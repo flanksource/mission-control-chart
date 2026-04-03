@@ -1,0 +1,14 @@
+{{- if not .Values.permissions.mcp }}
+apiVersion: mission-control.flanksource.com/v1
+kind: Permission
+metadata:
+  name: allow-all-users-to-use-mcp
+spec:
+  description: Grant all users to use MCP
+  subject:
+    group: all-users
+  actions:
+    - "mcp:use"
+  object:
+    mcp: true
+{{- end }}
