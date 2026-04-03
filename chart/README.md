@@ -202,6 +202,7 @@ A Helm chart for flanksource mission control
 | permissions.components | bool | `false` | when enabled, services must have explicit permissions to read components otherwise, system automatically has permission to read all components. |
 | permissions.configs | bool | `false` | when enabled, services must have explicit permissions to read configs otherwise, system automatically has permission to read all configs. |
 | permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
+| permissions.mcp | bool | `false` | when enabled, users must have explicit permissions to use MCP otherwise, all users automatically have permission to use MCP. |
 | permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
