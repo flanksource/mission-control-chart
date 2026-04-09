@@ -42,6 +42,17 @@ upstream:
   password: ""
   agentName: ""
   secretName: upstream
+authProvider: basic
+adminPassword:
+  secretKeyRef:
+    # set to false if you want to pass in an existing secret
+    create: true
+    name: mission-control-admin-password
+    key: password
+htpasswd:
+  create: true
+  secretName: ""
+  secretKey: htpasswd
 resources:
   requests:
     cpu: 100m

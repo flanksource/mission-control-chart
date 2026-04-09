@@ -21,6 +21,11 @@ spec:
         - name: properties-config
           configMap:
             name: {{ include "incident-commander.name" . }}-properties-config
+      {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+        - name: htpasswd
+          secret:
+            secretName: {{ if .Values.htpasswd.create }}mission-control-htpasswd{{ else }}{{ .Values.htpasswd.secretName }}{{ end }}
+      {{- end}}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -36,6 +41,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.db.jwtSecretKeyRef.name  }}
                   key: {{ .Values.db.jwtSecretKeyRef.key }}
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.adminPassword.secretKeyRef.name }}
+                  key: {{ .Values.adminPassword.secretKeyRef.key }}
           envFrom:
             - secretRef:
                 name: {{ .Values.upstream.secretName }}
@@ -43,6 +53,10 @@ spec:
             - /app/incident-commander
           args:
             - serve
+            - --auth={{ .Values.authProvider }}
+            {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+            - --htpasswd-file=/etc/htpasswd/{{ .Values.htpasswd.secretKey }}
+            {{- end }}
             - --apm-hub=http://apm-hub:8080
             - --canary-checker=http://canary-checker:8080
             - --config-db=http://config-db:8080
@@ -75,6 +89,11 @@ spec:
             - mountPath: /app/mission-control.properties
               name: properties-config
               subPath: mission-control.properties
+            {{- if and (eq .Values.authProvider "basic") (or .Values.htpasswd.create (ne .Values.htpasswd.secretName "")) }}
+            - name: htpasswd
+              mountPath: /etc/htpasswd
+              readOnly: true
+            {{- end}}
       {{- with .Values.extra }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
