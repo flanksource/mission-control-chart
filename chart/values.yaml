@@ -420,6 +420,19 @@ canary-checker:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
+  extra:
+    initContainers:
+      - name: wait-for-mission-control
+        image: docker.io/atkrad/wait4x:3.6
+        imagePullPolicy: IfNotPresent
+        command:
+          - wait4x
+          - http
+          - http://mission-control:8080/health
+          - --expect-status-code
+          - "200"
+          - -t
+          - 15m
   flanksource-ui:
     # Disable UI via canary-checker by default.
     enabled: false
@@ -442,6 +455,19 @@ config-db:
       secretKeyRef:
         name: incident-commander-postgres
         key: DB_URL
+  extra:
+    initContainers:
+      - name: wait-for-mission-control
+        image: docker.io/atkrad/wait4x:3.6
+        imagePullPolicy: IfNotPresent
+        command:
+          - wait4x
+          - http
+          - http://mission-control:8080/health
+          - --expect-status-code
+          - "200"
+          - -t
+          - 15m
 # @schema
 # required: false
 # @schema
@@ -517,6 +543,16 @@ kratos:
       - --watch-courier
       - --config
       - /etc/custom/config/kratos.yaml
+    extraInitContainers: |
+      - name: wait-for-postgres
+        image: docker.io/atkrad/wait4x:3.6
+        imagePullPolicy: IfNotPresent
+        command:
+          - wait4x
+          - tcp
+          - postgres:5432
+          - -t
+          - 15m
     extraVolumeMounts:
       - name: kratos-custom-config-volume
         mountPath: /etc/custom/config
