@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"time"
 
+	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/portforward"
@@ -98,6 +99,37 @@ func portForwardService(ctx context.Context, namespace, serviceName string, remo
 
 	close(stopChan)
 	return 0, nil, fmt.Errorf("timed out waiting for kubectl port-forward to service %s\noutput: %s", serviceName, output.String())
+}
+
+func waitForPodReady(ctx context.Context, namespace, labelSelector string, timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+
+	for time.Now().Before(deadline) {
+		pods, err := k8s.CoreV1().Pods(namespace).List(ctx, v1.ListOptions{LabelSelector: labelSelector})
+		if err == nil && len(pods.Items) > 0 {
+			for _, pod := range pods.Items {
+				if pod.DeletionTimestamp != nil {
+					continue
+				}
+				if pod.Status.Phase != corev1.PodRunning {
+					continue
+				}
+				for _, cs := range pod.Status.ContainerStatuses {
+					if cs.Ready {
+						return nil
+					}
+				}
+			}
+		}
+
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(2 * time.Second):
+		}
+	}
+
+	return fmt.Errorf("timed out waiting for ready pod matching selector %s in namespace %s", labelSelector, namespace)
 }
 
 func portForwardResource(ctx context.Context, namespace, apiPath string, remotePort int) (int, chan struct{}, error) {

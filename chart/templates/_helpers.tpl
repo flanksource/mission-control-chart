@@ -125,3 +125,19 @@ Generate the secrets.cipher value
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- define "incident-commander.artifactstore.name" -}}
+{{- printf "%s-artifactstore" (include "incident-commander.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "incident-commander.artifactstore.pvc" -}}
+{{- if .Values.artifactstore.volume.existingClaim -}}
+{{- .Values.artifactstore.volume.existingClaim -}}
+{{- else -}}
+{{- include "incident-commander.artifactstore.name" . -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "incident-commander.artifactstore.selectorLabels" -}}
+app.kubernetes.io/component: artifactstore
+{{- end -}}

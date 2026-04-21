@@ -15,7 +15,7 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
+var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func() {
 	var mcStopChan, configDBStopChan chan struct{}
 
 	BeforeAll(func() {
@@ -23,7 +23,7 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 
 		Expect(helm.NewHelmChart(ctx, "../").
 			Release("mission-control").Namespace("mission-control").
-			WaitFor(time.Minute * 5).
+			ForceConflicts().
 			Values(map[string]any{
 				"global": map[string]any{
 					"ui": map[string]any{
@@ -52,6 +52,9 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 		adminPassword := string(adminPasswordSecret.Data["password"])
 		Expect(adminPassword).NotTo(BeEmpty(), "Mission Control admin password should not be empty")
 		logger.Infof(clicky.MustFormat(adminPassword))
+
+		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=mission-control", 5*time.Minute)).To(Succeed(), "mission-control pod should become ready")
+		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=config-db", 5*time.Minute)).To(Succeed(), "config-db pod should become ready")
 
 		// Port forward to mission-control pod
 		var mcLocalPort int
@@ -120,6 +123,51 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 		scraper = mcInstanceWithoutAuth.GetScraper(uuid.Nil.String())
 		sr, err = scraper.Run()
 		Expect(err).NotTo(HaveOccurred(), "basic auth")
+	})
+
+	It("Should run the rclone artifactstore pod", func() {
+		Eventually(func(g Gomega) {
+			pods, err := k8s.CoreV1().Pods(namespace).List(context.TODO(), v1.ListOptions{
+				LabelSelector: "app.kubernetes.io/component=artifactstore",
+			})
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(pods.Items).NotTo(BeEmpty())
+
+			pod := pods.Items[0]
+			g.Expect(pod.Name).To(ContainSubstring("artifactstore"))
+			g.Expect(string(pod.Status.Phase)).To(Equal("Running"))
+
+			ready := false
+			for _, c := range pod.Status.ContainerStatuses {
+				if c.Name == "artifactstore" {
+					ready = c.Ready
+					break
+				}
+			}
+			g.Expect(ready).To(BeTrue())
+		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+	})
+
+	It("Should test default artifactstore connection", func() {
+		connection, err := k8s.Get(context.TODO(), "Connection", namespace, "default-artifactstore")
+		Expect(err).NotTo(HaveOccurred(), "default-artifactstore connection should exist")
+
+		connectionID := string(connection.GetUID())
+		Expect(connectionID).NotTo(BeEmpty())
+
+		Eventually(func(g Gomega) {
+			response, err := mcInstance.POST("/connection/test/"+connectionID, nil)
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(response.IsOK()).To(BeTrue())
+
+			body, err := response.AsJSON()
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(body["message"]).To(Equal("ok"))
+
+			payload, ok := body["payload"].(map[string]any)
+			g.Expect(ok).To(BeTrue())
+			g.Expect(fmt.Sprint(payload["status"])).NotTo(Equal("failed"), "artifactstore connection test returned failure: %v", payload["error"])
+		}).WithTimeout(20 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
 	})
 
 	// System scraper runs and should populate job histories/local agent

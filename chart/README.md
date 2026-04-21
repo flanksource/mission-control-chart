@@ -15,12 +15,12 @@ A Helm chart for flanksource mission control
 | Repository | Name | Version |
 |------------|------|---------|
 | https://flanksource.github.io/charts | apm-hub | >= 0.0.20 |
-| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.81 |
-| https://flanksource.github.io/charts | config-db | 0.0.1182 |
-| https://flanksource.github.io/charts | flanksource-ui | 1.4.184 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.107 |
+| https://flanksource.github.io/charts | config-db | 0.0.1339 |
+| https://flanksource.github.io/charts | flanksource-ui | 1.4.238 |
 | https://flanksource.github.io/charts | mission-control-kubernetes-view | >= 0.1.37 |
-| https://flanksource.github.io/charts | mission-control-misc-playbooks | 0.1.1 |
-| https://k8s.ory.sh/helm/charts | kratos | 0.32.0 |
+| https://flanksource.github.io/charts | mission-control-misc-playbooks | 0.1.2 |
+| https://k8s.ory.sh/helm/charts | kratos | 0.60.1 |
 
 ## Values
 
@@ -35,6 +35,21 @@ A Helm chart for flanksource mission control
 | apm-hub.db.secretKeyRef.name | string | `"incident-commander-postgres"` |  |
 | apm-hub.enabled | bool | `false` |  |
 | artifactConnection | string | `""` | artifact connection string |
+| artifactstore.enabled | bool | `true` |  |
+| artifactstore.image.pullPolicy | string | `"IfNotPresent"` |  |
+| artifactstore.image.repository | string | `"docker.io/rclone/rclone"` |  |
+| artifactstore.image.tag | string | `"1.71.2"` |  |
+| artifactstore.resources.limits.cpu | string | `"250m"` |  |
+| artifactstore.resources.limits.memory | string | `"256Mi"` |  |
+| artifactstore.resources.requests.cpu | string | `"25m"` |  |
+| artifactstore.resources.requests.memory | string | `"64Mi"` |  |
+| artifactstore.secretKeyRef.create | bool | `true` |  |
+| artifactstore.secretKeyRef.key | string | `"ACCESS_KEY_ID"` |  |
+| artifactstore.secretKeyRef.name | string | `"mission-control-artifactstore"` |  |
+| artifactstore.service.port | int | `8080` |  |
+| artifactstore.volume.existingClaim | string | `""` |  |
+| artifactstore.volume.storage | string | `"10Gi"` |  |
+| artifactstore.volume.storageClass | string | `""` |  |
 | authProvider | string | `"kratos"` |  |
 | canary-checker.db.external.create | bool | `false` |  |
 | canary-checker.db.external.enabled | bool | `true` |  |
@@ -125,7 +140,7 @@ A Helm chart for flanksource mission control
 | global.api.tlsSecretName | string | `""` |  |
 | global.db.connectionPooler.enabled | bool | `false` |  |
 | global.db.connectionPooler.extraContainers | string | `""` |  |
-| global.db.connectionPooler.image | string | `"bitnami/pgbouncer:1.22.0"` |  |
+| global.db.connectionPooler.image | string | `"pgbouncer/pgbouncer:1.22.0"` |  |
 | global.db.connectionPooler.secretKeyRef.key | string | `"DB_URL"` |  |
 | global.db.connectionPooler.secretKeyRef.name | string | `"mission-control-connection-pooler"` |  |
 | global.db.connectionPooler.serviceAccount.annotations | object | `{}` |  |
@@ -151,7 +166,7 @@ A Helm chart for flanksource mission control
 | identityRoleMapper.script | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1563"` |  |
+| image.tag | string | `"v0.0.1711"` |  |
 | impersonationRole.createNamespaces | bool | `true` |  |
 | impersonationRole.namespaces[0] | string | `"default"` |  |
 | ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
@@ -190,12 +205,14 @@ A Helm chart for flanksource mission control
 | kratos.kratos.config.secrets.default[2] | string | `"just a random a string secret"` |  |
 | kratos.kratos.config.session.lifespan | string | `"336h"` |  |
 | kratos.secret.enabled | bool | `false` |  |
+| kratos.secret.nameOverride | string | `"kratos"` |  |
 | llmConnection | string | `""` | llm connection string |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | metricsPort | int | `0` |  |
 | mission-control-kubernetes-view | object | `{}` |  |
 | mission-control-misc-playbooks.enabled | bool | `true` |  |
 | nameOverride | string | `""` |  |
+| oidc | bool | `false` |  |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
@@ -230,6 +247,7 @@ A Helm chart for flanksource mission control
 | upstream_push | object | `{}` |  |
 | views.dashboard.enabled | bool | `true` |  |
 | views.dashboard.sidebar | bool | `true` |  |
+| views.database.enabled | bool | `true` |  |
 | views.enabled | bool | `true` |  |
 | views.failingHealthChecks.enabled | bool | `true` |  |
 | views.failingHealthChecks.sidebar | bool | `false` |  |

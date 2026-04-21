@@ -1,0 +1,19 @@
+{{- if and .Values.artifactstore.enabled (not .Values.artifactstore.volume.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "incident-commander.artifactstore.pvc" . }}
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.artifactstore.volume.storageClass }}
+  storageClassName: {{ .Values.artifactstore.volume.storageClass }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.artifactstore.volume.storage }}
+{{- end }}
