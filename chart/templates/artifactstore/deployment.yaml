@@ -30,10 +30,8 @@ spec:
             - -ec
             - |
               mkdir -p /data/{{ .Values.artifactstore.connection.bucket | default "mission-control-artifacts" }}
-              exec rclone serve s3 \
-                --addr :8080 \
-                --auth-key "${ACCESS_KEY_ID},${SECRET_ACCESS_KEY}" \
-                /data
+              export RCLONE_AUTH_KEY="\"${ACCESS_KEY_ID},${SECRET_ACCESS_KEY}\""
+              exec rclone serve s3 --addr :8080 /data
           env:
             - name: ACCESS_KEY_ID
               valueFrom:

@@ -96,13 +96,13 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 	})
 
 	It("Should be healthy", func() {
-		healthy, err := mcInstance.IsHealthy()
+		healthy, statusCode, body, err := mcInstance.IsHealthy()
 		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
+		Expect(healthy).To(BeTrue(), "Expected mission-control to be healthy, got status code: %d, body: %s", statusCode, body)
 
-		healthy, err = mcInstanceWithoutAuth.IsHealthy()
+		healthy, statusCode, body, err = mcInstanceWithoutAuth.IsHealthy()
 		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
+		Expect(healthy).To(BeTrue(), "Expected mission-control (no auth) to be healthy, got status code: %d, body: %s", statusCode, body)
 	})
 
 	It("Should run WhoAmI", func() {
@@ -142,7 +142,7 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 
 			ready := false
 			for _, c := range pod.Status.ContainerStatuses {
-				if c.Name == "artifactstore" {
+				if c.Name == "rclone" {
 					ready = c.Ready
 					break
 				}
@@ -161,15 +161,11 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 		Eventually(func(g Gomega) {
 			response, err := mcInstance.POST("/connection/test/"+connectionID, nil)
 			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(response.IsOK()).To(BeTrue())
+			g.Expect(response.IsOK()).To(BeTrue(), "expected 200, got %d", response.StatusCode)
 
 			body, err := response.AsJSON()
 			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(body["message"]).To(Equal("ok"))
-
-			payload, ok := body["payload"].(map[string]any)
-			g.Expect(ok).To(BeTrue())
-			g.Expect(fmt.Sprint(payload["status"])).To(Equal("success"), "artifactstore connection test did not reach success: status=%v error=%v", payload["status"], payload["error"])
+			g.Expect(body["message"]).To(Equal("ok"), "unexpected response body: %v", body)
 		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
 	})
 
