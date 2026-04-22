@@ -1,4 +1,4 @@
-{{- if and .Values.artifactstore.enabled (not .Values.artifactstore.volume.existingClaim) }}
+{{- if and .Values.artifactstore.enabled (eq .Values.artifactConnection "") (not .Values.artifactstore.volume.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -1,4 +1,4 @@
-{{- if .Values.artifactstore.enabled }}
+{{- if and .Values.artifactstore.enabled (eq .Values.artifactConnection "") }}
 ---
 apiVersion: v1
 kind: Service
