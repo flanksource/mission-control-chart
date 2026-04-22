@@ -255,6 +255,34 @@ kmsConnection: ""
 # @schema
 # -- llm connection string
 llmConnection: ""
+
+# Basic S3-compatible server backed by rclone serve s3.
+# @schema
+# required: false
+# @schema
+artifactstore:
+  enabled: false
+  image:
+    repository: docker.io/rclone/rclone
+    tag: "1.73.5"
+    pullPolicy: IfNotPresent
+  connection:
+    name: default-artifactstore
+    bucket: artifacts
+  volume:
+    existingClaim: ""
+    storageClass: ""
+    storage: 10Gi
+  secretKeyRef:
+    create: true
+    name: mission-control-artifactstore
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+
 # Properties to configure mission-control feature sets
 # @schema
 # required: false

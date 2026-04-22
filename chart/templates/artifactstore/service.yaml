@@ -1,0 +1,19 @@
+{{- if and .Values.artifactstore.enabled (eq .Values.artifactConnection "") }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "incident-commander.artifactstore.name" . }}
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      protocol: TCP
+{{- end }}

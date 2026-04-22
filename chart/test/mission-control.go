@@ -120,13 +120,14 @@ func (mc *MissionControl) SearchCatalog(search string) ([]SelectedResource, erro
 	return mc.QueryCatalog(ResourceSelector{Search: search})
 }
 
-func (mc *MissionControl) IsHealthy() (bool, error) {
+func (mc *MissionControl) IsHealthy() (bool, int, string, error) {
 	r, err := mc.HTTP.R(context.TODO()).Get("/health")
 	if err != nil {
-		return false, err
+		return false, 0, "", err
 	}
 
-	return r.IsOK(), nil
+	body, _ := r.AsString()
+	return r.IsOK(), r.StatusCode, body, nil
 }
 
 func (mc *MissionControl) WhoAmI() (map[string]any, bool, error) {

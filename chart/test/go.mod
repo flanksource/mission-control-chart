@@ -9,7 +9,7 @@ require (
 	github.com/chromedp/chromedp v0.15.1
 	github.com/flanksource/commons v1.43.2
 	github.com/flanksource/commons-db v0.1.3
-	github.com/flanksource/commons-test v0.1.4
+	github.com/flanksource/commons-test v0.1.13
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.0
 	k8s.io/apimachinery v0.34.2
@@ -225,7 +225,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/gorm v1.31.0 // indirect
-	k8s.io/api v0.34.2 // indirect
+	k8s.io/api v0.34.2
 	k8s.io/apiextensions-apiserver v0.34.2 // indirect
 	k8s.io/client-go v0.34.2
 	k8s.io/klog/v2 v2.130.1 // indirect

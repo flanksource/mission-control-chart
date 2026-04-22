@@ -4,13 +4,13 @@ dependencies:
   version: 0.0.47
 - name: config-db
   repository: https://flanksource.github.io/charts
-  version: 0.0.1281
+  version: 0.0.1339
 - name: canary-checker
   repository: https://flanksource.github.io/charts
-  version: 1.1.3-beta.92
+  version: 1.1.3-beta.107
 - name: flanksource-ui
   repository: https://flanksource.github.io/charts
-  version: 1.4.230
+  version: 1.4.238
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.60.1
@@ -20,5 +20,5 @@ dependencies:
 - name: mission-control-misc-playbooks
   repository: https://flanksource.github.io/charts
   version: 0.1.2
-digest: sha256:e021bb53448a186cf0b8a64baac7be9ea038b91a6c3515745013bd164dc0d018
-generated: "2026-04-03T14:07:06.690318+05:45"
+digest: sha256:f966abc60f68d67369cc22078ebc281f614efbd58d2e73702a541ed550aa3da6
+generated: "2026-04-22T10:04:12.098898+05:45"

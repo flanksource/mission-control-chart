@@ -53,6 +53,183 @@
       "required": [],
       "title": "artifactConnection"
     },
+    "artifactstore": {
+      "additionalProperties": false,
+      "description": "Basic S3-compatible server backed by rclone serve s3.",
+      "properties": {
+        "connection": {
+          "additionalProperties": false,
+          "properties": {
+            "bucket": {
+              "default": "artifacts",
+              "required": [],
+              "title": "bucket",
+              "type": "string"
+            },
+            "name": {
+              "default": "default-artifactstore",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "bucket"
+          ],
+          "title": "connection",
+          "type": "object"
+        },
+        "enabled": {
+          "default": false,
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "image": {
+          "additionalProperties": false,
+          "properties": {
+            "pullPolicy": {
+              "default": "IfNotPresent",
+              "required": [],
+              "title": "pullPolicy",
+              "type": "string"
+            },
+            "repository": {
+              "default": "docker.io/rclone/rclone",
+              "required": [],
+              "title": "repository",
+              "type": "string"
+            },
+            "tag": {
+              "default": "1.73.5",
+              "required": [],
+              "title": "tag",
+              "type": "string"
+            }
+          },
+          "required": [
+            "repository",
+            "tag",
+            "pullPolicy"
+          ],
+          "title": "image",
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "limits": {
+              "additionalProperties": false,
+              "properties": {
+                "memory": {
+                  "default": "256Mi",
+                  "required": [],
+                  "title": "memory",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "memory"
+              ],
+              "title": "limits",
+              "type": "object"
+            },
+            "requests": {
+              "additionalProperties": false,
+              "properties": {
+                "cpu": {
+                  "default": "25m",
+                  "required": [],
+                  "title": "cpu",
+                  "type": "string"
+                },
+                "memory": {
+                  "default": "64Mi",
+                  "required": [],
+                  "title": "memory",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cpu",
+                "memory"
+              ],
+              "title": "requests",
+              "type": "object"
+            }
+          },
+          "required": [
+            "requests",
+            "limits"
+          ],
+          "title": "resources",
+          "type": "object"
+        },
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "default": true,
+              "required": [],
+              "title": "create",
+              "type": "boolean"
+            },
+            "name": {
+              "default": "mission-control-artifactstore",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "create",
+            "name"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        },
+        "volume": {
+          "additionalProperties": false,
+          "properties": {
+            "existingClaim": {
+              "default": "",
+              "required": [],
+              "title": "existingClaim",
+              "type": "string"
+            },
+            "storage": {
+              "default": "10Gi",
+              "required": [],
+              "title": "storage",
+              "type": "string"
+            },
+            "storageClass": {
+              "default": "",
+              "required": [],
+              "title": "storageClass",
+              "type": "string"
+            }
+          },
+          "required": [
+            "existingClaim",
+            "storageClass",
+            "storage"
+          ],
+          "title": "volume",
+          "type": "object"
+        }
+      },
+      "required": [
+        "enabled",
+        "image",
+        "connection",
+        "volume",
+        "secretKeyRef",
+        "resources"
+      ],
+      "title": "artifactstore"
+    },
     "authProvider": {
       "default": "kratos",
       "description": "Allowed values are [none, kratos, clerk, basic]",
@@ -372,7 +549,7 @@
                   "type": "string"
                 },
                 "image": {
-                  "default": "bitnami/pgbouncer:1.22.0",
+                  "default": "pgbouncer/pgbouncer:1.22.0",
                   "required": [],
                   "title": "image",
                   "type": "string"
@@ -663,7 +840,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1565",
+          "default": "v0.0.1711",
           "required": [],
           "title": "tag"
         }

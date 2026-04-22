@@ -15,7 +15,7 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
+var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func() {
 	var mcStopChan, configDBStopChan chan struct{}
 
 	BeforeAll(func() {
@@ -23,12 +23,15 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 
 		Expect(helm.NewHelmChart(ctx, "../").
 			Release("mission-control").Namespace("mission-control").
-			WaitFor(time.Minute * 5).
+			ForceConflicts().
 			Values(map[string]any{
 				"global": map[string]any{
 					"ui": map[string]any{
 						"host": "mission-control.cluster.local",
 					},
+				},
+				"artifactstore": map[string]any{
+					"enabled": true,
 				},
 				"authProvider": "basic",
 				"htpasswd": map[string]any{
@@ -52,6 +55,9 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 		adminPassword := string(adminPasswordSecret.Data["password"])
 		Expect(adminPassword).NotTo(BeEmpty(), "Mission Control admin password should not be empty")
 		logger.Infof(clicky.MustFormat(adminPassword))
+
+		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=mission-control", 5*time.Minute)).To(Succeed(), "mission-control pod should become ready")
+		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=config-db", 5*time.Minute)).To(Succeed(), "config-db pod should become ready")
 
 		// Port forward to mission-control pod
 		var mcLocalPort int
@@ -90,13 +96,13 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 	})
 
 	It("Should be healthy", func() {
-		healthy, err := mcInstance.IsHealthy()
+		healthy, statusCode, body, err := mcInstance.IsHealthy()
 		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
+		Expect(healthy).To(BeTrue(), "Expected mission-control to be healthy, got status code: %d, body: %s", statusCode, body)
 
-		healthy, err = mcInstanceWithoutAuth.IsHealthy()
+		healthy, statusCode, body, err = mcInstanceWithoutAuth.IsHealthy()
 		Expect(err).NotTo(HaveOccurred(), "Unable to query health endpoint")
-		Expect(healthy).To(BeTrue())
+		Expect(healthy).To(BeTrue(), "Expected mission-control (no auth) to be healthy, got status code: %d, body: %s", statusCode, body)
 	})
 
 	It("Should run WhoAmI", func() {
@@ -120,6 +126,47 @@ var _ = Describe("Mission Control", ginkgo.Ordered, Label("basic"), func() {
 		scraper = mcInstanceWithoutAuth.GetScraper(uuid.Nil.String())
 		sr, err = scraper.Run()
 		Expect(err).NotTo(HaveOccurred(), "basic auth")
+	})
+
+	It("Should run the rclone artifactstore pod", func() {
+		Eventually(func(g Gomega) {
+			pods, err := k8s.CoreV1().Pods(namespace).List(context.TODO(), v1.ListOptions{
+				LabelSelector: "app.kubernetes.io/component=artifactstore",
+			})
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(pods.Items).NotTo(BeEmpty())
+
+			pod := pods.Items[0]
+			g.Expect(pod.Name).To(ContainSubstring("artifactstore"))
+			g.Expect(string(pod.Status.Phase)).To(Equal("Running"))
+
+			ready := false
+			for _, c := range pod.Status.ContainerStatuses {
+				if c.Name == "rclone" {
+					ready = c.Ready
+					break
+				}
+			}
+			g.Expect(ready).To(BeTrue())
+		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
+	})
+
+	It("Should test default artifactstore connection", func() {
+		connection, err := k8s.Get(context.TODO(), "Connection", namespace, "default-artifactstore")
+		Expect(err).NotTo(HaveOccurred(), "default-artifactstore connection should exist")
+
+		connectionID := string(connection.GetUID())
+		Expect(connectionID).NotTo(BeEmpty())
+
+		Eventually(func(g Gomega) {
+			response, err := mcInstance.POST("/connection/test/"+connectionID, nil)
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(response.IsOK()).To(BeTrue(), "expected 200, got %d", response.StatusCode)
+
+			body, err := response.AsJSON()
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(body["message"]).To(Equal("ok"), "unexpected response body: %v", body)
+		}).WithTimeout(4 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
 	})
 
 	// System scraper runs and should populate job histories/local agent

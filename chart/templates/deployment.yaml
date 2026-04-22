@@ -120,6 +120,8 @@ spec:
            {{- end}}
            {{- if ne .Values.artifactConnection "" }}
             - --artifact-connection={{ .Values.artifactConnection }}
+           {{- else if .Values.artifactstore.enabled }}
+            - --artifact-connection=connection://{{ .Release.Namespace }}/{{ .Values.artifactstore.connection.name | default "default-artifactstore" }}
            {{- end }}
            {{- if ne .Values.kmsConnection "" }}
             - --secret-keeper-connection={{ .Values.kmsConnection }}

@@ -1,0 +1,64 @@
+{{- if and .Values.artifactstore.enabled (eq .Values.artifactConnection "") }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "incident-commander.artifactstore.name" . }}
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+    {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 8 }}
+        {{- include "incident-commander.extraLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: rclone
+          image: "{{ .Values.artifactstore.image.repository }}:{{ .Values.artifactstore.image.tag }}"
+          imagePullPolicy: {{ .Values.artifactstore.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              mkdir -p /data/{{ .Values.artifactstore.connection.bucket | default "mission-control-artifacts" }}
+              export RCLONE_AUTH_KEY="\"${ACCESS_KEY_ID},${SECRET_ACCESS_KEY}\""
+              exec rclone serve s3 --addr :8080 /data
+          env:
+            - name: ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.artifactstore.secretKeyRef.name }}
+                  key: ACCESS_KEY_ID
+            - name: SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.artifactstore.secretKeyRef.name }}
+                  key: SECRET_ACCESS_KEY
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          resources:
+            {{- toYaml .Values.artifactstore.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "incident-commander.artifactstore.pvc" . }}
+{{- end }}

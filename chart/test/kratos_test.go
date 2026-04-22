@@ -61,7 +61,7 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		host := "mission-control-kratos.cluster.local"
 		Expect(helm.NewHelmChart(ctx, "../").
 			Release(kratosReleaseName).Namespace(kratosNamespace).
-			WaitFor(time.Minute * 7).
+			ForceConflicts().
 			Values(map[string]any{
 				"cleanupResourcesOnDelete": true,
 				"authProvider":             "kratos",
@@ -83,6 +83,9 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		Expect(err).NotTo(HaveOccurred(), "Failed to get admin password secret")
 		kratosTestPassword = string(adminSecret.Data["password"])
 		Expect(kratosTestPassword).NotTo(BeEmpty(), "Admin password should not be empty")
+
+		Expect(waitForPodReady(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 7*time.Minute)).To(Succeed(), "mission-control pod should become ready")
+		Expect(waitForPodReady(ctx, kratosNamespace, "app.kubernetes.io/name=incident-manager-ui", 7*time.Minute)).To(Succeed(), "ui pod should become ready")
 
 		mcLocalPort, stopChan, err := portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 8080)
 		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
