@@ -14,7 +14,7 @@ spec:
     bucket: {{ .Values.artifactstore.connection.bucket | default "mission-control-artifacts" }}
     region: "us-east-1"
     url:
-      value: http://{{ include "incident-commander.artifactstore.name" . }}.{{ .Release.Namespace }}.svc:{{ .Values.artifactstore.service.port }}
+      value: http://{{ include "incident-commander.artifactstore.name" . }}.{{ .Release.Namespace }}.svc:8080
     usePathStyle: true
     secretKey:
       valueFrom:

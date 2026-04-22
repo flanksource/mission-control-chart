@@ -122,12 +122,6 @@
             "limits": {
               "additionalProperties": false,
               "properties": {
-                "cpu": {
-                  "default": "250m",
-                  "required": [],
-                  "title": "cpu",
-                  "type": "string"
-                },
                 "memory": {
                   "default": "256Mi",
                   "required": [],
@@ -136,7 +130,6 @@
                 }
               },
               "required": [
-                "cpu",
                 "memory"
               ],
               "title": "limits",
@@ -204,22 +197,6 @@
           "title": "secretKeyRef",
           "type": "object"
         },
-        "service": {
-          "additionalProperties": false,
-          "properties": {
-            "port": {
-              "default": 8080,
-              "required": [],
-              "title": "port",
-              "type": "integer"
-            }
-          },
-          "required": [
-            "port"
-          ],
-          "title": "service",
-          "type": "object"
-        },
         "volume": {
           "additionalProperties": false,
           "properties": {
@@ -254,7 +231,6 @@
       "required": [
         "enabled",
         "image",
-        "service",
         "connection",
         "volume",
         "secretKeyRef",

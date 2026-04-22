@@ -22,7 +22,7 @@ spec:
         {{- include "incident-commander.extraLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: artifactstore
+        - name: rclone
           image: "{{ .Values.artifactstore.image.repository }}:{{ .Values.artifactstore.image.tag }}"
           imagePullPolicy: {{ .Values.artifactstore.image.pullPolicy }}
           command:
@@ -31,7 +31,7 @@ spec:
             - |
               mkdir -p /data/{{ .Values.artifactstore.connection.bucket | default "mission-control-artifacts" }}
               exec rclone serve s3 \
-                --addr :{{ .Values.artifactstore.service.port }} \
+                --addr :8080 \
                 --auth-key "${ACCESS_KEY_ID},${SECRET_ACCESS_KEY}" \
                 /data
           env:
@@ -47,7 +47,7 @@ spec:
                   key: SECRET_ACCESS_KEY
           ports:
             - name: http
-              containerPort: {{ .Values.artifactstore.service.port }}
+              containerPort: 8080
           livenessProbe:
             tcpSocket:
               port: http

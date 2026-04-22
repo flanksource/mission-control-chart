@@ -41,14 +41,12 @@ A Helm chart for flanksource mission control
 | artifactstore.image.pullPolicy | string | `"IfNotPresent"` |  |
 | artifactstore.image.repository | string | `"docker.io/rclone/rclone"` |  |
 | artifactstore.image.tag | string | `"1.73.5"` |  |
-| artifactstore.resources.limits.cpu | string | `"250m"` |  |
 | artifactstore.resources.limits.memory | string | `"256Mi"` |  |
 | artifactstore.resources.requests.cpu | string | `"25m"` |  |
 | artifactstore.resources.requests.memory | string | `"64Mi"` |  |
 | artifactstore.secretKeyRef.create | bool | `true` |  |
 | artifactstore.secretKeyRef.key | string | `"ACCESS_KEY_ID"` |  |
 | artifactstore.secretKeyRef.name | string | `"mission-control-artifactstore"` |  |
-| artifactstore.service.port | int | `8080` |  |
 | artifactstore.volume.existingClaim | string | `""` |  |
 | artifactstore.volume.storage | string | `"10Gi"` |  |
 | artifactstore.volume.storageClass | string | `""` |  |
