@@ -56,13 +56,13 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 		Expect(adminPassword).NotTo(BeEmpty(), "Mission Control admin password should not be empty")
 		logger.Infof(clicky.MustFormat(adminPassword))
 
-		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=mission-control", 5*time.Minute)).To(Succeed(), "mission-control pod should become ready")
+		Expect(waitForPodReady(ctx, namespace, missionControlSelector, 5*time.Minute)).To(Succeed(), "mission-control pod should become ready")
 		Expect(waitForPodReady(ctx, namespace, "app.kubernetes.io/name=config-db", 5*time.Minute)).To(Succeed(), "config-db pod should become ready")
 
-		// Port forward to mission-control pod
+		// Port forward to mission-control service so tests validate the Service selector too.
 		var mcLocalPort int
-		mcLocalPort, mcStopChan, err = portForwardPod(ctx, namespace, "app.kubernetes.io/name=mission-control", 8080)
-		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
+		mcLocalPort, mcStopChan, err = portForwardService(ctx, namespace, "mission-control", 8080)
+		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control service")
 
 		// Port forward to config-db pod
 		var configDBLocalPort int

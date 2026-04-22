@@ -84,11 +84,11 @@ var _ = Describe("Mission Control (Kratos)", ginkgo.Ordered, Label("kratos"), fu
 		kratosTestPassword = string(adminSecret.Data["password"])
 		Expect(kratosTestPassword).NotTo(BeEmpty(), "Admin password should not be empty")
 
-		Expect(waitForPodReady(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 7*time.Minute)).To(Succeed(), "mission-control pod should become ready")
+		Expect(waitForPodReady(ctx, kratosNamespace, missionControlSelector, 7*time.Minute)).To(Succeed(), "mission-control pod should become ready")
 		Expect(waitForPodReady(ctx, kratosNamespace, "app.kubernetes.io/name=incident-manager-ui", 7*time.Minute)).To(Succeed(), "ui pod should become ready")
 
-		mcLocalPort, stopChan, err := portForwardPod(ctx, kratosNamespace, "app.kubernetes.io/name=mission-control", 8080)
-		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control pod")
+		mcLocalPort, stopChan, err := portForwardService(ctx, kratosNamespace, "mission-control", 8080)
+		Expect(err).NotTo(HaveOccurred(), "Failed to port forward to Mission Control service")
 		kratosMCStopChan = stopChan
 
 		kratosMC = &MissionControl{
