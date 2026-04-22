@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "incident-commander.labels" . | nindent 4 }}
     {{- include "incident-commander.extraLabels" . | nindent 4 }}
-    {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: artifactstore
 spec:
   replicas: 1
   strategy:
