@@ -106,7 +106,11 @@ func waitForPodReady(ctx context.Context, namespace, labelSelector string, timeo
 
 	for time.Now().Before(deadline) {
 		pods, err := k8s.CoreV1().Pods(namespace).List(ctx, v1.ListOptions{LabelSelector: labelSelector})
-		if err == nil && len(pods.Items) > 0 {
+		if err != nil {
+			return fmt.Errorf("failed to list pods matching selector %s in namespace %s: %w", labelSelector, namespace, err)
+		}
+
+		if len(pods.Items) > 0 {
 			for _, pod := range pods.Items {
 				if pod.DeletionTimestamp != nil {
 					continue
