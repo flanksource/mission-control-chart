@@ -14,14 +14,18 @@ A Helm chart for flanksource mission control agent
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.81 |
-| https://flanksource.github.io/charts | config-db | 0.0.1182 |
-| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.34 |
+| https://flanksource.github.io/charts | canary-checker | 1.1.3-beta.107 |
+| https://flanksource.github.io/charts | config-db | 0.0.1339 |
+| https://flanksource.github.io/charts | pushTelemetry(mission-control-watchtower) | 0.1.35-beta.4 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| adminPassword.secretKeyRef.create | bool | `true` |  |
+| adminPassword.secretKeyRef.key | string | `"password"` |  |
+| adminPassword.secretKeyRef.name | string | `"mission-control-admin-password"` |  |
+| authProvider | string | `"basic"` |  |
 | canary-checker.db.external.create | bool | `false` |  |
 | canary-checker.db.external.enabled | bool | `true` |  |
 | canary-checker.db.external.secretKeyRef.key | string | `"DB_URL"` |  |
@@ -88,9 +92,12 @@ A Helm chart for flanksource mission control agent
 | global.imageRegistry | string | `"public.ecr.aws"` |  |
 | global.labels | object | `{}` |  |
 | global.logLevel | string | `""` |  |
+| htpasswd.create | bool | `true` |  |
+| htpasswd.secretKey | string | `"htpasswd"` |  |
+| htpasswd.secretName | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"docker.io/flanksource/incident-commander"` |  |
-| image.tag | string | `"v0.0.1563"` |  |
+| image.tag | string | `"v0.0.1711"` |  |
 | jsonLogs | bool | `true` |  |
 | logLevel | string | `"{{.Values.global.logLevel}}"` |  |
 | properties."upstream.pull_playbook_actions" | bool | `true` |  |

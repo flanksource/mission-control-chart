@@ -57,6 +57,29 @@
       "additionalProperties": false,
       "description": "Extremely simple in-cluster S3-compatible server backed by rclone serve s3.",
       "properties": {
+        "connection": {
+          "additionalProperties": false,
+          "properties": {
+            "bucket": {
+              "default": "mission-control-artifacts",
+              "required": [],
+              "title": "bucket",
+              "type": "string"
+            },
+            "name": {
+              "default": "default-artifactstore",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "bucket"
+          ],
+          "title": "connection",
+          "type": "object"
+        },
         "enabled": {
           "default": true,
           "required": [],
@@ -79,7 +102,7 @@
               "type": "string"
             },
             "tag": {
-              "default": "1.71.2",
+              "default": "1.73.5",
               "required": [],
               "title": "tag",
               "type": "string"
@@ -91,43 +114,6 @@
             "pullPolicy"
           ],
           "title": "image",
-          "type": "object"
-        },
-        "connection": {
-          "additionalProperties": false,
-          "properties": {
-            "bucket": {
-              "default": "mission-control-artifacts",
-              "required": [],
-              "title": "bucket",
-              "type": "string"
-            },
-            "name": {
-              "default": "default-artifactstore",
-              "required": [],
-              "title": "name",
-              "type": "string"
-            },
-            "region": {
-              "default": "us-east-1",
-              "required": [],
-              "title": "region",
-              "type": "string"
-            },
-            "usePathStyle": {
-              "default": true,
-              "required": [],
-              "title": "usePathStyle",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "name",
-            "bucket",
-            "region",
-            "usePathStyle"
-          ],
-          "title": "connection",
           "type": "object"
         },
         "resources": {

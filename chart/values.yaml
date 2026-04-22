@@ -264,15 +264,13 @@ artifactstore:
   enabled: true
   image:
     repository: docker.io/rclone/rclone
-    tag: "1.71.2"
+    tag: "1.73.5"
     pullPolicy: IfNotPresent
   service:
     port: 8080
   connection:
     name: default-artifactstore
     bucket: mission-control-artifacts
-    region: us-east-1
-    usePathStyle: true
   volume:
     existingClaim: ""
     storageClass: ""

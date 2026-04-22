@@ -2,6 +2,53 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": true,
   "properties": {
+    "adminPassword": {
+      "additionalProperties": false,
+      "properties": {
+        "secretKeyRef": {
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "default": true,
+              "description": "set to false if you want to pass in an existing secret",
+              "required": [],
+              "title": "create",
+              "type": "boolean"
+            },
+            "key": {
+              "default": "password",
+              "required": [],
+              "title": "key",
+              "type": "string"
+            },
+            "name": {
+              "default": "mission-control-admin-password",
+              "required": [],
+              "title": "name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "create",
+            "name",
+            "key"
+          ],
+          "title": "secretKeyRef",
+          "type": "object"
+        }
+      },
+      "required": [
+        "secretKeyRef"
+      ],
+      "title": "adminPassword",
+      "type": "object"
+    },
+    "authProvider": {
+      "default": "basic",
+      "required": [],
+      "title": "authProvider",
+      "type": "string"
+    },
     "canary-checker": {
       "additionalProperties": true,
       "required": [],
@@ -448,6 +495,36 @@
       "title": "global",
       "type": "object"
     },
+    "htpasswd": {
+      "additionalProperties": false,
+      "properties": {
+        "create": {
+          "default": true,
+          "required": [],
+          "title": "create",
+          "type": "boolean"
+        },
+        "secretKey": {
+          "default": "htpasswd",
+          "required": [],
+          "title": "secretKey",
+          "type": "string"
+        },
+        "secretName": {
+          "default": "",
+          "required": [],
+          "title": "secretName",
+          "type": "string"
+        }
+      },
+      "required": [
+        "create",
+        "secretName",
+        "secretKey"
+      ],
+      "title": "htpasswd",
+      "type": "object"
+    },
     "image": {
       "additionalProperties": false,
       "description": "yaml-language-server: $schema=values.schema.json\nUse this only if you want to replace the default that is .Chart.Name as the name of all the objects.",
@@ -465,7 +542,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1565",
+          "default": "v0.0.1711",
           "required": [],
           "title": "tag",
           "type": "string"
@@ -739,6 +816,9 @@
     "jsonLogs",
     "serviceAccount",
     "upstream",
+    "authProvider",
+    "adminPassword",
+    "htpasswd",
     "resources",
     "pushTelemetry",
     "db",

@@ -12,10 +12,10 @@ spec:
           key: {{ .Values.artifactstore.secretKeyRef.key | default "ACCESS_KEY_ID" }}
           name: {{ .Values.artifactstore.secretKeyRef.name }}
     bucket: {{ .Values.artifactstore.connection.bucket | default "mission-control-artifacts" }}
-    region: {{ .Values.artifactstore.connection.region | default "us-east-1" }}
+    region: "us-east-1"
     url:
       value: http://{{ include "incident-commander.artifactstore.name" . }}.{{ .Release.Namespace }}.svc:{{ .Values.artifactstore.service.port }}
-    usePathStyle: {{ .Values.artifactstore.connection.usePathStyle | default true }}
+    usePathStyle: true
     secretKey:
       valueFrom:
         secretKeyRef:
