@@ -30,6 +30,9 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 						"host": "mission-control.cluster.local",
 					},
 				},
+				"artifactstore": map[string]any{
+					"enabled": "true",
+				},
 				"authProvider": "basic",
 				"htpasswd": map[string]any{
 					"create": true,

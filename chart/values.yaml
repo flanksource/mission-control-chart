@@ -261,7 +261,7 @@ llmConnection: ""
 # required: false
 # @schema
 artifactstore:
-  enabled: true
+  enabled: false
   image:
     repository: docker.io/rclone/rclone
     tag: "1.73.5"

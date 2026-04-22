@@ -37,7 +37,7 @@ A Helm chart for flanksource mission control
 | artifactConnection | string | `""` | artifact connection string |
 | artifactstore.connection.bucket | string | `"mission-control-artifacts"` |  |
 | artifactstore.connection.name | string | `"default-artifactstore"` |  |
-| artifactstore.enabled | bool | `true` |  |
+| artifactstore.enabled | bool | `false` |  |
 | artifactstore.image.pullPolicy | string | `"IfNotPresent"` |  |
 | artifactstore.image.repository | string | `"docker.io/rclone/rclone"` |  |
 | artifactstore.image.tag | string | `"1.73.5"` |  |
