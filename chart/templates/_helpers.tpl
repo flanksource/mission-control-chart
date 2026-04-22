@@ -139,5 +139,6 @@ Generate the secrets.cipher value
 {{- end -}}
 
 {{- define "incident-commander.artifactstore.selectorLabels" -}}
+{{ include "incident-commander.selectorLabels" . }}
 app.kubernetes.io/component: artifactstore
 {{- end -}}

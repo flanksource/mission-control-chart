@@ -10,6 +10,8 @@ metadata:
     {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 4 }}
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       {{- include "incident-commander.artifactstore.selectorLabels" . | nindent 6 }}

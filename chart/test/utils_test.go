@@ -114,8 +114,8 @@ func waitForPodReady(ctx context.Context, namespace, labelSelector string, timeo
 				if pod.Status.Phase != corev1.PodRunning {
 					continue
 				}
-				for _, cs := range pod.Status.ContainerStatuses {
-					if cs.Ready {
+				for _, condition := range pod.Status.Conditions {
+					if condition.Type == corev1.PodReady && condition.Status == corev1.ConditionTrue {
 						return nil
 					}
 				}

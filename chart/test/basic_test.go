@@ -166,7 +166,7 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 
 			payload, ok := body["payload"].(map[string]any)
 			g.Expect(ok).To(BeTrue())
-			g.Expect(fmt.Sprint(payload["status"])).NotTo(Equal("failed"), "artifactstore connection test returned failure: %v", payload["error"])
+			g.Expect(fmt.Sprint(payload["status"])).To(Equal("success"), "artifactstore connection test did not reach success: status=%v error=%v", payload["status"], payload["error"])
 		}).WithTimeout(20 * time.Minute).WithPolling(5 * time.Second).Should(Succeed())
 	})
 
