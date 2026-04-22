@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.artifactstore.secretKeyRef.name }}
-                  key: {{ .Values.artifactstore.secretKeyRef.key | default "ACCESS_KEY_ID" }}
+                  key: ACCESS_KEY_ID
             - name: SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:

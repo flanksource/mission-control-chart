@@ -55,13 +55,13 @@
     },
     "artifactstore": {
       "additionalProperties": false,
-      "description": "Extremely simple in-cluster S3-compatible server backed by rclone serve s3.",
+      "description": "Basic S3-compatible server backed by rclone serve s3.",
       "properties": {
         "connection": {
           "additionalProperties": false,
           "properties": {
             "bucket": {
-              "default": "mission-control-artifacts",
+              "default": "artifacts",
               "required": [],
               "title": "bucket",
               "type": "string"
@@ -175,13 +175,6 @@
               "title": "create",
               "type": "boolean"
             },
-            "key": {
-              "default": "ACCESS_KEY_ID",
-              "description": "Access key field name in the secret.",
-              "required": [],
-              "title": "key",
-              "type": "string"
-            },
             "name": {
               "default": "mission-control-artifactstore",
               "required": [],
@@ -191,8 +184,7 @@
           },
           "required": [
             "create",
-            "name",
-            "key"
+            "name"
           ],
           "title": "secretKeyRef",
           "type": "object"

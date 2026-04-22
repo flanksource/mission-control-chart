@@ -256,7 +256,7 @@ kmsConnection: ""
 # -- llm connection string
 llmConnection: ""
 
-# Extremely simple in-cluster S3-compatible server backed by rclone serve s3.
+# Basic S3-compatible server backed by rclone serve s3.
 # @schema
 # required: false
 # @schema
@@ -268,7 +268,7 @@ artifactstore:
     pullPolicy: IfNotPresent
   connection:
     name: default-artifactstore
-    bucket: mission-control-artifacts
+    bucket: artifacts
   volume:
     existingClaim: ""
     storageClass: ""
@@ -276,8 +276,6 @@ artifactstore:
   secretKeyRef:
     create: true
     name: mission-control-artifactstore
-    # Access key field name in the secret.
-    key: ACCESS_KEY_ID
   resources:
     requests:
       cpu: 25m

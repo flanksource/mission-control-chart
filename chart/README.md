@@ -35,7 +35,7 @@ A Helm chart for flanksource mission control
 | apm-hub.db.secretKeyRef.name | string | `"incident-commander-postgres"` |  |
 | apm-hub.enabled | bool | `false` |  |
 | artifactConnection | string | `""` | artifact connection string |
-| artifactstore.connection.bucket | string | `"mission-control-artifacts"` |  |
+| artifactstore.connection.bucket | string | `"artifacts"` |  |
 | artifactstore.connection.name | string | `"default-artifactstore"` |  |
 | artifactstore.enabled | bool | `false` |  |
 | artifactstore.image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -45,7 +45,6 @@ A Helm chart for flanksource mission control
 | artifactstore.resources.requests.cpu | string | `"25m"` |  |
 | artifactstore.resources.requests.memory | string | `"64Mi"` |  |
 | artifactstore.secretKeyRef.create | bool | `true` |  |
-| artifactstore.secretKeyRef.key | string | `"ACCESS_KEY_ID"` |  |
 | artifactstore.secretKeyRef.name | string | `"mission-control-artifactstore"` |  |
 | artifactstore.volume.existingClaim | string | `""` |  |
 | artifactstore.volume.storage | string | `"10Gi"` |  |
