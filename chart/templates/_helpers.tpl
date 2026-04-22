@@ -40,12 +40,24 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+Base selector labels shared by incident-commander workloads.
 */}}
 {{- define "incident-commander.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "incident-commander.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 control-plane: incident-commander
+{{- end }}
+
+{{/*
+Stable selector labels for the main mission-control pods.
+
+This is intentionally a superset of incident-commander.selectorLabels so it can
+be used for pod template labels and Service selectors without changing the
+immutable Deployment selector on upgrade.
+*/}}
+{{- define "incident-commander.missionControl.selectorLabels" -}}
+{{ include "incident-commander.selectorLabels" . }}
+app.kubernetes.io/component: mission-control
 {{- end }}
 
 {{- define "incident-commander.extraLabels" -}}

@@ -15,5 +15,5 @@ spec:
       interval: 30s
   selector:
     matchLabels:
-      {{- include "incident-commander.labels" . | nindent 6 }}
+      {{- include "incident-commander.missionControl.selectorLabels" . | nindent 6 }}
 {{- end }}

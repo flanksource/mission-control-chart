@@ -56,7 +56,7 @@ header "Kratos Logs"
 kubectl -n default logs -l app.kubernetes.io/name=kratos --tail 100
 
 header "Mission Control Logs"
-kubectl -n default logs -l app.kubernetes.io/name=mission-control --tail 100
+kubectl -n default logs -l app.kubernetes.io/name=mission-control,app.kubernetes.io/component=mission-control --tail 100
 
 if [[ "$SUCCESS" == "1" ]]; then
     exit 1

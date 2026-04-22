@@ -17,6 +17,8 @@ import (
 	"k8s.io/client-go/transport/spdy"
 )
 
+const missionControlSelector = "app.kubernetes.io/name=mission-control,app.kubernetes.io/component=mission-control"
+
 // portForwardPod sets up port forwarding to a pod matching the given label selector.
 // Returns the local port, a stop channel to close when done, and any error.
 func portForwardPod(ctx context.Context, namespace, labelSelector string, remotePort int) (int, chan struct{}, error) {
