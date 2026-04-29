@@ -38,6 +38,8 @@ spec:
           image: "{{ .Values.global.imageRegistry }}/{{.Values.global.imagePrefix}}/incident-commander:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: FLANKSOURCE_CHART_VERSION
+              value: {{ .Chart.Version | quote }}
             {{- if (tpl .Values.otel.labels .)}}
             - name: OTEL_LABELS
               value: "{{(tpl .Values.otel.labels .)}}"
