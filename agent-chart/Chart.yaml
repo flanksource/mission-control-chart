@@ -8,7 +8,7 @@ maintainers:
   - name: Flanksource
 dependencies:
   - name: config-db
-    version: "0.0.1368"
+    version: "0.0.1369"
     repository: https://flanksource.github.io/charts
   - name: canary-checker
     version: "1.1.3-beta.134"
