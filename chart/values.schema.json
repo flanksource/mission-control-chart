@@ -437,6 +437,11 @@
       ],
       "title": "disabled"
     },
+    "enableCatalogUI": {
+      "default": "false",
+      "required": [],
+      "title": "enableCatalogUI"
+    },
     "externalPostgrest": {
       "additionalProperties": false,
       "properties": {
@@ -840,7 +845,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1711",
+          "default": "v0.0.1755",
           "required": [],
           "title": "tag"
         }
@@ -874,6 +879,7 @@
     },
     "ingress": {
       "additionalProperties": false,
+      "description": "Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.",
       "properties": {
         "annotations": {
           "additionalProperties": true,

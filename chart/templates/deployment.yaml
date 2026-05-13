@@ -132,6 +132,9 @@ spec:
            {{- if ne .Values.llmConnection "" }}
             - --llm-connection={{ .Values.llmConnection }}
            {{- end }}
+           {{- if .Values.enableCatalogUI }}
+            - --ui
+           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           startupProbe:

@@ -542,7 +542,7 @@
           "type": "string"
         },
         "tag": {
-          "default": "v0.0.1711",
+          "default": "v0.0.1755",
           "required": [],
           "title": "tag",
           "type": "string"
