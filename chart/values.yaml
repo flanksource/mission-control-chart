@@ -314,7 +314,7 @@ metricsPort: 0
 # @schema
 # required: false
 # @schema
-enableCatalogUI: false
+enableCatalogUI: true
 
 # @schema
 # required: false
