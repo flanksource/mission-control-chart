@@ -24,7 +24,7 @@ image:
   # @schema
   # required: false
   # @schema
-  tag: "v0.0.1761"
+  tag: "v0.0.1762"
 # @schema
 # required: false
 # @schema
@@ -310,12 +310,10 @@ jsonLogs: true
 # required: false
 # @schema
 metricsPort: 0
-
 # @schema
 # required: false
 # @schema
 enableCatalogUI: true
-
 # @schema
 # required: false
 # @schema
@@ -485,7 +483,6 @@ apm-hub:
       create: false
       name: incident-commander-postgres
       key: DB_URL
-
 # Enable ingress only if the UI is deployed outside of the cluster and calls public incident-commander api endpoint.
 # @schema
 # required: false
