@@ -36,6 +36,7 @@ rules:
   - permissiongroups
   - permissions
   - playbooks
+  - plugins
   - scopes
   - views
   verbs:
@@ -56,6 +57,7 @@ rules:
   - notificationsilences/finalizers
   - permissiongroups/finalizers
   - permissions/finalizers
+  - plugins/finalizers
   - views/finalizers
   - applications/finalizers
   - scopes/finalizers
@@ -71,6 +73,7 @@ rules:
   - notificationsilences/status
   - permissiongroups/status
   - permissions/status
+  - plugins/status
   - views/status
   - applications/status
   - scopes/status
