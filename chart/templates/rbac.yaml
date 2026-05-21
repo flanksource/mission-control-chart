@@ -144,7 +144,7 @@ rules:
     - watch
 {{- end}}
 {{- if .Values.serviceAccount.rbac.extra }}
-{{ .Values.serviceAccount.rbac.extra | toYaml | nindent 2 }}
+{{ .Values.serviceAccount.rbac.extra | toYaml }}
 {{- end}}
 {{- if .Values.serviceAccount.rbac.clusterAdmin }}
 ---
