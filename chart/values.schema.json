@@ -505,6 +505,28 @@
       "required": [],
       "title": "extraArgs"
     },
+    "facet": {
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "If enabled, the facet chart is installed and a Connection pointing to its service is created.",
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "serviceName": {
+          "default": "",
+          "description": "Name of the facet service (including port) to connect to. Defaults to \"<release-name>-facet:3010\".",
+          "required": [],
+          "title": "serviceName",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "title": "facet",
+      "type": "object"
+    },
     "flanksource-ui": {
       "additionalProperties": true,
       "required": [],

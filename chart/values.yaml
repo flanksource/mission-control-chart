@@ -644,7 +644,7 @@ connectionName: mission-control-db
 createConnection: true
 # @schema
 # required: false
-# additionalProperties: false
+# additionalProperties: true
 # @schema
 facet:
   # @schema
