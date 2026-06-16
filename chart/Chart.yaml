@@ -37,3 +37,7 @@ dependencies:
     version: "0.1.2"
     repository: https://flanksource.github.io/charts
     condition: mission-control-misc-playbooks.enabled
+  - name: facet
+    version: "0.1.45"
+    repository: https://flanksource.github.io/charts
+    condition: facet.enabled
