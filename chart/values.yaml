@@ -646,6 +646,24 @@ createConnection: true
 # required: false
 # additionalProperties: false
 # @schema
+facet:
+  # @schema
+  # required: false
+  # type: boolean
+  # default: false
+  # @schema
+  # If enabled, the facet chart is installed and a Connection pointing to its service is created.
+  enabled: false
+  # @schema
+  # required: false
+  # type: string
+  # @schema
+  # Name of the facet service (including port) to connect to. Defaults to "<release-name>-facet:3010".
+  serviceName: ""
+# @schema
+# required: false
+# additionalProperties: false
+# @schema
 views:
   # If this is set to false, no views will be created
   enabled: true

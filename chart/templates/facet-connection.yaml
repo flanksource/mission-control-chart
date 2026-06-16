@@ -1,0 +1,14 @@
+{{- if .Values.facet.enabled }}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flanksource/duty/main/schema/openapi/connection.schema.json
+apiVersion: mission-control.flanksource.com/v1
+kind: Connection
+metadata:
+  name: facet
+  labels:
+    {{- include "incident-commander.labels" . | nindent 4 }}
+    {{- include "incident-commander.extraLabels" . | nindent 4 }}
+spec:
+  http:
+    url: http://{{ .Values.facet.serviceName | default (printf "%s-facet:3010" .Release.Name) }}
+{{- end }}
