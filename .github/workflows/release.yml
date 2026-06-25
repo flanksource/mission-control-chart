@@ -106,12 +106,32 @@ jobs:
               exit 1
             fi
 
-  create-release:
+  # Gate the release on the dependency checks here, in a plain job, rather than on
+  # the create-release caller below. A reusable-workflow caller that carries
+  # `if: always()` together with a skipped `needs` (duty-version-check is skipped
+  # on push) does not propagate its outputs to downstream jobs, so `helm` and
+  # `push-helm-chart` would read an empty `published` and skip even after a release
+  # is published. Keeping always()/skip handling in this gate lets create-release
+  # stay a clean caller whose outputs propagate normally.
+  release-gate:
     needs: [stable-dependency-check, duty-version-check]
-    if: |
-      always() &&
-      needs.stable-dependency-check.result == 'success' &&
-      (needs.duty-version-check.result == 'success' || needs.duty-version-check.result == 'skipped')
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify dependency checks passed
+        run: |
+          if [[ "${{ needs.stable-dependency-check.result }}" != "success" ]]; then
+            echo "::error::stable-dependency-check did not succeed (${{ needs.stable-dependency-check.result }})"
+            exit 1
+          fi
+          duty="${{ needs.duty-version-check.result }}"
+          if [[ "$duty" != "success" && "$duty" != "skipped" ]]; then
+            echo "::error::duty-version-check did not succeed ($duty)"
+            exit 1
+          fi
+
+  create-release:
+    needs: release-gate
     permissions:
       contents: write
       issues: write
