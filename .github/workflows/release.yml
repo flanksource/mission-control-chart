@@ -13,33 +13,53 @@ on:
 permissions: {} # start with no permission
 
 jobs:
+  # Always runs (no job-level `if`) so it never reports a "skipped" result. GitHub
+  # propagates a skipped job's status to every downstream job, and only jobs whose
+  # own `if` uses a status-check function override that — which previously left
+  # create-release and the chart jobs skipped on push. Running unconditionally and
+  # gating the real work behind a guard step keeps this a plain success that
+  # create-release can depend on without inheriting a skip.
   duty-version-check:
-    if: github.event_name == 'workflow_dispatch' && inputs.check_duty
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
+      - name: Determine whether to run duty checks
+        id: guard
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.check_duty }}" == "true" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Skipping duty version checks (only run on manual dispatch with check_duty)"
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        if: steps.guard.outputs.run == 'true'
 
       - name: Get canary-checker version
+        if: steps.guard.outputs.run == 'true'
         id: canary_checker_version
         uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
         with:
           cmd: yq '.dependencies[] | select(.name == "canary-checker") | .version' chart/Chart.yaml
 
       - name: Get config-db version
+        if: steps.guard.outputs.run == 'true'
         id: config_db_version
         uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
         with:
           cmd: yq '.dependencies[] | select(.name == "config-db") | .version' chart/Chart.yaml
 
       - name: Get mission-control version
+        if: steps.guard.outputs.run == 'true'
         id: mission_control_version
         uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
         with:
           cmd: yq '.image.tag' chart/values.yaml
 
       - name: Get latest duty release
+        if: steps.guard.outputs.run == 'true'
         id: duty
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,6 +69,7 @@ jobs:
           echo "Latest duty version: $LATEST_DUTY"
 
       - name: Check duty version in canary-checker
+        if: steps.guard.outputs.run == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -63,6 +84,7 @@ jobs:
           fi
 
       - name: Check duty version in config-db
+        if: steps.guard.outputs.run == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -77,6 +99,7 @@ jobs:
           fi
 
       - name: Check duty version in mission-control
+        if: steps.guard.outputs.run == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -106,32 +129,13 @@ jobs:
               exit 1
             fi
 
-  # Gate the release on the dependency checks here, in a plain job, rather than on
-  # the create-release caller below. A reusable-workflow caller that carries
-  # `if: always()` together with a skipped `needs` (duty-version-check is skipped
-  # on push) does not propagate its outputs to downstream jobs, so `helm` and
-  # `push-helm-chart` would read an empty `published` and skip even after a release
-  # is published. Keeping always()/skip handling in this gate lets create-release
-  # stay a clean caller whose outputs propagate normally.
-  release-gate:
-    needs: [stable-dependency-check, duty-version-check]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Verify dependency checks passed
-        run: |
-          if [[ "${{ needs.stable-dependency-check.result }}" != "success" ]]; then
-            echo "::error::stable-dependency-check did not succeed (${{ needs.stable-dependency-check.result }})"
-            exit 1
-          fi
-          duty="${{ needs.duty-version-check.result }}"
-          if [[ "$duty" != "success" && "$duty" != "skipped" ]]; then
-            echo "::error::duty-version-check did not succeed ($duty)"
-            exit 1
-          fi
-
+  # Both dependency checks always run (stable-dependency-check has no `if`;
+  # duty-version-check is now unconditional with internal gating), so neither
+  # reports "skipped". create-release can therefore be a plain reusable caller with
+  # no `if` — it runs when both checks succeed and is skipped if either fails — and
+  # its outputs propagate cleanly to the chart jobs below.
   create-release:
-    needs: release-gate
+    needs: [stable-dependency-check, duty-version-check]
     permissions:
       contents: write
       issues: write
