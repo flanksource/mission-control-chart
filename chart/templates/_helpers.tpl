@@ -142,6 +142,11 @@ Generate the secrets.cipher value
 {{- printf "%s-artifactstore" (include "incident-commander.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "incident-commander.artifactstore.deploymentName" -}}
+{{- $fullname := include "incident-commander.fullname" . | trunc 50 | trimSuffix "-" -}}
+{{- printf "%s-artifacts" $fullname | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "incident-commander.artifactstore.pvc" -}}
 {{- if .Values.artifactstore.volume.existingClaim -}}
 {{- .Values.artifactstore.volume.existingClaim -}}
@@ -150,7 +155,22 @@ Generate the secrets.cipher value
 {{- end -}}
 {{- end -}}
 
+{{- define "incident-commander.artifactstore.labelName" -}}
+artifactstore
+{{- end -}}
+
 {{- define "incident-commander.artifactstore.selectorLabels" -}}
-{{ include "incident-commander.selectorLabels" . }}
+app.kubernetes.io/name: {{ include "incident-commander.artifactstore.labelName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/component: artifactstore
+{{- end -}}
+
+{{- define "incident-commander.artifactstore.labels" -}}
+helm.sh/chart: {{ include "incident-commander.chart" . }}
+{{ include "incident-commander.artifactstore.selectorLabels" . }}
+app.kubernetes.io/part-of: {{ include "incident-commander.name" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
