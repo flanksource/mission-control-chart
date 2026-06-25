@@ -127,10 +127,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set version
-        run: |
-          git fetch --prune --unshallow
-          VERSION=$(git describe --abbrev=0 --tags | sed -e 's/^v//')
-          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${{ needs.create-release.outputs.version }}" >> $GITHUB_ENV
       - name: Update chart version
         uses: mikefarah/yq@7ccaf8e700ce99eb3f0f6cef7f5930a0b3c827cd # v4.49.2
         with:
