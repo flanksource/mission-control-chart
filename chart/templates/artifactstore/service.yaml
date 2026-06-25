@@ -5,8 +5,7 @@ kind: Service
 metadata:
   name: {{ include "incident-commander.artifactstore.name" . }}
   labels:
-    {{- include "incident-commander.labels" . | nindent 4 }}
-    app.kubernetes.io/component: artifactstore
+    {{- include "incident-commander.artifactstore.labels" . | nindent 4 }}
     {{- include "incident-commander.extraLabels" . | nindent 4 }}
 spec:
   type: ClusterIP

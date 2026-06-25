@@ -131,13 +131,16 @@ var _ = Describe("Mission Control - Basic", ginkgo.Ordered, Label("basic"), func
 	It("Should run the rclone artifactstore pod", func() {
 		Eventually(func(g Gomega) {
 			pods, err := k8s.CoreV1().Pods(namespace).List(context.TODO(), v1.ListOptions{
-				LabelSelector: "app.kubernetes.io/component=artifactstore",
+				LabelSelector: "app.kubernetes.io/name=artifactstore,app.kubernetes.io/component=artifactstore",
 			})
 			g.Expect(err).NotTo(HaveOccurred())
 			g.Expect(pods.Items).NotTo(BeEmpty())
 
 			pod := pods.Items[0]
-			g.Expect(pod.Name).To(ContainSubstring("artifactstore"))
+			g.Expect(pod.Name).To(ContainSubstring("artifact"))
+			g.Expect(pod.Labels).To(HaveKeyWithValue("app.kubernetes.io/name", "artifactstore"))
+			g.Expect(pod.Labels).To(HaveKeyWithValue("app.kubernetes.io/component", "artifactstore"))
+			g.Expect(pod.Labels).To(HaveKeyWithValue("app.kubernetes.io/part-of", "mission-control"))
 			g.Expect(string(pod.Status.Phase)).To(Equal("Running"))
 
 			ready := false
