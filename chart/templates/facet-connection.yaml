@@ -9,6 +9,6 @@ metadata:
     {{- include "incident-commander.labels" . | nindent 4 }}
     {{- include "incident-commander.extraLabels" . | nindent 4 }}
 spec:
-  http:
+  facet:
     url: http://{{ .Values.facet.serviceName | default (printf "%s-facet:3010" .Release.Name) }}
 {{- end }}
