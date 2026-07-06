@@ -139,7 +139,7 @@ A Helm chart for flanksource mission control
 | global.api.tlsSecretName | string | `""` |  |
 | global.db.connectionPooler.enabled | bool | `false` |  |
 | global.db.connectionPooler.extraContainers | string | `""` |  |
-| global.db.connectionPooler.image | string | `"pgbouncer/pgbouncer:1.22.0"` |  |
+| global.db.connectionPooler.image | string | `"edoburu/pgbouncer:1.22.0-p0"` |  |
 | global.db.connectionPooler.secretKeyRef.key | string | `"DB_URL"` |  |
 | global.db.connectionPooler.secretKeyRef.name | string | `"mission-control-connection-pooler"` |  |
 | global.db.connectionPooler.serviceAccount.annotations | object | `{}` |  |
