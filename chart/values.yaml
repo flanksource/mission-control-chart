@@ -96,7 +96,7 @@ global:
         # @schema
         annotations: {}
       extraContainers: ""
-      image: pgbouncer/pgbouncer:1.22.0
+      image: edoburu/pgbouncer:1.22.0-p0
 # @schema
 # required: false
 # @schema

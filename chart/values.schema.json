@@ -576,7 +576,7 @@
                   "type": "string"
                 },
                 "image": {
-                  "default": "pgbouncer/pgbouncer:1.22.0",
+                  "default": "edoburu/pgbouncer:1.22.0-p0",
                   "required": [],
                   "title": "image",
                   "type": "string"
