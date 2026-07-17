@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [bump-chart-deps]
 
+permissions:
+  contents: read
+
 jobs:
   bump:
     runs-on: ubuntu-latest
