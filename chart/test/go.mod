@@ -9,7 +9,7 @@ require (
 	github.com/chromedp/chromedp v0.15.1
 	github.com/flanksource/commons v1.53.1
 	github.com/flanksource/commons-db v0.1.17
-	github.com/flanksource/commons-test v0.1.13
+	github.com/flanksource/commons-test v0.1.15
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.1
 	k8s.io/apimachinery v0.36.1
