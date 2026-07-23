@@ -149,12 +149,16 @@ github.com/flanksource/clicky v1.21.37-0.20260715094201-d847a9108f43 h1:8SNaLRmA
 github.com/flanksource/clicky v1.21.37-0.20260715094201-d847a9108f43/go.mod h1:832IbjMZgsqGYF2fwskgUZ6zrvf7qfxpFv3mfLO2DWg=
 github.com/flanksource/clicky v1.21.42 h1:MC0uklJWq4KDg2Inq9OxT4IE3SJVqVA3Zio8DftSvK0=
 github.com/flanksource/clicky v1.21.42/go.mod h1:wxgvRVic4B8cWCxQ7EO57Q6zBnV49VUoGJ0i9SMdVt4=
+github.com/flanksource/clicky v1.21.44 h1:EwDaWXOPF7Tu5UeL/TE168n89LZqjRMUptcg1kw6884=
+github.com/flanksource/clicky v1.21.44/go.mod h1:wxgvRVic4B8cWCxQ7EO57Q6zBnV49VUoGJ0i9SMdVt4=
 github.com/flanksource/commons v1.53.1 h1:WiMvY9XGG//L4ndYKTcmp0NjWXg4B7Wbn4hYWkITUmY=
 github.com/flanksource/commons v1.53.1/go.mod h1:ZII22jIDJ3fd/Mz7l0SzLFEv8aoSUg+xwfJAAVf8up4=
 github.com/flanksource/commons-db v0.1.17 h1:bOdG03af7kiBb4uqHcmkEs194SVW7P34Rp/ZChTJS/0=
 github.com/flanksource/commons-db v0.1.17/go.mod h1:Td/fCQmw3S0hBVBHI/6pjE/xk4KB91/FI/V1QMcHV8U=
 github.com/flanksource/commons-db v0.1.20 h1:wk0ezM7oq0mQcKA+DW6DKKTuDHqgmCQkAu7ddxhd7M8=
 github.com/flanksource/commons-db v0.1.20/go.mod h1:Td/fCQmw3S0hBVBHI/6pjE/xk4KB91/FI/V1QMcHV8U=
+github.com/flanksource/commons-db v0.1.21 h1:CC9Qxsg/jI6vnK5u61G/nuYkfbBwr3718eJqpgHfS88=
+github.com/flanksource/commons-db v0.1.21/go.mod h1:Td/fCQmw3S0hBVBHI/6pjE/xk4KB91/FI/V1QMcHV8U=
 github.com/flanksource/commons-test v0.1.13 h1:DLb3q1a7d+BpfxZDy2bdY8ZA5z1+UTYFEO9DYd15bw4=
 github.com/flanksource/commons-test v0.1.13/go.mod h1:T0zLA9F55jlaOhtvjj1Ot7QZQhtn2baAuflT+27ueG8=
 github.com/flanksource/commons-test v0.1.15 h1:YmGO7jeaFdbyfJCWpzIJNxU8j4b3QNPwfLT/5UoaUck=
