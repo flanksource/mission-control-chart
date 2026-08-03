@@ -189,8 +189,9 @@ jobs:
       - name: Wait for chart dependencies and update
         run: |
           if ! command -v yq &> /dev/null; then
-            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-            sudo chmod +x /usr/local/bin/yq
+            wget -qO /tmp/yq https://github.com/mikefarah/yq/releases/download/v4.49.2/yq_linux_amd64
+            echo "be2c0ddcf426b6a231648610ec5d1666ae50e9f6473e82f6486f9f4cb6e3e2f7  /tmp/yq" | sha256sum --check --strict
+            sudo install -m 0755 /tmp/yq /usr/local/bin/yq
           fi
           bash scripts/wait-for-charts.sh ./chart ./agent-chart
 
@@ -218,8 +219,9 @@ jobs:
       - name: Install yq
         run: |
           if ! command -v yq &> /dev/null; then
-            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.49.2/yq_linux_amd64
-            sudo chmod +x /usr/local/bin/yq
+            wget -qO /tmp/yq https://github.com/mikefarah/yq/releases/download/v4.49.2/yq_linux_amd64
+            echo "be2c0ddcf426b6a231648610ec5d1666ae50e9f6473e82f6486f9f4cb6e3e2f7  /tmp/yq" | sha256sum --check --strict
+            sudo install -m 0755 /tmp/yq /usr/local/bin/yq
           fi
 
       - name: Configure AWS credentials
