@@ -216,7 +216,7 @@ authProvider: kratos
 # required: false
 # type: boolean
 # @schema
-oidc: false
+oidc: true
 # @schema
 # required: false
 # @schema

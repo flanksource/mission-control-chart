@@ -1030,7 +1030,7 @@
       "title": "nameOverride"
     },
     "oidc": {
-      "default": false,
+      "default": true,
       "description": "Enable OIDC mode in mission-control by passing the --oidc flag",
       "required": [],
       "title": "oidc",
