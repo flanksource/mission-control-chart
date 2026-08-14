@@ -211,7 +211,7 @@ A Helm chart for flanksource mission control
 | mission-control-kubernetes-view | object | `{}` |  |
 | mission-control-misc-playbooks.enabled | bool | `true` |  |
 | nameOverride | string | `""` |  |
-| oidc | bool | `false` |  |
+| oidc | bool | `true` |  |
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
