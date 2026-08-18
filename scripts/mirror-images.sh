@@ -38,4 +38,8 @@ mirror_image "docker.io/postgrest/postgrest:${POSTGREST_TAG}" "postgrest:${POSTG
 KUBECTL_TAG=$(grep -oP 'registry\.k8s\.io/kubectl:\K[^\s"]+' "${CHART_DIR}/templates/cleanup-job.yaml" | head -1)
 mirror_image "registry.k8s.io/kubectl:${KUBECTL_TAG}" "kubectl:${KUBECTL_TAG}"
 
+# ClickHouse — optional analytics database from the config-db subchart
+CLICKHOUSE_TAG=$(yq '."config-db".clickhouse.image.tag' "${CHART_DIR}/values.yaml")
+mirror_image "docker.io/clickhouse/clickhouse-server:${CLICKHOUSE_TAG}" "clickhouse-server:${CLICKHOUSE_TAG}"
+
 echo "All images mirrored successfully."
