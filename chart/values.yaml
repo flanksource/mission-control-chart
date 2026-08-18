@@ -459,6 +459,9 @@ canary-checker:
 # @schema
 config-db:
   disablePostgrest: true
+  clickhouse:
+    image:
+      tag: "25.4"
   otel:
     collector: "{{ .Values.global.otel.collector }}"
     labels: "{{ .Values.global.otel.labels }}"

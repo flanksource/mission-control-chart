@@ -39,8 +39,7 @@ KUBECTL_TAG=$(grep -oP 'registry\.k8s\.io/kubectl:\K[^\s"]+' "${CHART_DIR}/templ
 mirror_image "registry.k8s.io/kubectl:${KUBECTL_TAG}" "kubectl:${KUBECTL_TAG}"
 
 # ClickHouse — optional analytics database from the config-db subchart
-# Keep this tag aligned with config-db's clickhouse.image.tag.
-CLICKHOUSE_TAG="25.4"
+CLICKHOUSE_TAG=$(yq '."config-db".clickhouse.image.tag' "${CHART_DIR}/values.yaml")
 mirror_image "docker.io/clickhouse/clickhouse-server:${CLICKHOUSE_TAG}" "clickhouse-server:${CLICKHOUSE_TAG}"
 
 echo "All images mirrored successfully."
