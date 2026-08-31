@@ -524,7 +524,8 @@
         }
       },
       "required": [],
-      "title": "facet"
+      "title": "facet",
+      "type": "object"
     },
     "flanksource-ui": {
       "additionalProperties": true,
@@ -1161,11 +1162,13 @@
             }
           },
           "required": [],
-          "title": "catalog"
+          "title": "catalog",
+          "type": "object"
         }
       },
       "required": [],
-      "title": "reports"
+      "title": "reports",
+      "type": "object"
     },
     "resources": {
       "additionalProperties": false,

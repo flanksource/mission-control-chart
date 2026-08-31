@@ -647,6 +647,7 @@ connectionName: mission-control-db
 createConnection: true
 # @schema
 # required: false
+# type: object
 # additionalProperties: true
 # @schema
 facet:
@@ -665,11 +666,13 @@ facet:
   serviceName: ""
 # @schema
 # required: false
+# type: object
 # additionalProperties: false
 # @schema
 reports:
   # @schema
   # required: false
+  # type: object
   # additionalProperties: false
   # @schema
   catalog:
