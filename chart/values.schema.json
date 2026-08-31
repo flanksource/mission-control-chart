@@ -438,7 +438,7 @@
       "title": "disabled"
     },
     "enableCatalogUI": {
-      "default": "false",
+      "default": "true",
       "required": [],
       "title": "enableCatalogUI"
     },
@@ -867,7 +867,7 @@
           "title": "repository"
         },
         "tag": {
-          "default": "v0.0.1755",
+          "default": "v0.0.1937",
           "required": [],
           "title": "tag"
         }
@@ -1139,6 +1139,36 @@
       "default": "1",
       "required": [],
       "title": "replicas"
+    },
+    "reports": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "default": false,
+              "description": "Installs the Catalog Report playbook. Requires facet.enabled.",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "file": {
+              "additionalProperties": true,
+              "description": "TSX template that renders the report, passed as-is to the report action.\nWhen empty, the embedded CatalogReport.tsx is used, e.g.\n\nfile:\n  # Path to a TSX file in the container.\n  # Relative paths resolve against the working directory.\n  path: report/CatalogReport.tsx\n  git:\n    # URL of the git repository holding the TSX file.\n    url: https://github.com/flanksource/reports\n    # Path to the TSX file within the repository.\n    file: catalog/Report.tsx\n    # Branch to clone. Defaults to \"main\".\n    base: main\n    # Connection used for credentials to the git repository.\n    connection: connection://mission-control/github",
+              "required": [],
+              "title": "file",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "catalog",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "reports",
+      "type": "object"
     },
     "resources": {
       "additionalProperties": false,

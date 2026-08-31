@@ -647,6 +647,7 @@ connectionName: mission-control-db
 createConnection: true
 # @schema
 # required: false
+# type: object
 # additionalProperties: true
 # @schema
 facet:
@@ -663,6 +664,47 @@ facet:
   # @schema
   # Name of the facet service (including port) to connect to. Defaults to "<release-name>-facet:3010".
   serviceName: ""
+# @schema
+# required: false
+# type: object
+# additionalProperties: false
+# @schema
+reports:
+  # @schema
+  # required: false
+  # type: object
+  # additionalProperties: false
+  # @schema
+  catalog:
+    # @schema
+    # required: false
+    # type: boolean
+    # default: false
+    # @schema
+    # Installs the Catalog Report playbook. Requires facet.enabled.
+    enabled: false
+    # @schema
+    # required: false
+    # type: object
+    # additionalProperties: true
+    # @schema
+    # TSX template that renders the report, passed as-is to the report action.
+    # When empty, the embedded CatalogReport.tsx is used, e.g.
+    #
+    # file:
+    #   # Path to a TSX file in the container.
+    #   # Relative paths resolve against the working directory.
+    #   path: report/CatalogReport.tsx
+    #   git:
+    #     # URL of the git repository holding the TSX file.
+    #     url: https://github.com/flanksource/reports
+    #     # Path to the TSX file within the repository.
+    #     file: catalog/Report.tsx
+    #     # Branch to clone. Defaults to "main".
+    #     base: main
+    #     # Connection used for credentials to the git repository.
+    #     connection: connection://mission-control/github
+    file: {}
 # @schema
 # required: false
 # additionalProperties: false
