@@ -90,21 +90,23 @@ rules:
   - patch
 {{- if .Values.serviceAccount.rbac.secrets}}
 - apiGroups:
-    - v1
+    - ""
   resources:
     - secrets
   verbs:
     - get
     - list
+    - watch
 {{- end}}
 {{- if .Values.serviceAccount.rbac.configmaps}}
 - apiGroups:
-    - v1
+    - ""
   resources:
     - configmaps
   verbs:
     - get
     - list
+    - watch
 {{- end}}
 {{- if .Values.serviceAccount.rbac.exec}}
 - apiGroups: [""]
