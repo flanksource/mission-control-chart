@@ -1159,6 +1159,13 @@
               "required": [],
               "title": "file",
               "type": "object"
+            },
+            "timeout": {
+              "default": "",
+              "description": "Render timeout for the report, e.g. \"10m\".\nWhen empty, the facet server's own render timeout applies.",
+              "required": [],
+              "title": "timeout",
+              "type": "string"
             }
           },
           "required": [],
