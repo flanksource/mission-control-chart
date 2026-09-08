@@ -685,6 +685,14 @@ reports:
     enabled: false
     # @schema
     # required: false
+    # type: string
+    # default: ""
+    # @schema
+    # Render timeout for the report, e.g. "10m".
+    # When empty, the facet server's own render timeout applies.
+    timeout: ""
+    # @schema
+    # required: false
     # type: object
     # additionalProperties: true
     # @schema
