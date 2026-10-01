@@ -17,8 +17,9 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: PermissionGroup is the Schema for the Mission Control Permission
-          Groups
+        description: |-
+          PermissionGroup is the Schema for the Mission Control Permission Groups.
+          DEPRECATED: Use Role and RoleBinding instead.
         properties:
           apiVersion:
             description: |-
