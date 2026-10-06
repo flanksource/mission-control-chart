@@ -30,6 +30,7 @@ rules:
   resources:
   - applications
   - connections
+  - externalidentityproviders
   - incidentrules
   - notifications
   - notificationsilences
@@ -37,7 +38,10 @@ rules:
   - permissions
   - playbooks
   - plugins
+  - rolebindings
+  - roles
   - scopes
+  - teams
   - views
   verbs:
   - create
@@ -51,6 +55,7 @@ rules:
   - mission-control.flanksource.com
   resources:
   - connections/finalizers
+  - externalidentityproviders/finalizers
   - incidentrules/finalizers
   - playbooks/finalizers
   - notifications/finalizers
@@ -58,15 +63,19 @@ rules:
   - permissiongroups/finalizers
   - permissions/finalizers
   - plugins/finalizers
+  - rolebindings/finalizers
+  - roles/finalizers
   - views/finalizers
   - applications/finalizers
   - scopes/finalizers
+  - teams/finalizers
   verbs:
   - update
 - apiGroups:
   - mission-control.flanksource.com
   resources:
   - connections/status
+  - externalidentityproviders/status
   - incidentrules/status
   - playbooks/status
   - notifications/status
@@ -74,9 +83,12 @@ rules:
   - permissiongroups/status
   - permissions/status
   - plugins/status
+  - rolebindings/status
+  - roles/status
   - views/status
   - applications/status
   - scopes/status
+  - teams/status
   verbs:
   - get
   - patch
