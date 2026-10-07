@@ -1108,6 +1108,12 @@
       "required": [],
       "title": "permissions"
     },
+    "pluginHostGRPCAddress": {
+      "default": "",
+      "description": "Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`.",
+      "required": [],
+      "title": "pluginHostGRPCAddress"
+    },
     "pluginHostGRPCPort": {
       "default": "8081",
       "description": "Plugin HostService gRPC port for remote plugin callbacks (0 disables).",

@@ -318,6 +318,11 @@ pluginHostGRPCPort: 8081
 # @schema
 # required: false
 # @schema
+# -- Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`.
+pluginHostGRPCAddress: ""
+# @schema
+# required: false
+# @schema
 enableCatalogUI: true
 # @schema
 # required: false
