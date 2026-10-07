@@ -4,6 +4,33 @@
 
 A Helm chart for flanksource mission control
 
+## Remote plugin callbacks
+
+When `upstream_push` is not configured, the chart exposes the plugin HostService
+on `pluginHostGRPCPort` (default `8081`) and advertises
+`<service>.<namespace>.svc:<port>` to remote plugins, using the Service name
+(including `nameOverride`) and release namespace. Set
+`pluginHostGRPCAddress` to override this address, for example when plugins run
+outside the cluster. A Plugin's `spec.hostGRPCAddress` takes precedence over the
+chart's advertised address. Set `pluginHostGRPCPort: 0` to disable the listener
+and remove its Service port; `pluginHostGRPCAddress` is ignored in this case.
+
+With `upstream_push` configured, Mission Control runs as an agent and does not
+start a local HostService listener. The chart omits the gRPC Service port and
+callback-address flag, and ignores `pluginHostGRPCAddress`. In this mode,
+`pluginHostGRPCPort` selects the port the agent dials on the upstream server:
+it must be positive and match that server's HostService port. For example, if
+the upstream listens on `9091`, every agent must set `pluginHostGRPCPort: 9091`.
+Zero or negative ports are rejected for agents; they do not disable callbacks.
+
+**Security:** This callback channel uses plaintext gRPC by default and can carry
+resolved connection secrets and invocation tokens. Tokens authenticate calls
+but do not encrypt traffic. Restrict access to the HostService port with a
+NetworkPolicy allowing only trusted plugin pods, and configure TLS for off-host
+plugins. This chart does not configure TLS certificates or their mounts;
+enabling TLS currently requires deployment customization. Do not treat token
+authentication or a NetworkPolicy as a substitute for encryption.
+
 ## Maintainers
 
 | Name | Email | Url |
@@ -220,6 +247,8 @@ A Helm chart for flanksource mission control
 | permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
 | permissions.mcp | bool | `false` | when enabled, users must have explicit permissions to use MCP otherwise, all users automatically have permission to use MCP. |
 | permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
+| pluginHostGRPCAddress | string | `""` | Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`. Ignored when `upstream_push` is configured or `pluginHostGRPCPort` is 0. |
+| pluginHostGRPCPort | int | `8081` | Plugin HostService listener port (0 disables). With `upstream_push`, the agent's dial port; must be positive and match the upstream HostService port. |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
