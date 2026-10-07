@@ -1108,6 +1108,12 @@
       "required": [],
       "title": "permissions"
     },
+    "pluginHostGRPCPort": {
+      "default": "8081",
+      "description": "Plugin HostService gRPC port for remote plugin callbacks (0 disables).",
+      "required": [],
+      "title": "pluginHostGRPCPort"
+    },
     "properties": {
       "additionalProperties": true,
       "description": "Properties to configure mission-control feature sets",

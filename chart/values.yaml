@@ -313,6 +313,11 @@ metricsPort: 0
 # @schema
 # required: false
 # @schema
+# -- Plugin HostService gRPC port for remote plugin callbacks (0 disables).
+pluginHostGRPCPort: 8081
+# @schema
+# required: false
+# @schema
 enableCatalogUI: true
 # @schema
 # required: false

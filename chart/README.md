@@ -220,6 +220,7 @@ A Helm chart for flanksource mission control
 | permissions.connections | bool | `false` | when enabled, users must have explicit permissions to run connections otherwise, editors automatically have permission to run connections. |
 | permissions.mcp | bool | `false` | when enabled, users must have explicit permissions to use MCP otherwise, all users automatically have permission to use MCP. |
 | permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, editors automatically have permission to run playbooks. |
+| pluginHostGRPCPort | int | `8081` | Plugin HostService gRPC port for remote plugin callbacks (0 disables). |
 | properties."incidents.disable" | bool | `true` |  |
 | properties."logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
