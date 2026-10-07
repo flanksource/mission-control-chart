@@ -313,12 +313,12 @@ metricsPort: 0
 # @schema
 # required: false
 # @schema
-# -- Plugin HostService gRPC port for remote plugin callbacks (0 disables).
+# -- Plugin HostService listener port (0 disables). With `upstream_push`, the agent's dial port; must be positive and match the upstream HostService port.
 pluginHostGRPCPort: 8081
 # @schema
 # required: false
 # @schema
-# -- Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`.
+# -- Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`. Ignored when `upstream_push` is configured or `pluginHostGRPCPort` is 0.
 pluginHostGRPCAddress: ""
 # @schema
 # required: false

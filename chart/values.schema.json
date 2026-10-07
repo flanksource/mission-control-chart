@@ -1110,13 +1110,13 @@
     },
     "pluginHostGRPCAddress": {
       "default": "",
-      "description": "Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`.",
+      "description": "Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`. Ignored when `upstream_push` is configured or `pluginHostGRPCPort` is 0.",
       "required": [],
       "title": "pluginHostGRPCAddress"
     },
     "pluginHostGRPCPort": {
       "default": "8081",
-      "description": "Plugin HostService gRPC port for remote plugin callbacks (0 disables).",
+      "description": "Plugin HostService listener port (0 disables). With `upstream_push`, the agent's dial port; must be positive and match the upstream HostService port.",
       "required": [],
       "title": "pluginHostGRPCPort"
     },

@@ -11,7 +11,7 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
-    {{- if gt (int .Values.pluginHostGRPCPort) 0 }}
+    {{- if and (not .Values.upstream_push) (gt (int .Values.pluginHostGRPCPort) 0) }}
     - port: {{ .Values.pluginHostGRPCPort }}
       targetPort: {{ .Values.pluginHostGRPCPort }}
       protocol: TCP

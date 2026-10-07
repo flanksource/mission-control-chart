@@ -1,3 +1,6 @@
+{{- if and .Values.upstream_push (le (int .Values.pluginHostGRPCPort) 0) }}
+{{- fail "pluginHostGRPCPort must be positive when upstream_push is configured and must match the upstream HostService port" }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,7 +77,7 @@ spec:
             - --config-db=http://config-db:8080
             - --auth={{ .Values.authProvider }}
             - --upstream-grpc-port={{ .Values.pluginHostGRPCPort }}
-           {{- if gt (int .Values.pluginHostGRPCPort) 0 }}
+           {{- if and (not .Values.upstream_push) (gt (int .Values.pluginHostGRPCPort) 0) }}
             - --plugin-host-grpc-address={{ .Values.pluginHostGRPCAddress | default (printf "%s.%s.svc:%v" (include "incident-commander.name" .) .Release.Namespace .Values.pluginHostGRPCPort) }}
            {{- end }}
            {{- if .Values.oidc }}
