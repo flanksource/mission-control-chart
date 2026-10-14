@@ -242,11 +242,10 @@ authentication or a NetworkPolicy as a substitute for encryption.
 | otel.collector | string | `"{{.Values.global.otel.collector}}"` |  |
 | otel.labels | string | `"{{ .Values.global.otel.labels }}"` |  |
 | otel.serviceName | string | `"mission-control"` |  |
-| permissions.components | bool | `false` | when enabled, services must have explicit permissions to read components otherwise, all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read all components. |
 | permissions.configs | bool | `false` | when enabled, services must have explicit permissions to read configs otherwise, all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read all configs. |
-| permissions.connections | bool | `false` | when enabled, users must have explicit permissions to read and use connections otherwise, members of the `editors` team and all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read and use connections. |
+| permissions.connections | bool | `false` | when enabled, users must have explicit permissions to read and use connections otherwise, all users and all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read and use connections. |
 | permissions.mcp | bool | `false` | when enabled, users must have explicit permissions to use MCP otherwise, all users automatically have permission to use MCP. |
-| permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, members of the `editors` team and all notifications automatically have permission to run playbooks. |
+| permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, all users and all notifications automatically have permission to run playbooks. |
 | pluginHostGRPCAddress | string | `""` | Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`. Ignored when `upstream_push` is configured or `pluginHostGRPCPort` is 0. |
 | pluginHostGRPCPort | int | `8081` | Plugin HostService listener port (0 disables). With `upstream_push`, the agent's dial port; must be positive and match the upstream HostService port. |
 | properties."incidents.disable" | bool | `true` |  |

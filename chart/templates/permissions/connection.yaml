@@ -10,30 +10,21 @@ spec:
     - name: read-connections
       action: read
       resource:
-        scopeRef: all-connections
+        scopeRef: mission-control-builtin/all-connections
     - name: use-connections
       action: connection:use
       resource:
-        scopeRef: all-connections
+        scopeRef: mission-control-builtin/all-connections
 ---
 apiVersion: mission-control.flanksource.com/v1
 kind: RoleBinding
 metadata:
-  name: system-connection-users
+  name: connection-users
 spec:
-  description: allow all mission control services access to read and use all the connections
+  description: Allow everyone, and every resource acting on its own, to read and use all connections
   role: connection-user
   subjects:
-    {{- include "incident-commander.rbac.systemSubjects" . | nindent 4 }}
----
-apiVersion: mission-control.flanksource.com/v1
-kind: RoleBinding
-metadata:
-  name: editor-connection-users
-spec:
-  description: allow editors to read and use all connections
-  role: connection-user
-  subjects:
-    teams:
-      - editors
+    people:
+      - "*"
+    {{- include "incident-commander.rbac.resourceSubjects" . | nindent 4 }}
 {{- end }}

@@ -10,39 +10,15 @@ spec:
     - name: read-configs
       action: read
       resource:
-        scopeRef: all-configs
+        scopeRef: mission-control-builtin/all-configs
 ---
 apiVersion: mission-control.flanksource.com/v1
 kind: RoleBinding
 metadata:
-  name: system-config-readers
+  name: resource-config-readers
 spec:
-  description: Grant system to read all configs
+  description: Allow every resource acting on its own to read all configs, e.g. a playbook running on a config
   role: config-reader
   subjects:
-    {{- include "incident-commander.rbac.systemSubjects" . | nindent 4 }}
-{{- end }}
-{{- if not .Values.permissions.components }}
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Role
-metadata:
-  name: component-reader
-spec:
-  description: Read every component
-  rules:
-    - name: read-components
-      action: read
-      resource:
-        scopeRef: all-components
----
-apiVersion: mission-control.flanksource.com/v1
-kind: RoleBinding
-metadata:
-  name: system-component-readers
-spec:
-  description: Grant system to read all components
-  role: component-reader
-  subjects:
-    {{- include "incident-commander.rbac.systemSubjects" . | nindent 4 }}
+    {{- include "incident-commander.rbac.resourceSubjects" . | nindent 4 }}
 {{- end }}

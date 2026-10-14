@@ -5,67 +5,31 @@ kind: Role
 metadata:
   name: playbook-runner
 spec:
-  description: Run, approve and cancel every playbook, with or without a target
+  description: Run, approve and cancel every playbook, without a target or on any config
   rules:
     {{- range $action := list "run" "approve" "cancel" }}
     - name: {{ $action }}-playbooks
       action: playbook:{{ $action }}
       resource:
-        scopeRef: all-playbooks
-    - name: {{ $action }}-playbooks-on-targets
+        scopeRef: mission-control-builtin/all-playbooks
+    - name: {{ $action }}-playbooks-on-configs
       action: playbook:{{ $action }}
       resource:
-        scopeRef: all-playbooks
+        scopeRef: mission-control-builtin/all-playbooks
       target:
-        scopeRef: all-playbook-targets
+        scopeRef: mission-control-builtin/all-configs
     {{- end }}
 ---
 apiVersion: mission-control.flanksource.com/v1
 kind: RoleBinding
 metadata:
-  name: notification-playbook-runners
+  name: playbook-runners
 spec:
-  description: Grant all notifications to run playbooks
+  description: Allow everyone, and every notification, to run playbooks
   role: playbook-runner
   subjects:
-    notifications:
-      - name: "*"
----
-apiVersion: mission-control.flanksource.com/v1
-kind: RoleBinding
-metadata:
-  name: editor-playbook-runners
-spec:
-  description: Grant editors to run playbooks
-  role: playbook-runner
-  subjects:
-    teams:
-      - editors
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Role
-metadata:
-  name: config-component-reader
-spec:
-  description: Read every config and component
-  rules:
-    - name: read-configs
-      action: read
-      resource:
-        scopeRef: all-configs
-    - name: read-components
-      action: read
-      resource:
-        scopeRef: all-components
----
-apiVersion: mission-control.flanksource.com/v1
-kind: RoleBinding
-metadata:
-  name: notification-config-component-readers
-spec:
-  description: Grant all notifications to read configs & components
-  role: config-component-reader
-  subjects:
+    people:
+      - "*"
     notifications:
       - name: "*"
 {{- end }}

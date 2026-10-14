@@ -68,9 +68,9 @@ app.kubernetes.io/component: mission-control
 
 {{/*
 RoleBinding subjects for the resources that act on their own: every canary, scraper,
-playbook, topology and notification. Replaces the "system" PermissionGroup.
+playbook, topology and notification.
 */}}
-{{- define "incident-commander.rbac.systemSubjects" -}}
+{{- define "incident-commander.rbac.resourceSubjects" -}}
 canaries:
   - name: "*"
 scrapers:
