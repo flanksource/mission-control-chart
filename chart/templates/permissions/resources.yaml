@@ -1,32 +1,48 @@
 {{- if not .Values.permissions.configs }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: Role
 metadata:
-  name: allow-system-to-read-all-configs
+  name: config-reader
+spec:
+  description: Read every config
+  rules:
+    - name: read-configs
+      action: read
+      resource:
+        scopeRef: all-configs
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: RoleBinding
+metadata:
+  name: system-config-readers
 spec:
   description: Grant system to read all configs
-  subject:
-    group: system
-  actions:
-    - read
-  object:
-    configs:
-      - name: "*"
+  role: config-reader
+  subjects:
+    {{- include "incident-commander.rbac.systemSubjects" . | nindent 4 }}
 {{- end }}
 {{- if not .Values.permissions.components }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: Role
 metadata:
-  name: allow-system-to-read-all-components
+  name: component-reader
+spec:
+  description: Read every component
+  rules:
+    - name: read-components
+      action: read
+      resource:
+        scopeRef: all-components
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: RoleBinding
+metadata:
+  name: system-component-readers
 spec:
   description: Grant system to read all components
-  subject:
-    group: system
-  actions:
-    - read
-  object:
-    components:
-      - name: "*"
+  role: component-reader
+  subjects:
+    {{- include "incident-commander.rbac.systemSubjects" . | nindent 4 }}
 {{- end }}

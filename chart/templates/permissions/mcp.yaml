@@ -1,14 +1,23 @@
 {{- if not .Values.permissions.mcp }}
+---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: Role
 metadata:
-  name: allow-all-users-to-use-mcp
+  name: mcp-user
+spec:
+  description: Use the MCP server
+  rules:
+    - name: use-mcp
+      action: mcp:use
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: RoleBinding
+metadata:
+  name: all-people-mcp-users
 spec:
   description: Grant all users to use MCP
-  subject:
-    group: all-users
-  actions:
-    - "mcp:use"
-  object:
-    mcp: true
+  role: mcp-user
+  subjects:
+    people:
+      - "*"
 {{- end }}

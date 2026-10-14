@@ -1,54 +1,71 @@
 {{- if not .Values.permissions.playbooks }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: PermissionGroup
+kind: Role
 metadata:
-  name: all-notifications
+  name: playbook-runner
 spec:
-  notifications:
-    - name: "*"
+  description: Run, approve and cancel every playbook, with or without a target
+  rules:
+    {{- range $action := list "run" "approve" "cancel" }}
+    - name: {{ $action }}-playbooks
+      action: playbook:{{ $action }}
+      resource:
+        scopeRef: all-playbooks
+    - name: {{ $action }}-playbooks-on-targets
+      action: playbook:{{ $action }}
+      resource:
+        scopeRef: all-playbooks
+      target:
+        scopeRef: all-playbook-targets
+    {{- end }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: RoleBinding
 metadata:
-  name: allow-all-notifications-to-run-playbooks
+  name: notification-playbook-runners
 spec:
   description: Grant all notifications to run playbooks
-  subject:
-    group: all-notifications
-  actions:
-    - "playbook:*"
-  object:
-    playbooks:
-      - name: '*'
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Permission
-metadata:
-  name: allow-all-notifications-config-component-read
-spec:
-  description: Grant all notifications to read configs & components
-  subject:
-    group: all-notifications
-  actions:
-    - read
-  object:
-    configs:
+  role: playbook-runner
+  subjects:
+    notifications:
       - name: "*"
-    components:
-      - name: "*"    
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: RoleBinding
 metadata:
-  name: allow-editors-to-run-playbooks
+  name: editor-playbook-runners
 spec:
   description: Grant editors to run playbooks
-  subject:
-    group: editor
-  actions:
-    - "playbook:*"
-  object:
-    playbooks:
-      - name: '*'
-{{- end}}
+  role: playbook-runner
+  subjects:
+    teams:
+      - editors
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Role
+metadata:
+  name: config-component-reader
+spec:
+  description: Read every config and component
+  rules:
+    - name: read-configs
+      action: read
+      resource:
+        scopeRef: all-configs
+    - name: read-components
+      action: read
+      resource:
+        scopeRef: all-components
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: RoleBinding
+metadata:
+  name: notification-config-component-readers
+spec:
+  description: Grant all notifications to read configs & components
+  role: config-component-reader
+  subjects:
+    notifications:
+      - name: "*"
+{{- end }}

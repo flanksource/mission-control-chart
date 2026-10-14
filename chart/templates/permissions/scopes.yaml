@@ -1,0 +1,53 @@
+apiVersion: mission-control.flanksource.com/v1
+kind: Scope
+metadata:
+  name: all-configs
+spec:
+  description: Every config
+  targets:
+    - config:
+        name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Scope
+metadata:
+  name: all-components
+spec:
+  description: Every component
+  targets:
+    - component:
+        name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Scope
+metadata:
+  name: all-connections
+spec:
+  description: Every connection
+  targets:
+    - connection:
+        name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Scope
+metadata:
+  name: all-playbooks
+spec:
+  description: Every playbook
+  targets:
+    - playbook:
+        name: "*"
+---
+apiVersion: mission-control.flanksource.com/v1
+kind: Scope
+metadata:
+  name: all-playbook-targets
+spec:
+  description: Everything a playbook can run on, i.e. every config, component and check
+  targets:
+    - config:
+        name: "*"
+    - component:
+        name: "*"
+    - check:
+        name: "*"

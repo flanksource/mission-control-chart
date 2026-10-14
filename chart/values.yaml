@@ -333,14 +333,15 @@ permissions:
   # required: false
   # @schema
   # -- when enabled, users must have explicit permissions to run playbooks
-  # otherwise, editors automatically have permission to run playbooks.
+  # otherwise, members of the `editors` team and all notifications automatically have permission to run playbooks.
   playbooks: false
   # @schema
   # type: boolean
   # required: false
   # @schema
-  # -- when enabled, users must have explicit permissions to run connections
-  # otherwise, editors automatically have permission to run connections.
+  # -- when enabled, users must have explicit permissions to read and use connections
+  # otherwise, members of the `editors` team and all canaries, scrapers, playbooks, topologies and notifications
+  # automatically have permission to read and use connections.
   connections: false
   # @schema
   # type: boolean
@@ -354,14 +355,14 @@ permissions:
   # required: false
   # @schema
   # -- when enabled, services must have explicit permissions to read configs
-  # otherwise, system automatically has permission to read all configs.
+  # otherwise, all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read all configs.
   configs: false
   # @schema
   # type: boolean
   # required: false
   # @schema
   # -- when enabled, services must have explicit permissions to read components
-  # otherwise, system automatically has permission to read all components.
+  # otherwise, all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read all components.
   components: false
 # @schema
 # required: false
