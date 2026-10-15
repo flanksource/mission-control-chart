@@ -4,13 +4,13 @@ dependencies:
   version: 0.0.47
 - name: config-db
   repository: https://flanksource.github.io/charts
-  version: 0.0.1461
+  version: 0.0.1479
 - name: canary-checker
   repository: https://flanksource.github.io/charts
   version: 1.2.0
 - name: flanksource-ui
   repository: https://flanksource.github.io/charts
-  version: 1.4.317
+  version: 1.4.332
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.60.1
@@ -22,6 +22,6 @@ dependencies:
   version: 0.1.2
 - name: facet
   repository: https://flanksource.github.io/charts
-  version: 0.1.71
-digest: sha256:c03989b862360a16a2eb62f8f94e214862abb3c4c55efc7cdcd3f3f85f4aa9e7
-generated: "2026-09-08T12:31:13.668243284+05:30"
+  version: 0.1.73
+digest: sha256:a2084f816a49e4d70a8295b6e99fa7adeacf3ecd3b9de2d0be0d049320d6e004
+generated: "2026-10-15T03:44:07.249570333Z"
