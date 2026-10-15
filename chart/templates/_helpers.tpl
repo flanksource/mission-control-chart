@@ -66,6 +66,23 @@ app.kubernetes.io/component: mission-control
 {{- end }}
 {{- end }}
 
+{{/*
+RoleBinding subjects for the resources that act on their own: every canary, scraper,
+playbook, topology and notification.
+*/}}
+{{- define "incident-commander.rbac.resourceSubjects" -}}
+canaries:
+  - name: "*"
+scrapers:
+  - name: "*"
+playbooks:
+  - name: "*"
+topologies:
+  - name: "*"
+notifications:
+  - name: "*"
+{{- end }}
+
 {{- define "postgrest.image" -}}
 {{ if .Values.externalPostgrest.imageName }}
 {{- .Values.externalPostgrest.imageName -}}

@@ -1,54 +1,35 @@
 {{- if not .Values.permissions.playbooks }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: PermissionGroup
+kind: Role
 metadata:
-  name: all-notifications
+  name: playbook-runner
 spec:
-  notifications:
-    - name: "*"
+  description: Run, approve and cancel every playbook, without a target or on any config
+  rules:
+    {{- range $action := list "run" "approve" "cancel" }}
+    - name: {{ $action }}-playbooks
+      action: playbook:{{ $action }}
+      resource:
+        scopeRef: mission-control-builtin/all-playbooks
+    - name: {{ $action }}-playbooks-on-configs
+      action: playbook:{{ $action }}
+      resource:
+        scopeRef: mission-control-builtin/all-playbooks
+      target:
+        scopeRef: mission-control-builtin/all-configs
+    {{- end }}
 ---
 apiVersion: mission-control.flanksource.com/v1
-kind: Permission
+kind: RoleBinding
 metadata:
-  name: allow-all-notifications-to-run-playbooks
+  name: playbook-runners
 spec:
-  description: Grant all notifications to run playbooks
-  subject:
-    group: all-notifications
-  actions:
-    - "playbook:*"
-  object:
-    playbooks:
-      - name: '*'
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Permission
-metadata:
-  name: allow-all-notifications-config-component-read
-spec:
-  description: Grant all notifications to read configs & components
-  subject:
-    group: all-notifications
-  actions:
-    - read
-  object:
-    configs:
+  description: Allow everyone, and every notification, to run playbooks
+  role: playbook-runner
+  subjects:
+    people:
+      - "*"
+    notifications:
       - name: "*"
-    components:
-      - name: "*"    
----
-apiVersion: mission-control.flanksource.com/v1
-kind: Permission
-metadata:
-  name: allow-editors-to-run-playbooks
-spec:
-  description: Grant editors to run playbooks
-  subject:
-    group: editor
-  actions:
-    - "playbook:*"
-  object:
-    playbooks:
-      - name: '*'
-{{- end}}
+{{- end }}

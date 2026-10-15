@@ -1069,23 +1069,16 @@
     "permissions": {
       "additionalProperties": false,
       "properties": {
-        "components": {
-          "default": false,
-          "description": "when enabled, services must have explicit permissions to read components\notherwise, system automatically has permission to read all components.",
-          "required": [],
-          "title": "components",
-          "type": "boolean"
-        },
         "configs": {
           "default": false,
-          "description": "when enabled, services must have explicit permissions to read configs\notherwise, system automatically has permission to read all configs.",
+          "description": "when enabled, services must have explicit permissions to read configs\notherwise, all canaries, scrapers, playbooks, topologies and notifications automatically have permission to read all configs.",
           "required": [],
           "title": "configs",
           "type": "boolean"
         },
         "connections": {
           "default": false,
-          "description": "when enabled, users must have explicit permissions to run connections\notherwise, editors automatically have permission to run connections.",
+          "description": "when enabled, users must have explicit permissions to read and use connections\notherwise, all users and all canaries, scrapers, playbooks, topologies and notifications\nautomatically have permission to read and use connections.",
           "required": [],
           "title": "connections",
           "type": "boolean"
@@ -1099,7 +1092,7 @@
         },
         "playbooks": {
           "default": false,
-          "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, editors automatically have permission to run playbooks.",
+          "description": "when enabled, users must have explicit permissions to run playbooks\notherwise, all users and all notifications automatically have permission to run playbooks.",
           "required": [],
           "title": "playbooks",
           "type": "boolean"
