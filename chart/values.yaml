@@ -291,11 +291,11 @@ properties:
   # @schema
   # type: [string,boolean]
   # @schema
-  incidents.disable: true
+  public.incidents.disable: true
   # @schema
   # type: [string,boolean]
   # @schema
-  logs.disable: true
+  public.logs.disable: true
 # -v, -vv, -vvv
 # @schema
 # required: false

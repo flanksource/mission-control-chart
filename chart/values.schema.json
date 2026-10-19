@@ -1117,19 +1117,19 @@
       "additionalProperties": true,
       "description": "Properties to configure mission-control feature sets",
       "properties": {
-        "incidents.disable": {
+        "public.incidents.disable": {
           "default": true,
           "required": [],
-          "title": "incidents.disable",
+          "title": "public.incidents.disable",
           "type": [
             "string",
             "boolean"
           ]
         },
-        "logs.disable": {
+        "public.logs.disable": {
           "default": true,
           "required": [],
-          "title": "logs.disable",
+          "title": "public.logs.disable",
           "type": [
             "string",
             "boolean"

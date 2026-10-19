@@ -248,8 +248,8 @@ authentication or a NetworkPolicy as a substitute for encryption.
 | permissions.playbooks | bool | `false` | when enabled, users must have explicit permissions to run playbooks otherwise, all users and all notifications automatically have permission to run playbooks. |
 | pluginHostGRPCAddress | string | `""` | Advertised remote plugin callback address. Empty uses `<service>.<namespace>.svc:<pluginHostGRPCPort>`. Ignored when `upstream_push` is configured or `pluginHostGRPCPort` is 0. |
 | pluginHostGRPCPort | int | `8081` | Plugin HostService listener port (0 disables). With `upstream_push`, the agent's dial port; must be positive and match the upstream HostService port. |
-| properties."incidents.disable" | bool | `true` |  |
-| properties."logs.disable" | bool | `true` |  |
+| properties."public.incidents.disable" | bool | `true` |  |
+| properties."public.logs.disable" | bool | `true` |  |
 | replicas | int | `1` |  |
 | resources.limits.cpu | string | `"500m"` |  |
 | resources.limits.memory | string | `"1024Mi"` |  |
