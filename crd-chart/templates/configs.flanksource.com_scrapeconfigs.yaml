@@ -7135,10 +7135,6 @@ spec:
                       description: A static value or JSONPath expression to use as
                         the Name for the resource.
                       type: string
-                    ntlm:
-                      type: boolean
-                    ntlmv2:
-                      type: boolean
                     oauth:
                       properties:
                         clientID:
