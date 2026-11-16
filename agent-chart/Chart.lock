@@ -7,6 +7,6 @@ dependencies:
   version: 1.2.0
 - name: mission-control-watchtower
   repository: https://flanksource.github.io/charts
-  version: 0.1.35-beta.4
-digest: sha256:b141c84a1b13d804b65f4fb2b1e72a647f5e0744e508ff6a120f64ff34571479
-generated: "2026-10-15T08:57:42.711587958Z"
+  version: 0.1.35-beta.5
+digest: sha256:243955a2269f039e7a79a48d245b60846a384bb8ef41470e3cc8e74080c73af5
+generated: "2026-11-16T11:41:26.852744871Z"

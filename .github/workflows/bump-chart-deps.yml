@@ -52,6 +52,15 @@ jobs:
 
           echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
 
+      - uses: azure/setup-helm@b9e51907a09c216f16ebe8536097933489208112 # v4.3.0
+        if: steps.bump.outputs.changed == 'true'
+
+      - name: Update Chart.lock files
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          helm dependency update chart
+          helm dependency update agent-chart
+
       - name: Open PR with auto-merge
         if: steps.bump.outputs.changed == 'true'
         env:
@@ -61,7 +70,7 @@ jobs:
           git config user.name "flankbot"
           git config user.email "flankbot@flanksource.com"
           git checkout -b "$BRANCH"
-          git add chart/Chart.yaml agent-chart/Chart.yaml
+          git add chart/Chart.yaml agent-chart/Chart.yaml chart/Chart.lock agent-chart/Chart.lock
           git commit -m "chore: bump flanksource chart dependencies to latest"
           git push origin "$BRANCH"
           gh pr create \
