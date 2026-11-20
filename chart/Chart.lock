@@ -22,6 +22,6 @@ dependencies:
   version: 0.1.4-beta.1
 - name: facet
   repository: https://flanksource.github.io/charts
-  version: 0.1.74
-digest: sha256:6fef2d392206eae6c053aa4102f44316efe7169671ba6b78f214968b9d8c2da5
-generated: "2026-11-19T06:34:45.908970444Z"
+  version: 0.1.75
+digest: sha256:859e06bc7f7d4bf306e33ed503b41efd37c29d1a51cf59e92abf81d347b8e2d3
+generated: "2026-11-20T10:04:52.88967927Z"
