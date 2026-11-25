@@ -10,7 +10,7 @@ dependencies:
   version: 1.2.0
 - name: flanksource-ui
   repository: https://flanksource.github.io/charts
-  version: 1.4.364
+  version: 1.4.365
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.60.1
@@ -23,5 +23,5 @@ dependencies:
 - name: facet
   repository: https://flanksource.github.io/charts
   version: 0.1.75
-digest: sha256:4db37ce004bbbbd3432b8d3ca21c017c16f7fe302f53cb5dbf3d91b4e67f5ac9
-generated: "2026-11-23T06:48:04.392605328Z"
+digest: sha256:cfde5496e028bf6644ce17faa82fc526067caf15e15422ce3fea6a9cd9780616
+generated: "2026-11-25T05:23:47.95124888Z"
